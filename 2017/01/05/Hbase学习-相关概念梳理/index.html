@@ -80,12 +80,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="carlosfu">
-<meta property="og:url" content="http://yoursite.com/categories/Redis/index.html">
+<meta name="description" content="如果一个table做了预分配Region，例如有100个Region，合理的分配会使得Region分配到不同的RegionServer上面。 所以一个Region上面不会存在两个表，例如表有几个列族，那么在Region内部有一个Store的概念，有几个列族就有几个 Store，每个列族底层是真正的存储：HFile和Memstore，其中Hfile可以是多个。下面这个图引自网易的一个博客，对于 客户">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hbase学习-相关概念梳理">
+<meta property="og:url" content="http://yoursite.com/2017/01/05/Hbase学习-相关概念梳理/index.html">
 <meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="如果一个table做了预分配Region，例如有100个Region，合理的分配会使得Region分配到不同的RegionServer上面。 所以一个Region上面不会存在两个表，例如表有几个列族，那么在Region内部有一个Store的概念，有几个列族就有几个 Store，每个列族底层是真正的存储：HFile和Memstore，其中Hfile可以是多个。下面这个图引自网易的一个博客，对于 客户">
+<meta property="og:image" content="http://i2.itc.cn/20170105/3084_77a5423c_aed9_8bb7_01ad_a0f0c57fa578_1.png">
+<meta property="og:image" content="http://i2.itc.cn/20170105/3084_bde9d35e_0b62_d8e8_cc21_aa930eb4bf3f_1.png">
+<meta property="og:updated_time" content="2017-01-05T02:18:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="carlosfu">
+<meta name="twitter:title" content="Hbase学习-相关概念梳理">
+<meta name="twitter:description" content="如果一个table做了预分配Region，例如有100个Region，合理的分配会使得Region分配到不同的RegionServer上面。 所以一个Region上面不会存在两个表，例如表有几个列族，那么在Region内部有一个Store的概念，有几个列族就有几个 Store，每个列族底层是真正的存储：HFile和Memstore，其中Hfile可以是多个。下面这个图引自网易的一个博客，对于 客户">
+<meta name="twitter:image" content="http://i2.itc.cn/20170105/3084_77a5423c_aed9_8bb7_01ad_a0f0c57fa578_1.png">
 
 
 
@@ -103,7 +110,7 @@
   };
 </script>
 
-  <title> 分类: Redis | carlosfu </title>
+  <title> Hbase学习-相关概念梳理 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -134,7 +141,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-right  ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -222,47 +229,154 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Redis
-        <small>分类</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Hbase学习-相关概念梳理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-05T10:18:33+08:00" content="2017-01-05">
+              2017-01-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hbase/" itemprop="url" rel="index">
+                    <span itemprop="name">hbase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/05/Hbase学习-相关概念梳理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/05/Hbase学习-相关概念梳理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/01/05/Hbase学习-相关概念梳理/" class="leancloud_visitors" data-flag-title="Hbase学习-相关概念梳理">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>如果一个table做了预分配Region，例如有100个Region，合理的分配会使得Region分配到不同的RegionServer上面。</p>
+<p>所以一个Region上面不会存在两个表，例如表有几个列族，那么在Region内部有一个Store的概念，有几个列族就有几个</p>
+<p>Store，每个列族底层是真正的存储：HFile和Memstore，其中Hfile可以是多个。下面这个图引自网易的一个博客，对于</p>
+<p>客户端一次scan过程的解析。</p>
+<p><img src="http://i2.itc.cn/20170105/3084_77a5423c_aed9_8bb7_01ad_a0f0c57fa578_1.png" alt=""></p>
+<p><img src="http://i2.itc.cn/20170105/3084_bde9d35e_0b62_d8e8_cc21_aa930eb4bf3f_1.png" alt=""></p>
 
-      <h1 class="post-title">
+      
+    </div>
+    
+    <div>
+      
         
-            <a class="post-title-link" href="/2016/06/06/1.Redis3.0与3.2/" itemprop="url">
-              
-                <span itemprop="name">Redis 3.2.0 new-1.对比3.0</span>
-              
-            </a>
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
+      
+    </div>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-06-06T09:35:36+08:00"
-              content="2016-06-06" >
-          06-06
-        </time>
-      </div>
+    <footer class="post-footer">
+      
 
-    </header>
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/28/Hbase学习1.2-伪分布式安装/" rel="next" title="Hbase学习1.2-伪分布式安装">
+                <i class="fa fa-chevron-left"></i> Hbase学习1.2-伪分布式安装
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </section>
 
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -270,6 +384,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/05/Hbase学习-相关概念梳理/"
+           data-title="Hbase学习-相关概念梳理" data-url="http://yoursite.com/2017/01/05/Hbase学习-相关概念梳理/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -289,8 +411,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
@@ -362,6 +493,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -458,6 +600,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
