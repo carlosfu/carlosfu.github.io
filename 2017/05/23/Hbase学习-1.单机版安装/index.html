@@ -86,12 +86,12 @@
 <meta property="og:url" content="http://yoursite.com/2017/05/23/Hbase学习-1.单机版安装/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="注意1. 需要oracle jdk 7+。 2. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /op">
-<meta property="og:image" content="http://i1.itc.cn/20160429/3084_ec811221_81e6_ed50_50d9_ce7afa7a0165_1.png">
-<meta property="og:updated_time" content="2017-05-24T02:00:38.000Z">
+<meta property="og:image" content="http://i1.itc.cn/20170524/3084_3b90ccd0_fa7e_2a29_3b30_48fbce4e6038_1.png">
+<meta property="og:updated_time" content="2017-05-24T02:21:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hbase学习-1.单机版安装">
 <meta name="twitter:description" content="注意1. 需要oracle jdk 7+。 2. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /op">
-<meta name="twitter:image" content="http://i1.itc.cn/20160429/3084_ec811221_81e6_ed50_50d9_ce7afa7a0165_1.png">
+<meta name="twitter:image" content="http://i1.itc.cn/20170524/3084_3b90ccd0_fa7e_2a29_3b30_48fbce4e6038_1.png">
 
 
 
@@ -322,21 +322,25 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase/</div><div class="line">wget http://archive.apache.org/dist/hbase/1.2.5/hbase-1.2.5-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.5-bin.tar.gz</div><div class="line">ln -s /opt/hbase/hbase-1.2.5 hbase</div></pre></td></tr></table></figure>
 <a id="more"></a>
 <h5 id="2-相关目录"><a href="#2-相关目录" class="headerlink" title="2.相关目录"></a>2.相关目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase/zookeeper</div><div class="line">mkdir -p /opt/hbase/data</div></pre></td></tr></table></figure>
-<h5 id="3-修改Hbase相关环境变量"><a href="#3-修改Hbase相关环境变量" class="headerlink" title="3. 修改Hbase相关环境变量"></a>3. 修改Hbase相关环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/jdk</div><div class="line">HBASE_HOME=/opt/hbase/hbase</div><div class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin</div></pre></td></tr></table></figure>
-<h5 id="4-修改hbase-site-xml配置"><a href="#4-修改hbase-site-xml配置" class="headerlink" title="4. 修改hbase-site.xml配置"></a>4. 修改hbase-site.xml配置</h5><p>如果不添加hbase会安装在/tmp/hbase-${user.name}目录下，在机器重启时候会删掉</p>
+<h5 id="3-修改Hbase相关环境变量"><a href="#3-修改Hbase相关环境变量" class="headerlink" title="3. 修改Hbase相关环境变量"></a>3. 修改Hbase相关环境变量</h5><p>vim /etc/profile </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/jdk</div><div class="line">HBASE_HOME=/opt/hbase/hbase</div><div class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin</div></pre></td></tr></table></figure>
+<p>生效：source /etc/profile</p>
+<h5 id="4-修改hbase-site-xml配置"><a href="#4-修改hbase-site-xml配置" class="headerlink" title="4. 修改hbase-site.xml配置"></a>4. 修改hbase-site.xml配置</h5><p>vim /opt/hbase/hbase/conf/hbase-site.xml</p>
+<p>如果不添加hbase会安装在/tmp/hbase-${user.name}目录下，在机器重启时候会删掉</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///opt/hbase/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.zookeeper.property.dataDir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/hbase/zookeeper<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
 <h5 id="5-修改hbase-env-sh中的JAVA-HOME地址"><a href="#5-修改hbase-env-sh中的JAVA-HOME地址" class="headerlink" title="5. 修改hbase-env.sh中的JAVA_HOME地址"></a>5. 修改hbase-env.sh中的JAVA_HOME地址</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk/</div></pre></td></tr></table></figure>
 <h5 id="6-启动"><a href="#6-启动" class="headerlink" title="6. 启动"></a>6. 启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh /opt/hbase/hbase/bin/start-hbase.sh</div></pre></td></tr></table></figure>
 <h4 id="二、开始"><a href="#二、开始" class="headerlink" title="二、开始"></a>二、开始</h4><h5 id="1-相关确认"><a href="#1-相关确认" class="headerlink" title="1.相关确认"></a>1.相关确认</h5><ul>
-<li>进程：单机版的Hbase将Hbase、zookeeper等放在一个进程里。</li>
+<li>进程：单机版的Hbase将Master、Region Server、Zookeeper等放在一个进程里。</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># jps -l</span></div><div class="line">25277 org.apache.hadoop.hbase.master.HMaster</div></pre></td></tr></table></figure>
 <p>可以通过netstat观察进程下的端口：</p>
 <ul>
-<li>HMaster管理：<br><a href="http://10.10.xx.xx:60010" target="_blank" rel="external">http://10.10.xx.xx:60010</a></li>
+<li>HMaster管理：<br><a href="http://10.10.53.159:16010/" target="_blank" rel="external">http://10.10.53.159:16010/master-status</a></li>
 </ul>
-<p><img src="http://i1.itc.cn/20160429/3084_ec811221_81e6_ed50_50d9_ce7afa7a0165_1.png" alt="Hbase status界面"></p>
-<h5 id="2-Hbase-shell连接"><a href="#2-Hbase-shell连接" class="headerlink" title="2.Hbase shell连接"></a>2.Hbase shell连接</h5><p>/opt/hbase/bin/hbase shell<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hbase(main):001:0&gt; status</div><div class="line">2016-04-29 14:54:46,851 WARN  [main] util.NativeCodeLoader: Unable to load native-hadoop library <span class="keyword">for</span> your platform... using <span class="built_in">builtin</span>-java classes <span class="built_in">where</span> applicable</div><div class="line">1 active master, 0 backup masters, 1 servers, 0 dead, 3.0000 average load</div></pre></td></tr></table></figure></p>
+<p><img src="http://i1.itc.cn/20170524/3084_3b90ccd0_fa7e_2a29_3b30_48fbce4e6038_1.png" alt="Hbase status界面"></p>
+<h5 id="2-Hbase-shell连接"><a href="#2-Hbase-shell连接" class="headerlink" title="2.Hbase shell连接"></a>2.Hbase shell连接</h5><p>hbase shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hbase(main):001:0&gt; status</div><div class="line">1 active master, 0 backup masters, 1 servers, 0 dead, 2.0000 average load</div></pre></td></tr></table></figure>
 
       
     </div>
