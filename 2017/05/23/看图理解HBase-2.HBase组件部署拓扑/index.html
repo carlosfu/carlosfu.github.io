@@ -80,20 +80,18 @@
 
 
 
-<meta name="description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
+<meta name="description" content="未完成…..  一.Master二.Worker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="看图理解HBASE-1.HBase组件角色和交互">
-<meta property="og:url" content="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件职责和交互/index.html">
+<meta property="og:title" content="看图理解HBASE-2.HBase组件部署拓扑">
+<meta property="og:url" content="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/index.html">
 <meta property="og:site_name" content="carlosfu">
-<meta property="og:description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
-<meta property="og:image" content="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png">
-<meta property="og:image" content="http://i0.itc.cn/20170522/3084_6bea028c_2cbf_81af_1216_b8804eeed739_1.png">
-<meta property="og:image" content="http://i3.itc.cn/20170524/3084_9dc53e86_b86e_9c64_5354_cf9e4f2751c3_1.png">
-<meta property="og:updated_time" content="2017-05-24T01:42:13.000Z">
+<meta property="og:description" content="未完成…..  一.Master二.Worker">
+<meta property="og:image" content="http://i2.itc.cn/20170524/3084_a16989ed_8586_d854_3435_b3ce8bff8550_1.png">
+<meta property="og:updated_time" content="2017-05-24T02:02:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="看图理解HBASE-1.HBase组件角色和交互">
-<meta name="twitter:description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
-<meta name="twitter:image" content="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png">
+<meta name="twitter:title" content="看图理解HBASE-2.HBase组件部署拓扑">
+<meta name="twitter:description" content="未完成…..  一.Master二.Worker">
+<meta name="twitter:image" content="http://i2.itc.cn/20170524/3084_a16989ed_8586_d854_3435_b3ce8bff8550_1.png">
 
 
 
@@ -111,7 +109,7 @@
   };
 </script>
 
-  <title> 看图理解HBASE-1.HBase组件角色和交互 | carlosfu </title>
+  <title> 看图理解HBASE-2.HBase组件部署拓扑 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -241,7 +239,7 @@
             
             
               
-                看图理解HBASE-1.HBase组件角色和交互
+                看图理解HBASE-2.HBase组件部署拓扑
               
             
           </h1>
@@ -283,8 +281,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/看图理解HBase-2.HBase组件职责和交互/" itemprop="commentsCount"></span>
+                <a href="/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/看图理解HBase-2.HBase组件部署拓扑/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -294,7 +292,7 @@
 
           
           
-             <span id="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBASE-1.HBase组件角色和交互">
+             <span id="/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/" class="leancloud_visitors" data-flag-title="看图理解HBASE-2.HBase组件部署拓扑">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -316,77 +314,9 @@
       
 
       
-        <p><img src="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png" alt=""></p>
-<h3 id="一-Client"><a href="#一-Client" class="headerlink" title="一.Client"></a>一.Client</h3><h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1.角色"></a>1.角色</h4><ul>
-<li>普通API(get、put、delete等)</li>
-<li>Admin API(create、alter、compact等)</li>
-</ul>
-<h4 id="2-交互"><a href="#2-交互" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
-<li>与Zookeeper<ul>
-<li>第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。</li>
-<li>Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart client)</li>
-</ul>
-</li>
-<li>与Master：这里没有画，但在使用Admin API(例如建表)时，实际上是对Master进行操作。</li>
-<li>与RegionServer：读写数据。</li>
-</ul>
-<a id="more"></a>
-<h3 id="二-Zookeeper"><a href="#二-Zookeeper" class="headerlink" title="二.Zookeeper"></a>二.Zookeeper</h3><h4 id="1-角色-1"><a href="#1-角色-1" class="headerlink" title="1.角色"></a>1.角色</h4><ul>
-<li>分布式配置中心：记录Meta表、Region Server列表(死活)、Region迁移状态等等</li>
-</ul>
-<p>例如，下面是Zookeeper中记录的backup Master。<br><img src="http://i0.itc.cn/20170522/3084_6bea028c_2cbf_81af_1216_b8804eeed739_1.png" alt=""></p>
-<p>例如，下面是Zookeeper中记录的Region Server列表配置。<br><img src="http://i3.itc.cn/20170524/3084_9dc53e86_b86e_9c64_5354_cf9e4f2751c3_1.png" alt=""></p>
-<ul>
-<li><p>心跳检测：心跳检测Region Server和Master的状态</p>
-</li>
-<li><p>领导者选举：active master和backup master的选举。</p>
-</li>
-</ul>
-<h4 id="2-交互-1"><a href="#2-交互-1" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
-<li><p>与Master：</p>
-<ul>
-<li>active master和backup master会通过zookeeper完成选举，从而保证master的高可用性。</li>
-<li>master会从zookeeper中获取Region Server的上下线等信息(zookeeper Listener)，之后Master完成如Region Server故障恢复、Region分配，负载均衡等工作。</li>
-<li>Zookeeper会对master做心跳检测。</li>
-</ul>
-</li>
-<li><p>与Region Server: </p>
-<ul>
-<li>上下线的感应：对Region Server进行心跳检测。</li>
-</ul>
-</li>
-<li><p>与client：上面已经提到。</p>
-</li>
-<li><p>与HDFS：尚不清楚如何进行交互。</p>
-</li>
-</ul>
-<h4 id="三-Region-Server"><a href="#三-Region-Server" class="headerlink" title="三.Region Server"></a>三.Region Server</h4><h4 id="1-职责"><a href="#1-职责" class="headerlink" title="1.职责"></a>1.职责</h4><ul>
-<li>存放数据：所有的读写都在这里完成，对机器性能有一定的要求。</li>
-<li>管理数据：flush、compact、split等</li>
-</ul>
-<h4 id="2-交互-2"><a href="#2-交互-2" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
-<li>Master： 上报一些统计信息(例如请求量等等，通过master可以查到整个集群的汇总信息)和管理操作(例如compact split等等)</li>
-<li>客户端： 上面已经提过</li>
-<li>zoookeeper： 上面已经提过</li>
-</ul>
-<h3 id="四-Master"><a href="#四-Master" class="headerlink" title="四.Master"></a>四.Master</h3><h4 id="1-职责-1"><a href="#1-职责-1" class="headerlink" title="1.职责"></a>1.职责</h4><p>大脑，但是不承担读写，对机器要求一般，但要求高可用性。</p>
-<ul>
-<li>负载均衡</li>
-<li>Region Server故障恢复</li>
-<li>Table管理(create、alter)、Region管理(split、assign等)</li>
-</ul>
-<h4 id="2-交互-3"><a href="#2-交互-3" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
-<li><p>与HDFS：</p>
-<ul>
-<li>存储数据：Region Server除了Memstore和blockcache对外提供读写外，实际上底层数据存储在HDFS上，包含Hfile和Hlog等。(通过flush、WAL)</li>
-</ul>
-</li>
-<li><p>与Zookeeper：上面已经提过</p>
-</li>
-<li>与RegionServer：管理Region Server</li>
-<li>与client：上面已经提过</li>
-</ul>
-
+        <p>未完成…..</p>
+<p><img src="http://i2.itc.cn/20170524/3084_a16989ed_8586_d854_3435_b3ce8bff8550_1.png" alt=""></p>
+<h3 id="一-Master"><a href="#一-Master" class="headerlink" title="一.Master"></a>一.Master</h3><h3 id="二-Worker"><a href="#二-Worker" class="headerlink" title="二.Worker"></a>二.Worker</h3>
       
     </div>
     
@@ -409,8 +339,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/23/Hbase学习-1.单机版安装/" rel="next" title="Hbase学习1.1-单机版安装">
-                <i class="fa fa-chevron-left"></i> Hbase学习1.1-单机版安装
+              <a href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" rel="next" title="看图理解HBASE-1.HBase组件角色和交互">
+                <i class="fa fa-chevron-left"></i> 看图理解HBASE-1.HBase组件角色和交互
               </a>
             
           </div>
@@ -441,8 +371,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/05/23/看图理解HBase-2.HBase组件职责和交互/"
-           data-title="看图理解HBASE-1.HBase组件角色和交互" data-url="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件职责和交互/">
+      <div class="ds-thread" data-thread-key="2017/05/23/看图理解HBase-2.HBase组件部署拓扑/"
+           data-title="看图理解HBASE-2.HBase组件部署拓扑" data-url="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/">
       </div>
     
   </div>
@@ -487,7 +417,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -555,7 +485,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-Client"><span class="nav-number">1.</span> <span class="nav-text">一.Client</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-角色"><span class="nav-number">1.1.</span> <span class="nav-text">1.角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-交互"><span class="nav-number">1.2.</span> <span class="nav-text">2.交互</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-Zookeeper"><span class="nav-number">2.</span> <span class="nav-text">二.Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-角色-1"><span class="nav-number">2.1.</span> <span class="nav-text">1.角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-交互-1"><span class="nav-number">2.2.</span> <span class="nav-text">2.交互</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三-Region-Server"><span class="nav-number">2.3.</span> <span class="nav-text">三.Region Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-职责"><span class="nav-number">2.4.</span> <span class="nav-text">1.职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-交互-2"><span class="nav-number">2.5.</span> <span class="nav-text">2.交互</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-Master"><span class="nav-number">3.</span> <span class="nav-text">四.Master</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-职责-1"><span class="nav-number">3.1.</span> <span class="nav-text">1.职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-交互-3"><span class="nav-number">3.2.</span> <span class="nav-text">2.交互</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-Master"><span class="nav-number">1.</span> <span class="nav-text">一.Master</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-Worker"><span class="nav-number">2.</span> <span class="nav-text">二.Worker</span></a></li></ol></div>
             
           </div>
         </section>

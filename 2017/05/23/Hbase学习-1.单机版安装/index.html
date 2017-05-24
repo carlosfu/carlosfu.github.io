@@ -80,17 +80,17 @@
 
 
 
-<meta name="description" content="注意1. 需要oracle jdk 7+。 2. Hbase0.98分别支持hadoop1和hadoop2，hadoop1已经不更新了，所以选用hbase0.98-hadoop-2。 3. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.">
+<meta name="description" content="注意1. 需要oracle jdk 7+。 2. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /op">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hbase学习1.1-单机版安装">
+<meta property="og:title" content="Hbase学习-1.单机版安装">
 <meta property="og:url" content="http://yoursite.com/2017/05/23/Hbase学习-1.单机版安装/index.html">
 <meta property="og:site_name" content="carlosfu">
-<meta property="og:description" content="注意1. 需要oracle jdk 7+。 2. Hbase0.98分别支持hadoop1和hadoop2，hadoop1已经不更新了，所以选用hbase0.98-hadoop-2。 3. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.">
+<meta property="og:description" content="注意1. 需要oracle jdk 7+。 2. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /op">
 <meta property="og:image" content="http://i1.itc.cn/20160429/3084_ec811221_81e6_ed50_50d9_ce7afa7a0165_1.png">
-<meta property="og:updated_time" content="2017-05-23T13:21:35.000Z">
+<meta property="og:updated_time" content="2017-05-24T02:00:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hbase学习1.1-单机版安装">
-<meta name="twitter:description" content="注意1. 需要oracle jdk 7+。 2. Hbase0.98分别支持hadoop1和hadoop2，hadoop1已经不更新了，所以选用hbase0.98-hadoop-2。 3. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.">
+<meta name="twitter:title" content="Hbase学习-1.单机版安装">
+<meta name="twitter:description" content="注意1. 需要oracle jdk 7+。 2. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载hbase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /op">
 <meta name="twitter:image" content="http://i1.itc.cn/20160429/3084_ec811221_81e6_ed50_50d9_ce7afa7a0165_1.png">
 
 
@@ -109,7 +109,7 @@
   };
 </script>
 
-  <title> Hbase学习1.1-单机版安装 | carlosfu </title>
+  <title> Hbase学习-1.单机版安装 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -239,7 +239,7 @@
             
             
               
-                Hbase学习1.1-单机版安装
+                Hbase学习-1.单机版安装
               
             
           </h1>
@@ -292,7 +292,7 @@
 
           
           
-             <span id="/2017/05/23/Hbase学习-1.单机版安装/" class="leancloud_visitors" data-flag-title="Hbase学习1.1-单机版安装">
+             <span id="/2017/05/23/Hbase学习-1.单机版安装/" class="leancloud_visitors" data-flag-title="Hbase学习-1.单机版安装">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -315,16 +315,18 @@
 
       
         <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><pre><code>1. 需要oracle jdk 7+。
-2. Hbase0.98分别支持hadoop1和hadoop2，hadoop1已经不更新了，所以选用hbase0.98-hadoop-2。
-3. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。
-</code></pre><h4 id="一、安装、配置、启动"><a href="#一、安装、配置、启动" class="headerlink" title="一、安装、配置、启动"></a>一、安装、配置、启动</h4><h5 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h5><p>hbase镜像：<a href="http://mirror.bit.edu.cn/apache/hbase/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt</div><div class="line">http://mirror.bit.edu.cn/apache/hbase/0.98.18/hbase-0.98.18-hadoop2-bin.tar.gz</div><div class="line">tar -xvf hbase-0.98.18-hadoop2-bin.tar.gz</div><div class="line">ln -s /opt/hbase-0.98.18-hadoop2-bin hbase</div></pre></td></tr></table></figure></p>
+2. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。
+3. 本示例使用的是1.2.5版本。
+4. 生产环境不建议使用root启动。
+</code></pre><h4 id="一、安装、配置、启动"><a href="#一、安装、配置、启动" class="headerlink" title="一、安装、配置、启动"></a>一、安装、配置、启动</h4><h5 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h5><p>hbase镜像：<a href="http://mirror.bit.edu.cn/apache/hbase/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase/</div><div class="line">wget http://archive.apache.org/dist/hbase/1.2.5/hbase-1.2.5-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.5-bin.tar.gz</div><div class="line">ln -s /opt/hbase/hbase-1.2.5 hbase</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<h5 id="2-相关目录"><a href="#2-相关目录" class="headerlink" title="2.相关目录"></a>2.相关目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase/zookeeper</div><div class="line">mkdir -p /opt/habse/data</div></pre></td></tr></table></figure>
-<h5 id="3-修改Hbase相关环境变量"><a href="#3-修改Hbase相关环境变量" class="headerlink" title="3. 修改Hbase相关环境变量"></a>3. 修改Hbase相关环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/jdk</div><div class="line">HBASE_HOME=/opt/hbase</div><div class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin</div></pre></td></tr></table></figure>
+<h5 id="2-相关目录"><a href="#2-相关目录" class="headerlink" title="2.相关目录"></a>2.相关目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase/zookeeper</div><div class="line">mkdir -p /opt/hbase/data</div></pre></td></tr></table></figure>
+<h5 id="3-修改Hbase相关环境变量"><a href="#3-修改Hbase相关环境变量" class="headerlink" title="3. 修改Hbase相关环境变量"></a>3. 修改Hbase相关环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/jdk</div><div class="line">HBASE_HOME=/opt/hbase/hbase</div><div class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin</div></pre></td></tr></table></figure>
 <h5 id="4-修改hbase-site-xml配置"><a href="#4-修改hbase-site-xml配置" class="headerlink" title="4. 修改hbase-site.xml配置"></a>4. 修改hbase-site.xml配置</h5><p>如果不添加hbase会安装在/tmp/hbase-${user.name}目录下，在机器重启时候会删掉</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///opt/hbase/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.zookeeper.property.dataDir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/hbase/zookeeper<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
 <h5 id="5-修改hbase-env-sh中的JAVA-HOME地址"><a href="#5-修改hbase-env-sh中的JAVA-HOME地址" class="headerlink" title="5. 修改hbase-env.sh中的JAVA_HOME地址"></a>5. 修改hbase-env.sh中的JAVA_HOME地址</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk/</div></pre></td></tr></table></figure>
-<h5 id="6-启动"><a href="#6-启动" class="headerlink" title="6. 启动"></a>6. 启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh /opt/hbase/bin/start-hbase.sh</div></pre></td></tr></table></figure>
+<h5 id="6-启动"><a href="#6-启动" class="headerlink" title="6. 启动"></a>6. 启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh /opt/hbase/hbase/bin/start-hbase.sh</div></pre></td></tr></table></figure>
 <h4 id="二、开始"><a href="#二、开始" class="headerlink" title="二、开始"></a>二、开始</h4><h5 id="1-相关确认"><a href="#1-相关确认" class="headerlink" title="1.相关确认"></a>1.相关确认</h5><ul>
 <li>进程：单机版的Hbase将Hbase、zookeeper等放在一个进程里。</li>
 </ul>
@@ -366,7 +368,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/" rel="prev" title="看图理解HBASE-1.HBase组件角色和交互">
+              <a href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" rel="prev" title="看图理解HBASE-1.HBase组件角色和交互">
                 看图理解HBASE-1.HBase组件角色和交互 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -395,7 +397,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/05/23/Hbase学习-1.单机版安装/"
-           data-title="Hbase学习1.1-单机版安装" data-url="http://yoursite.com/2017/05/23/Hbase学习-1.单机版安装/">
+           data-title="Hbase学习-1.单机版安装" data-url="http://yoursite.com/2017/05/23/Hbase学习-1.单机版安装/">
       </div>
     
   </div>
@@ -440,7 +442,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
