@@ -236,6 +236,284 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/" itemprop="url">
+                  看图理解HBASE-2.HBase组件角色和交互
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T22:20:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hbase/" itemprop="url" rel="index">
+                    <span itemprop="name">hbase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/看图理解HBase-2.HBase组件职责和交互/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBASE-2.HBase组件角色和交互">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png" alt=""></p>
+<h3 id="一-Client"><a href="#一-Client" class="headerlink" title="一.Client"></a>一.Client</h3><h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1.角色"></a>1.角色</h4><ul>
+<li>普通API(get、put、delete等)</li>
+<li>Admin API(create、alter、compact等)</li>
+</ul>
+<h4 id="2-交互"><a href="#2-交互" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
+<li>与Zookeeper<ul>
+<li>第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。</li>
+<li>Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart client)</li>
+</ul>
+</li>
+<li>与Master：这里没有画，但在使用Admin API(例如建表)时，实际上是对Master进行操作。</li>
+<li>与RegionServer：读写数据。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/23/Hbase学习-1.单机版安装/" itemprop="url">
+                  Hbase学习1.1-单机版安装
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T21:20:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hbase/" itemprop="url" rel="index">
+                    <span itemprop="name">hbase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/Hbase学习-1.单机版安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/Hbase学习-1.单机版安装/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/Hbase学习-1.单机版安装/" class="leancloud_visitors" data-flag-title="Hbase学习1.1-单机版安装">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><pre><code>1. 需要oracle jdk 7+。
+2. Hbase0.98分别支持hadoop1和hadoop2，hadoop1已经不更新了，所以选用hbase0.98-hadoop-2。
+3. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。
+</code></pre><h4 id="一、安装、配置、启动"><a href="#一、安装、配置、启动" class="headerlink" title="一、安装、配置、启动"></a>一、安装、配置、启动</h4><h5 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h5><p>hbase镜像：<a href="http://mirror.bit.edu.cn/apache/hbase/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt</div><div class="line">http://mirror.bit.edu.cn/apache/hbase/0.98.18/hbase-0.98.18-hadoop2-bin.tar.gz</div><div class="line">tar -xvf hbase-0.98.18-hadoop2-bin.tar.gz</div><div class="line">ln -s /opt/hbase-0.98.18-hadoop2-bin hbase</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/23/Hbase学习-1.单机版安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/01/05/Hbase学习-相关概念梳理/" itemprop="url">
                   Hbase学习-相关概念梳理
                 </a>
@@ -617,140 +895,6 @@
           <h3 id="注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。"><a href="#注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。" class="headerlink" title="注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。"></a>注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。</h3><h3 id="相关代码：https-github-com-carlosfu-hbase-train"><a href="#相关代码：https-github-com-carlosfu-hbase-train" class="headerlink" title="相关代码：https://github.com/carlosfu/hbase-train"></a>相关代码：<a href="https://github.com/carlosfu/hbase-train" target="_blank" rel="external">https://github.com/carlosfu/hbase-train</a></h3><h4 id="一、pom依赖"><a href="#一、pom依赖" class="headerlink" title="一、pom依赖"></a>一、pom依赖</h4>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/11/28/Hbase学习3-java连接/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/28/Hbase学习1.1-单机版安装/" itemprop="url">
-                  Hbase学习1.1-单机版安装
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-28T09:22:03+08:00" content="2016-11-28">
-              2016-11-28
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hbase/" itemprop="url" rel="index">
-                    <span itemprop="name">hbase</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/28/Hbase学习1.1-单机版安装/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/Hbase学习1.1-单机版安装/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/11/28/Hbase学习1.1-单机版安装/" class="leancloud_visitors" data-flag-title="Hbase学习1.1-单机版安装">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><pre><code>1. 需要oracle jdk 7+。
-2. Hbase0.98分别支持hadoop1和hadoop2，hadoop1已经不更新了，所以选用hbase0.98-hadoop-2。
-3. 单机版hbase: hbaseMaster,zookeeper,regionserver都在一起，使用本地磁盘代替hdfs存储。
-</code></pre><h4 id="一、安装、配置、启动"><a href="#一、安装、配置、启动" class="headerlink" title="一、安装、配置、启动"></a>一、安装、配置、启动</h4><h5 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h5><p>hbase镜像：<a href="http://mirror.bit.edu.cn/apache/hbase/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt</div><div class="line">http://mirror.bit.edu.cn/apache/hbase/0.98.18/hbase-0.98.18-hadoop2-bin.tar.gz</div><div class="line">tar -xvf hbase-0.98.18-hadoop2-bin.tar.gz</div><div class="line">ln -s /opt/hbase-0.98.18-hadoop2-bin hbase</div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/28/Hbase学习1.1-单机版安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1486,137 +1630,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="url">
-                  Netty学习4-Netty客户端基本结构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T14:45:25+08:00" content="2016-06-01">
-              2016-06-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习4-Netty客户端基本结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/01/Netty学习4-Netty客户端基本结构/" class="leancloud_visitors" data-flag-title="Netty学习4-Netty客户端基本结构">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h3><p>上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习4-Netty客户端基本结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1662,7 +1675,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
