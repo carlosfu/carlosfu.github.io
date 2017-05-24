@@ -82,16 +82,16 @@
 
 <meta name="description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
 <meta property="og:type" content="article">
-<meta property="og:title" content="看图理解HBASE-2.HBase组件角色和交互">
+<meta property="og:title" content="看图理解HBASE-1.HBase组件角色和交互">
 <meta property="og:url" content="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件职责和交互/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
 <meta property="og:image" content="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png">
 <meta property="og:image" content="http://i0.itc.cn/20170522/3084_6bea028c_2cbf_81af_1216_b8804eeed739_1.png">
-<meta property="og:image" content="http://i1.itc.cn/20170522/3084_195e8d10_39a3_703c_9294_b6d894eabd66_1.png">
-<meta property="og:updated_time" content="2017-05-24T01:39:24.000Z">
+<meta property="og:image" content="http://i3.itc.cn/20170524/3084_9dc53e86_b86e_9c64_5354_cf9e4f2751c3_1.png">
+<meta property="og:updated_time" content="2017-05-24T01:42:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="看图理解HBASE-2.HBase组件角色和交互">
+<meta name="twitter:title" content="看图理解HBASE-1.HBase组件角色和交互">
 <meta name="twitter:description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次访写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
 <meta name="twitter:image" content="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png">
 
@@ -111,7 +111,7 @@
   };
 </script>
 
-  <title> 看图理解HBASE-2.HBase组件角色和交互 | carlosfu </title>
+  <title> 看图理解HBASE-1.HBase组件角色和交互 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -241,7 +241,7 @@
             
             
               
-                看图理解HBASE-2.HBase组件角色和交互
+                看图理解HBASE-1.HBase组件角色和交互
               
             
           </h1>
@@ -294,7 +294,7 @@
 
           
           
-             <span id="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBASE-2.HBase组件角色和交互">
+             <span id="/2017/05/23/看图理解HBase-2.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBASE-1.HBase组件角色和交互">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -335,7 +335,7 @@
 <li>分布式配置中心：记录Meta表、Region Server列表(死活)、Region迁移状态等等</li>
 </ul>
 <p>例如，下面是Zookeeper中记录的backup Master。<br><img src="http://i0.itc.cn/20170522/3084_6bea028c_2cbf_81af_1216_b8804eeed739_1.png" alt=""></p>
-<p>例如，下面是Zookeeper中记录的Region Server列表配置。<br><img src="http://i1.itc.cn/20170522/3084_195e8d10_39a3_703c_9294_b6d894eabd66_1.png" alt=""></p>
+<p>例如，下面是Zookeeper中记录的Region Server列表配置。<br><img src="http://i3.itc.cn/20170524/3084_9dc53e86_b86e_9c64_5354_cf9e4f2751c3_1.png" alt=""></p>
 <ul>
 <li><p>心跳检测：心跳检测Region Server和Master的状态</p>
 </li>
@@ -442,7 +442,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/05/23/看图理解HBase-2.HBase组件职责和交互/"
-           data-title="看图理解HBASE-2.HBase组件角色和交互" data-url="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件职责和交互/">
+           data-title="看图理解HBASE-1.HBase组件角色和交互" data-url="http://yoursite.com/2017/05/23/看图理解HBase-2.HBase组件职责和交互/">
       </div>
     
   </div>
