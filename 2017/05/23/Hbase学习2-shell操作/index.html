@@ -82,13 +82,13 @@
 
 <meta name="description" content="1help命令很有用，不会命令可以用help，例如help create 一、Admin API1.建表(最简)：必须指定好列族create ‘table_name’,’family_name’ 例如 12345678910一个列簇hbase(main):003:0&amp;gt; create &apos;user_test&apos;,&apos;score&apos;0 row(s) in 0.1120 seconds=&amp;gt; Hbas">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hbase学习2-shell操作">
+<meta property="og:title" content="HBase学习2-shell操作">
 <meta property="og:url" content="http://yoursite.com/2017/05/23/Hbase学习2-shell操作/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="1help命令很有用，不会命令可以用help，例如help create 一、Admin API1.建表(最简)：必须指定好列族create ‘table_name’,’family_name’ 例如 12345678910一个列簇hbase(main):003:0&amp;gt; create &apos;user_test&apos;,&apos;score&apos;0 row(s) in 0.1120 seconds=&amp;gt; Hbas">
-<meta property="og:updated_time" content="2017-05-24T05:57:23.000Z">
+<meta property="og:updated_time" content="2017-05-25T01:05:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hbase学习2-shell操作">
+<meta name="twitter:title" content="HBase学习2-shell操作">
 <meta name="twitter:description" content="1help命令很有用，不会命令可以用help，例如help create 一、Admin API1.建表(最简)：必须指定好列族create ‘table_name’,’family_name’ 例如 12345678910一个列簇hbase(main):003:0&amp;gt; create &apos;user_test&apos;,&apos;score&apos;0 row(s) in 0.1120 seconds=&amp;gt; Hbas">
 
 
@@ -107,7 +107,7 @@
   };
 </script>
 
-  <title> Hbase学习2-shell操作 | carlosfu </title>
+  <title> HBase学习2-shell操作 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -237,7 +237,7 @@
             
             
               
-                Hbase学习2-shell操作
+                HBase学习2-shell操作
               
             
           </h1>
@@ -263,8 +263,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hbase/" itemprop="url" rel="index">
-                    <span itemprop="name">hbase</span>
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
                   </a>
                 </span>
 
@@ -290,7 +290,7 @@
 
           
           
-             <span id="/2017/05/23/Hbase学习2-shell操作/" class="leancloud_visitors" data-flag-title="Hbase学习2-shell操作">
+             <span id="/2017/05/23/Hbase学习2-shell操作/" class="leancloud_visitors" data-flag-title="HBase学习2-shell操作">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -332,11 +332,11 @@
 <h5 id="2-查"><a href="#2-查" class="headerlink" title="2. 查"></a>2. 查</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">如果不指定VERSIONS，那么每列获取最新的一个版本</div></pre></td></tr></table></figure>
 <p>get ‘table_name’,’rowkey’<br>get ‘table_name’,’rowkey’,’family’<br>get ‘table_name’,’rowkey’,’family:column’<br>get ‘table_name’,’rowkey’,{column =&gt; ‘f:c’, timestamp =&gt; [ts1,ts2], VERSIONS =&gt; 4}</p>
 <p>例如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">hbase(main):012:0&gt; get <span class="string">'user_test'</span>,<span class="string">'rowkey-1'</span></div><div class="line">COLUMN                                       CELL</div><div class="line"> score:english                          timestamp=1495604900005, value=66</div><div class="line"> score:math                             timestamp=1495604879564, value=99</div><div class="line"> score:sport                            timestamp=1495604887677, value=100</div><div class="line">3 row(s) <span class="keyword">in</span> 0.0820 seconds</div><div class="line"></div><div class="line">hbase(main):013:0&gt; get <span class="string">'user_test'</span>,<span class="string">'rowkey-1'</span>,<span class="string">'score'</span></div><div class="line">COLUMN                                        CELL</div><div class="line"> score:english                          timestamp=1495604900005, value=66</div><div class="line"> score:math                             timestamp=1495604879564, value=99</div><div class="line"> score:sport                            timestamp=1495604887677, value=100</div><div class="line">3 row(s) <span class="keyword">in</span> 0.0360 seconds</div><div class="line"></div><div class="line">hbase(main):014:0&gt; get <span class="string">'user_test'</span>,<span class="string">'rowkey-1'</span>,<span class="string">'score:math'</span></div><div class="line">COLUMN                                        CELL                                                                                                      </div><div class="line"> score:math                             timestamp=1461916251017, value=99                                                                         </div><div class="line">1 row(s) <span class="keyword">in</span> 0.0080 seconds</div><div class="line"></div><div class="line"></div><div class="line">hbase(main):016:0&gt; get <span class="string">'user_test'</span>,<span class="string">'rowkey-1'</span>,&#123;COLUMN =&gt; <span class="string">'score:math'</span>, TIMESTAMP =&gt; 1495604879564&#125;</div><div class="line">COLUMN                                        CELL</div><div class="line"> score:math                              timestamp=1495604879564, value=99</div><div class="line">1 row(s) <span class="keyword">in</span> 0.0130 seconds</div></pre></td></tr></table></figure></p>
-<h5 id="3-改"><a href="#3-改" class="headerlink" title="3. 改"></a>3. 改</h5><p>在hbase中改就是在cell里面添加一个新的版本，如果最大版本数是1，就会覆盖，其使用方法还是put。<br>例如，将english的分数改为20，发现timestamp= 1495604900005已经发生了变化，因为create table时没有指定版本数量，那么版本数量就是1。</p>
+<h5 id="3-改"><a href="#3-改" class="headerlink" title="3. 改"></a>3. 改</h5><p>在HBase中改就是在cell里面添加一个新的版本，如果最大版本数是1，就会覆盖，其使用方法还是put。<br>例如，将english的分数改为20，发现timestamp= 1495604900005已经发生了变化，因为create table时没有指定版本数量，那么版本数量就是1。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">hbase(main):015:0&gt; put <span class="string">'user_test'</span>,<span class="string">'rowkey-1'</span>,<span class="string">'score:english'</span>,<span class="string">'20'</span></div><div class="line">0 row(s) <span class="keyword">in</span> 0.0040 seconds</div><div class="line"></div><div class="line">hbase(main):016:0&gt; get <span class="string">'user_test'</span>,<span class="string">'rowkey-1'</span>,<span class="string">'score'</span></div><div class="line">COLUMN                                         CELL</div><div class="line"> score:english                         timestamp=1495605251276, value=20</div><div class="line"> score:math                            timestamp=1495604879564, value=99</div><div class="line"> score:sport                           timestamp=1495604887677, value=100</div><div class="line">3 row(s) <span class="keyword">in</span> 0.0310 seconds</div></pre></td></tr></table></figure>
 <p>下面修改一下最大版本数为3(这个操作如果是线上可能不太适合(考虑到数据量)，具体有什么影响后面继续学习)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">hbase(main):016:0&gt; alter <span class="string">'user_test'</span>, NAME =&gt; <span class="string">'score'</span>, VERSIONS =&gt; 3</div><div class="line">Updating all regions with the new schema...</div><div class="line">0/1 regions updated.</div><div class="line">1/1 regions updated.</div><div class="line">Done.</div><div class="line">0 row(s) <span class="keyword">in</span> 2.0850 seconds</div><div class="line"></div><div class="line">hbase(main):017:0&gt; describe <span class="string">'user_test'</span></div><div class="line">Table user_test is ENABLED                                                                                                                     </div><div class="line">user_test                                                                                                                                      </div><div class="line">COLUMN FAMILIES DESCRIPTION                                                                                                                    </div><div class="line">&#123;NAME =&gt; <span class="string">'score'</span>, DATA_BLOCK_ENCODING =&gt; <span class="string">'NONE'</span>, BLOOMFILTER =&gt; <span class="string">'ROW'</span>, REPLICATION_SCOPE =&gt; <span class="string">'0'</span>, VERSIONS =&gt; <span class="string">'3'</span>, COMPRESSION =&gt; <span class="string">'NONE'</span>, MIN_VE</div><div class="line">RSIONS =&gt; <span class="string">'0'</span>, TTL =&gt; <span class="string">'FOREVER'</span>, KEEP_DELETED_CELLS =&gt; <span class="string">'FALSE'</span>, BLOCKSIZE =&gt; <span class="string">'65536'</span>, IN_MEMORY =&gt; <span class="string">'false'</span>, BLOCKCACHE =&gt; <span class="string">'true'</span>&#125;              </div><div class="line">1 row(s) <span class="keyword">in</span> 0.0200 seconds</div></pre></td></tr></table></figure>
-<h5 id="4-删"><a href="#4-删" class="headerlink" title="4.删"></a>4.删</h5><pre><code>在hbase中并不会立刻删除row，而是做了一个标记，当做major compact时候才会真正删除，但是对于客户端来说是访问不到的，但是major compact是必须要的，否则硬盘不会变小
+<h5 id="4-删"><a href="#4-删" class="headerlink" title="4.删"></a>4.删</h5><pre><code>在HBase中并不会立刻删除row，而是做了一个标记，当做major compact时候才会真正删除，但是对于客户端来说是访问不到的，但是major compact是必须要的，否则硬盘不会变小
 </code></pre><ul>
 <li>delete ‘table_name’,’rowkey’, ‘family_name:column’</li>
 <li>delete ‘table_name’,’rowkey’</li>
@@ -366,8 +366,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/23/Hbase学习-1.单机版安装/" rel="next" title="Hbase学习-1.单机版安装">
-                <i class="fa fa-chevron-left"></i> Hbase学习-1.单机版安装
+              <a href="/2017/05/23/Hbase学习-1.单机版安装/" rel="next" title="HBase学习-1.单机版安装">
+                <i class="fa fa-chevron-left"></i> HBase学习-1.单机版安装
               </a>
             
           </div>
@@ -403,7 +403,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/05/23/Hbase学习2-shell操作/"
-           data-title="Hbase学习2-shell操作" data-url="http://yoursite.com/2017/05/23/Hbase学习2-shell操作/">
+           data-title="HBase学习2-shell操作" data-url="http://yoursite.com/2017/05/23/Hbase学习2-shell操作/">
       </div>
     
   </div>
@@ -456,7 +456,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
