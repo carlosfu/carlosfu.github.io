@@ -1,0 +1,764 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求(redis.c) 1234567891011121314void initServer(void) &amp;#123;...忽略...    /* Create an event handler for accepting new connections in TCP and Unix     * domain sockets.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis源码学习一：客户端请求处理到命令执行">
+<meta property="og:url" content="http://yoursite.com/2016/05/23/Redis从客户端请求到命令处理/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求(redis.c) 1234567891011121314void initServer(void) &amp;#123;...忽略...    /* Create an event handler for accepting new connections in TCP and Unix     * domain sockets.">
+<meta property="og:updated_time" content="2017-06-12T08:53:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis源码学习一：客户端请求处理到命令执行">
+<meta name="twitter:description" content="1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求(redis.c) 1234567891011121314void initServer(void) &amp;#123;...忽略...    /* Create an event handler for accepting new connections in TCP and Unix     * domain sockets.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Redis源码学习一：客户端请求处理到命令执行 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Redis源码学习一：客户端请求处理到命令执行
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-23T22:20:00+08:00" content="2016-05-23">
+              2016-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis源码/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis源码</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/23/Redis从客户端请求到命令处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/Redis从客户端请求到命令处理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/23/Redis从客户端请求到命令处理/" class="leancloud_visitors" data-flag-title="Redis源码学习一：客户端请求处理到命令执行">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="1-Redis实例启动的时候，创建TcpHandler来处理客户端的请求"><a href="#1-Redis实例启动的时候，创建TcpHandler来处理客户端的请求" class="headerlink" title="1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求"></a>1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求</h4><p><strong>(redis.c)</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">void initServer(void) &#123;</div><div class="line">...忽略...</div><div class="line">    /* Create an event handler for accepting new connections in TCP and Unix</div><div class="line">     * domain sockets. */</div><div class="line">    for (j = 0; j &lt; server.ipfd_count; j++) &#123;</div><div class="line">        if (aeCreateFileEvent(server.el, server.ipfd[j], AE_READABLE,</div><div class="line">            acceptTcpHandler,NULL) == AE_ERR)</div><div class="line">            &#123;</div><div class="line">                redisPanic(</div><div class="line">                    &quot;Unrecoverable error creating server.ipfd file event.&quot;);</div><div class="line">            &#125;</div><div class="line">    &#125;</div><div class="line">...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>其中acceptTcpHandler就是处理TCP连接的函数。</p>
+<h4 id="2-networking-c中包含了acceptTcpHandler的详细定义，其中acceptCommonHandler是accpet后的处理逻辑"><a href="#2-networking-c中包含了acceptTcpHandler的详细定义，其中acceptCommonHandler是accpet后的处理逻辑" class="headerlink" title="2.networking.c中包含了acceptTcpHandler的详细定义，其中acceptCommonHandler是accpet后的处理逻辑"></a>2.networking.c中包含了acceptTcpHandler的详细定义，其中acceptCommonHandler是accpet后的处理逻辑</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">void acceptTcpHandler(aeEventLoop *el, int fd, void *privdata, int mask) &#123;</div><div class="line">    ...忽略...</div><div class="line"></div><div class="line">    while(max--) &#123;</div><div class="line">        cfd = anetTcpAccept(server.neterr, fd, cip, sizeof(cip), &amp;cport);</div><div class="line">        if (cfd == ANET_ERR) &#123;</div><div class="line">            if (errno != EWOULDBLOCK)</div><div class="line">                redisLog(REDIS_WARNING,</div><div class="line">                    &quot;Accepting client connection: %s&quot;, server.neterr);</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        redisLog(REDIS_VERBOSE,&quot;Accepted %s:%d&quot;, cip, cport);</div><div class="line">        acceptCommonHandler(cfd,0);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-networking-c中包含了acceptCommonHandler的详细定义，其中createClient用来创建客户端连接结构体。"><a href="#3-networking-c中包含了acceptCommonHandler的详细定义，其中createClient用来创建客户端连接结构体。" class="headerlink" title="3.networking.c中包含了acceptCommonHandler的详细定义，其中createClient用来创建客户端连接结构体。"></a>3.networking.c中包含了acceptCommonHandler的详细定义，其中createClient用来创建客户端连接结构体。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">static void acceptCommonHandler(int fd, int flags) &#123;</div><div class="line">    redisClient *c;</div><div class="line">    if ((c = createClient(fd)) == NULL) &#123;</div><div class="line">        redisLog(REDIS_WARNING,</div><div class="line">            &quot;Error registering fd event for the new client: %s (fd=%d)&quot;,</div><div class="line">            strerror(errno),fd);</div><div class="line">        close(fd); /* May be already closed, just ignore errors */</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    ...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="4-networking-c中包含了createClient的详细定义，其中readQueryFromClient就是处理客户端输入数据"><a href="#4-networking-c中包含了createClient的详细定义，其中readQueryFromClient就是处理客户端输入数据" class="headerlink" title="4.networking.c中包含了createClient的详细定义，其中readQueryFromClient就是处理客户端输入数据"></a>4.networking.c中包含了createClient的详细定义，其中readQueryFromClient就是处理客户端输入数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">redisClient *createClient(int fd) &#123;</div><div class="line">    redisClient *c = zmalloc(sizeof(redisClient));</div><div class="line">    /* passing -1 as fd it is possible to create a non connected client.</div><div class="line">     * This is useful since all the Redis commands needs to be executed</div><div class="line">     * in the context of a client. When commands are executed in other</div><div class="line">     * contexts (for instance a Lua script) we need a non connected client. */</div><div class="line">    if (fd != -1) &#123;</div><div class="line">        anetNonBlock(NULL,fd);</div><div class="line">        anetEnableTcpNoDelay(NULL,fd);</div><div class="line">        if (server.tcpkeepalive)</div><div class="line">            anetKeepAlive(NULL,fd,server.tcpkeepalive);</div><div class="line">        if (aeCreateFileEvent(server.el,fd,AE_READABLE,</div><div class="line">            readQueryFromClient, c) == AE_ERR)</div><div class="line">        &#123;</div><div class="line">            close(fd);</div><div class="line">            zfree(c);</div><div class="line">            return NULL;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">	...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="5-networking-c中包含了readQueryFromClient的详细定义，其中processInputBuffer就是解析和处理数据"><a href="#5-networking-c中包含了readQueryFromClient的详细定义，其中processInputBuffer就是解析和处理数据" class="headerlink" title="5.networking.c中包含了readQueryFromClient的详细定义，其中processInputBuffer就是解析和处理数据"></a>5.networking.c中包含了readQueryFromClient的详细定义，其中processInputBuffer就是解析和处理数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">void readQueryFromClient(aeEventLoop *el, int fd, void *privdata, int mask) &#123;</div><div class="line">    redisClient *c = (redisClient*) privdata;</div><div class="line">    ...忽略...</div><div class="line">    if (sdslen(c-&gt;querybuf) &gt; server.client_max_querybuf_len) &#123;</div><div class="line">        sds ci = catClientInfoString(sdsempty(),c), bytes = sdsempty();</div><div class="line"></div><div class="line">        bytes = sdscatrepr(bytes,c-&gt;querybuf,64);</div><div class="line">        redisLog(REDIS_WARNING,&quot;Closing client that reached max query buffer length: %s (qbuf initial bytes: %s)&quot;, ci, bytes);</div><div class="line">        sdsfree(ci);</div><div class="line">        sdsfree(bytes);</div><div class="line">        freeClient(c);</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    processInputBuffer(c);</div><div class="line">    server.current_client = NULL;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="6-networking-c中包含了processInputBuffer的详细定义，其中："><a href="#6-networking-c中包含了processInputBuffer的详细定义，其中：" class="headerlink" title="6.networking.c中包含了processInputBuffer的详细定义，其中："></a>6.networking.c中包含了processInputBuffer的详细定义，其中：</h4><ul>
+<li><p>processInlineBuffer是验证单行命令。</p>
+</li>
+<li><p>processMultibulkBuffer是验证多行命令。</p>
+</li>
+<li><p>processCommand是命令处理，也就是我们需要关心和跟踪的。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">void processInputBuffer(redisClient *c) &#123;</div><div class="line">    /* Keep processing while there is something in the input buffer */</div><div class="line">    while(sdslen(c-&gt;querybuf)) &#123;</div><div class="line">        /* Return if clients are paused. */</div><div class="line">        if (!(c-&gt;flags &amp; REDIS_SLAVE) &amp;&amp; clientsArePaused()) return;</div><div class="line"></div><div class="line">        /* Immediately abort if the client is in the middle of something. */</div><div class="line">        if (c-&gt;flags &amp; REDIS_BLOCKED) return;</div><div class="line"></div><div class="line">        /* REDIS_CLOSE_AFTER_REPLY closes the connection once the reply is</div><div class="line">         * written to the client. Make sure to not let the reply grow after</div><div class="line">         * this flag has been set (i.e. don&apos;t process more commands). */</div><div class="line">        if (c-&gt;flags &amp; REDIS_CLOSE_AFTER_REPLY) return;</div><div class="line"></div><div class="line">        /* Determine request type when unknown. */</div><div class="line">        if (!c-&gt;reqtype) &#123;</div><div class="line">            if (c-&gt;querybuf[0] == &apos;*&apos;) &#123;</div><div class="line">                c-&gt;reqtype = REDIS_REQ_MULTIBULK;</div><div class="line">            &#125; else &#123;</div><div class="line">                c-&gt;reqtype = REDIS_REQ_INLINE;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (c-&gt;reqtype == REDIS_REQ_INLINE) &#123;</div><div class="line">            if (processInlineBuffer(c) != REDIS_OK) break;</div><div class="line">        &#125; else if (c-&gt;reqtype == REDIS_REQ_MULTIBULK) &#123;</div><div class="line">            if (processMultibulkBuffer(c) != REDIS_OK) break;</div><div class="line">        &#125; else &#123;</div><div class="line">            redisPanic(&quot;Unknown request type&quot;);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        /* Multibulk processing could see a &lt;= 0 length. */</div><div class="line">        if (c-&gt;argc == 0) &#123;</div><div class="line">            resetClient(c);</div><div class="line">        &#125; else &#123;</div><div class="line">            /* Only reset the client when the command was executed. */</div><div class="line">            if (processCommand(c) == REDIS_OK)</div><div class="line">                resetClient(c);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="7-redis-c中包含了processCommand的详细定义，其中：call-c-REDIS-CALL-FULL-是普通命令的调用逻辑"><a href="#7-redis-c中包含了processCommand的详细定义，其中：call-c-REDIS-CALL-FULL-是普通命令的调用逻辑" class="headerlink" title="7.redis.c中包含了processCommand的详细定义，其中：call(c,REDIS_CALL_FULL)是普通命令的调用逻辑"></a>7.redis.c中包含了processCommand的详细定义，其中：call(c,REDIS_CALL_FULL)是普通命令的调用逻辑</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div></pre></td><td class="code"><pre><div class="line">int processCommand(redisClient *c) &#123;</div><div class="line">    /* The QUIT command is handled separately. Normal command procs will</div><div class="line">     * go through checking for replication and QUIT will cause trouble</div><div class="line">     * when FORCE_REPLICATION is enabled and would be implemented in</div><div class="line">     * a regular command proc. */</div><div class="line">    if (!strcasecmp(c-&gt;argv[0]-&gt;ptr,&quot;quit&quot;)) &#123;</div><div class="line">        addReply(c,shared.ok);</div><div class="line">        c-&gt;flags |= REDIS_CLOSE_AFTER_REPLY;</div><div class="line">        return REDIS_ERR;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Now lookup the command and check ASAP about trivial error conditions</div><div class="line">     * such as wrong arity, bad command name and so forth. */</div><div class="line">    c-&gt;cmd = c-&gt;lastcmd = lookupCommand(c-&gt;argv[0]-&gt;ptr);</div><div class="line">    if (!c-&gt;cmd) &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        addReplyErrorFormat(c,&quot;unknown command &apos;%s&apos;&quot;,</div><div class="line">            (char*)c-&gt;argv[0]-&gt;ptr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125; else if ((c-&gt;cmd-&gt;arity &gt; 0 &amp;&amp; c-&gt;cmd-&gt;arity != c-&gt;argc) ||</div><div class="line">               (c-&gt;argc &lt; -c-&gt;cmd-&gt;arity)) &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        addReplyErrorFormat(c,&quot;wrong number of arguments for &apos;%s&apos; command&quot;,</div><div class="line">            c-&gt;cmd-&gt;name);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Check if the user is authenticated */</div><div class="line">    if (server.requirepass &amp;&amp; !c-&gt;authenticated &amp;&amp; c-&gt;cmd-&gt;proc != authCommand)</div><div class="line">    &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        addReply(c,shared.noautherr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* If cluster is enabled perform the cluster redirection here.</div><div class="line">     * However we don&apos;t perform the redirection if:</div><div class="line">     * 1) The sender of this command is our master.</div><div class="line">     * 2) The command has no key arguments. */</div><div class="line">    if (server.cluster_enabled &amp;&amp;</div><div class="line">        !(c-&gt;flags &amp; REDIS_MASTER) &amp;&amp;</div><div class="line">        !(c-&gt;flags &amp; REDIS_LUA_CLIENT &amp;&amp;</div><div class="line">          server.lua_caller-&gt;flags &amp; REDIS_MASTER) &amp;&amp;</div><div class="line">        !(c-&gt;cmd-&gt;getkeys_proc == NULL &amp;&amp; c-&gt;cmd-&gt;firstkey == 0))</div><div class="line">    &#123;</div><div class="line">        int hashslot;</div><div class="line"></div><div class="line">        if (server.cluster-&gt;state != REDIS_CLUSTER_OK) &#123;</div><div class="line">            flagTransaction(c);</div><div class="line">            clusterRedirectClient(c,NULL,0,REDIS_CLUSTER_REDIR_DOWN_STATE);</div><div class="line">            return REDIS_OK;</div><div class="line">        &#125; else &#123;</div><div class="line">            int error_code;</div><div class="line">            clusterNode *n = getNodeByQuery(c,c-&gt;cmd,c-&gt;argv,c-&gt;argc,&amp;hashslot,&amp;error_code);</div><div class="line">            if (n == NULL || n != server.cluster-&gt;myself) &#123;</div><div class="line">                flagTransaction(c);</div><div class="line">                clusterRedirectClient(c,n,hashslot,error_code);</div><div class="line">                return REDIS_OK;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Handle the maxmemory directive.</div><div class="line">     *</div><div class="line">     * First we try to free some memory if possible (if there are volatile</div><div class="line">     * keys in the dataset). If there are not the only thing we can do</div><div class="line">     * is returning an error. */</div><div class="line">    if (server.maxmemory) &#123;</div><div class="line">        int retval = freeMemoryIfNeeded();</div><div class="line">        if ((c-&gt;cmd-&gt;flags &amp; REDIS_CMD_DENYOOM) &amp;&amp; retval == REDIS_ERR) &#123;</div><div class="line">            flagTransaction(c);</div><div class="line">            addReply(c, shared.oomerr);</div><div class="line">            return REDIS_OK;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Don&apos;t accept write commands if there are problems persisting on disk</div><div class="line">     * and if this is a master instance. */</div><div class="line">    if (((server.stop_writes_on_bgsave_err &amp;&amp;</div><div class="line">          server.saveparamslen &gt; 0 &amp;&amp;</div><div class="line">          server.lastbgsave_status == REDIS_ERR) ||</div><div class="line">          server.aof_last_write_status == REDIS_ERR) &amp;&amp;</div><div class="line">        server.masterhost == NULL &amp;&amp;</div><div class="line">        (c-&gt;cmd-&gt;flags &amp; REDIS_CMD_WRITE ||</div><div class="line">         c-&gt;cmd-&gt;proc == pingCommand))</div><div class="line">    &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        if (server.aof_last_write_status == REDIS_OK)</div><div class="line">            addReply(c, shared.bgsaveerr);</div><div class="line">        else</div><div class="line">            addReplySds(c,</div><div class="line">                sdscatprintf(sdsempty(),</div><div class="line">                &quot;-MISCONF Errors writing to the AOF file: %s\r\n&quot;,</div><div class="line">                strerror(server.aof_last_write_errno)));</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Don&apos;t accept write commands if there are not enough good slaves and</div><div class="line">     * user configured the min-slaves-to-write option. */</div><div class="line">    if (server.masterhost == NULL &amp;&amp;</div><div class="line">        server.repl_min_slaves_to_write &amp;&amp;</div><div class="line">        server.repl_min_slaves_max_lag &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;flags &amp; REDIS_CMD_WRITE &amp;&amp;</div><div class="line">        server.repl_good_slaves_count &lt; server.repl_min_slaves_to_write)</div><div class="line">    &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        addReply(c, shared.noreplicaserr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Don&apos;t accept write commands if this is a read only slave. But</div><div class="line">     * accept write commands if this is our master. */</div><div class="line">    if (server.masterhost &amp;&amp; server.repl_slave_ro &amp;&amp;</div><div class="line">        !(c-&gt;flags &amp; REDIS_MASTER) &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;flags &amp; REDIS_CMD_WRITE)</div><div class="line">    &#123;</div><div class="line">        addReply(c, shared.roslaveerr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Only allow SUBSCRIBE and UNSUBSCRIBE in the context of Pub/Sub */</div><div class="line">    if (c-&gt;flags &amp; REDIS_PUBSUB &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != pingCommand &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != subscribeCommand &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != unsubscribeCommand &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != psubscribeCommand &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != punsubscribeCommand) &#123;</div><div class="line">        addReplyError(c,&quot;only (P)SUBSCRIBE / (P)UNSUBSCRIBE / QUIT allowed in this context&quot;);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Only allow INFO and SLAVEOF when slave-serve-stale-data is no and</div><div class="line">     * we are a slave with a broken link with master. */</div><div class="line">    if (server.masterhost &amp;&amp; server.repl_state != REDIS_REPL_CONNECTED &amp;&amp;</div><div class="line">        server.repl_serve_stale_data == 0 &amp;&amp;</div><div class="line">        !(c-&gt;cmd-&gt;flags &amp; REDIS_CMD_STALE))</div><div class="line">    &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        addReply(c, shared.masterdownerr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Loading DB? Return an error if the command has not the</div><div class="line">     * REDIS_CMD_LOADING flag. */</div><div class="line">    if (server.loading &amp;&amp; !(c-&gt;cmd-&gt;flags &amp; REDIS_CMD_LOADING)) &#123;</div><div class="line">        addReply(c, shared.loadingerr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Lua script too slow? Only allow a limited number of commands. */</div><div class="line">    if (server.lua_timedout &amp;&amp;</div><div class="line">          c-&gt;cmd-&gt;proc != authCommand &amp;&amp;</div><div class="line">          c-&gt;cmd-&gt;proc != replconfCommand &amp;&amp;</div><div class="line">        !(c-&gt;cmd-&gt;proc == shutdownCommand &amp;&amp;</div><div class="line">          c-&gt;argc == 2 &amp;&amp;</div><div class="line">          tolower(((char*)c-&gt;argv[1]-&gt;ptr)[0]) == &apos;n&apos;) &amp;&amp;</div><div class="line">        !(c-&gt;cmd-&gt;proc == scriptCommand &amp;&amp;</div><div class="line">          c-&gt;argc == 2 &amp;&amp;</div><div class="line">          tolower(((char*)c-&gt;argv[1]-&gt;ptr)[0]) == &apos;k&apos;))</div><div class="line">    &#123;</div><div class="line">        flagTransaction(c);</div><div class="line">        addReply(c, shared.slowscripterr);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Exec the command */</div><div class="line">    if (c-&gt;flags &amp; REDIS_MULTI &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != execCommand &amp;&amp; c-&gt;cmd-&gt;proc != discardCommand &amp;&amp;</div><div class="line">        c-&gt;cmd-&gt;proc != multiCommand &amp;&amp; c-&gt;cmd-&gt;proc != watchCommand)</div><div class="line">    &#123;</div><div class="line">        queueMultiCommand(c);</div><div class="line">        addReply(c,shared.queued);</div><div class="line">    &#125; else &#123;</div><div class="line">        call(c,REDIS_CALL_FULL);</div><div class="line">        c-&gt;woff = server.master_repl_offset;</div><div class="line">        if (listLength(server.ready_keys))</div><div class="line">            handleClientsBlockedOnLists();</div><div class="line">    &#125;</div><div class="line">    return REDIS_OK;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="8-redis-c中包含了call的定义，其中c-cmd-gt-proc是命令的真正执行逻辑，显然redisClient中包含了cmd属性-cmd有proc方法。"><a href="#8-redis-c中包含了call的定义，其中c-cmd-gt-proc是命令的真正执行逻辑，显然redisClient中包含了cmd属性-cmd有proc方法。" class="headerlink" title="8.redis.c中包含了call的定义，其中c-cmd-&gt;proc是命令的真正执行逻辑，显然redisClient中包含了cmd属性,cmd有proc方法。"></a>8.redis.c中包含了call的定义，其中c-cmd-&gt;proc是命令的真正执行逻辑，显然redisClient中包含了cmd属性,cmd有proc方法。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">/* Call() is the core of Redis execution of a command */</div><div class="line">void call(redisClient *c, int flags) &#123;</div><div class="line">    long long dirty, start, duration;</div><div class="line">    int client_old_flags = c-&gt;flags;</div><div class="line"></div><div class="line">    /* Sent the command to clients in MONITOR mode, only if the commands are</div><div class="line">     * not generated from reading an AOF. */</div><div class="line">    if (listLength(server.monitors) &amp;&amp;</div><div class="line">        !server.loading &amp;&amp;</div><div class="line">        !(c-&gt;cmd-&gt;flags &amp; (REDIS_CMD_SKIP_MONITOR|REDIS_CMD_ADMIN)))</div><div class="line">    &#123;</div><div class="line">        replicationFeedMonitors(c,server.monitors,c-&gt;db-&gt;id,c-&gt;argv,c-&gt;argc);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /* Call the command. */</div><div class="line">    c-&gt;flags &amp;= ~(REDIS_FORCE_AOF|REDIS_FORCE_REPL);</div><div class="line">    redisOpArrayInit(&amp;server.also_propagate);</div><div class="line">    dirty = server.dirty;</div><div class="line">    start = ustime();</div><div class="line">    c-&gt;cmd-&gt;proc(c);</div><div class="line">    duration = ustime()-start;</div><div class="line">    dirty = server.dirty-dirty;</div><div class="line">    if (dirty &lt; 0) dirty = 0;</div><div class="line">    ...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="9-redis-h中包含了redisClient的定义，redisCommand-cmd就是那个cmd"><a href="#9-redis-h中包含了redisClient的定义，redisCommand-cmd就是那个cmd" class="headerlink" title="9.redis.h中包含了redisClient的定义，redisCommand cmd就是那个cmd"></a>9.redis.h中包含了redisClient的定义，redisCommand cmd就是那个cmd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">typedef struct redisClient &#123;</div><div class="line">    uint64_t id;            /* Client incremental unique ID. */</div><div class="line">    int fd;</div><div class="line">    redisDb *db;</div><div class="line">    int dictid;</div><div class="line">    robj *name;             /* As set by CLIENT SETNAME */</div><div class="line">    sds querybuf;</div><div class="line">    size_t querybuf_peak;   /* Recent (100ms or more) peak of querybuf size */</div><div class="line">    int argc;</div><div class="line">    robj **argv;</div><div class="line">    struct redisCommand *cmd, *lastcmd;</div><div class="line">    int reqtype;</div><div class="line">    int multibulklen;       /* number of multi bulk arguments left to read */</div><div class="line">    long bulklen;           /* length of bulk argument in multi bulk request */</div><div class="line">    list *reply;</div><div class="line">    unsigned long reply_bytes; /* Tot bytes of objects in reply list */</div><div class="line">    int sentlen;            /* Amount of bytes already sent in the current</div><div class="line">	...忽略...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="10-redis-h包含redisCmd的定义，其中包含redisCommandProc"><a href="#10-redis-h包含redisCmd的定义，其中包含redisCommandProc" class="headerlink" title="10. redis.h包含redisCmd的定义，其中包含redisCommandProc"></a>10. redis.h包含redisCmd的定义，其中包含redisCommandProc</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">struct redisCommand &#123;</div><div class="line">    char *name;</div><div class="line">    redisCommandProc *proc;</div><div class="line">    int arity;</div><div class="line">    char *sflags; /* Flags as string representation, one char per flag. */</div><div class="line">    int flags;    /* The actual flags, obtained from the &apos;sflags&apos; field. */</div><div class="line">    /* Use a function to determine keys arguments in a command line.</div><div class="line">     * Used for Redis Cluster redirect. */</div><div class="line">    redisGetKeysProc *getkeys_proc;</div><div class="line">    /* What keys should be loaded in background when calling this command? */</div><div class="line">    int firstkey; /* The first argument that&apos;s a key (0 = no keys) */</div><div class="line">    int lastkey;  /* The last argument that&apos;s a key */</div><div class="line">    int keystep;  /* The step between first and last key */</div><div class="line">    long long microseconds, calls;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="11-redis-c中包含：在初始化时候会加载所有命令，就是RedisCommand数组，其中第二个参数就是redisCommandProc，也就是各个命令的处理逻辑"><a href="#11-redis-c中包含：在初始化时候会加载所有命令，就是RedisCommand数组，其中第二个参数就是redisCommandProc，也就是各个命令的处理逻辑" class="headerlink" title="11.redis.c中包含：在初始化时候会加载所有命令，就是RedisCommand数组，其中第二个参数就是redisCommandProc，也就是各个命令的处理逻辑"></a>11.redis.c中包含：在初始化时候会加载所有命令，就是RedisCommand数组，其中第二个参数就是redisCommandProc，也就是各个命令的处理逻辑</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">struct redisCommand redisCommandTable[] = &#123;</div><div class="line">    &#123;&quot;get&quot;,getCommand,2,&quot;rF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;set&quot;,setCommand,-3,&quot;wm&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;setnx&quot;,setnxCommand,3,&quot;wmF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;setex&quot;,setexCommand,4,&quot;wm&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;psetex&quot;,psetexCommand,4,&quot;wm&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;append&quot;,appendCommand,3,&quot;wm&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;strlen&quot;,strlenCommand,2,&quot;rF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;del&quot;,delCommand,-2,&quot;w&quot;,0,NULL,1,-1,1,0,0&#125;,</div><div class="line">    &#123;&quot;exists&quot;,existsCommand,-2,&quot;rF&quot;,0,NULL,1,-1,1,0,0&#125;,</div><div class="line">    &#123;&quot;setbit&quot;,setbitCommand,4,&quot;wm&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;getbit&quot;,getbitCommand,3,&quot;rF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;setrange&quot;,setrangeCommand,4,&quot;wm&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;getrange&quot;,getrangeCommand,4,&quot;r&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;substr&quot;,getrangeCommand,4,&quot;r&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;zrevrank&quot;,zrevrankCommand,3,&quot;rF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;zscan&quot;,zscanCommand,-3,&quot;rR&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;hset&quot;,hsetCommand,4,&quot;wmF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;hsetnx&quot;,hsetnxCommand,4,&quot;wmF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;hget&quot;,hgetCommand,3,&quot;rF&quot;,0,NULL,1,1,1,0,0&#125;,</div><div class="line">    &#123;&quot;pfcount&quot;,pfcountCommand,-2,&quot;r&quot;,0,NULL,1,-1,1,0,0&#125;,</div><div class="line">    &#123;&quot;pfmerge&quot;,pfmergeCommand,-2,&quot;wm&quot;,0,NULL,1,-1,1,0,0&#125;,</div><div class="line">    &#123;&quot;pfdebug&quot;,pfdebugCommand,-3,&quot;w&quot;,0,NULL,0,0,0,0,0&#125;,</div><div class="line">    &#123;&quot;latency&quot;,latencyCommand,-2,&quot;arslt&quot;,0,NULL,0,0,0,0,0&#125;</div><div class="line">    ...忽略...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>其中server.commands就是命令字典</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">void populateCommandTable(void) &#123;</div><div class="line">    int j;</div><div class="line">    int numcommands = sizeof(redisCommandTable)/sizeof(struct redisCommand);</div><div class="line"></div><div class="line">    for (j = 0; j &lt; numcommands; j++) &#123;</div><div class="line">        struct redisCommand *c = redisCommandTable+j;</div><div class="line">        char *f = c-&gt;sflags;</div><div class="line">        int retval1, retval2;</div><div class="line"></div><div class="line">        while(*f != &apos;\0&apos;) &#123;</div><div class="line">            switch(*f) &#123;</div><div class="line">            case &apos;w&apos;: c-&gt;flags |= REDIS_CMD_WRITE; break;</div><div class="line">            case &apos;r&apos;: c-&gt;flags |= REDIS_CMD_READONLY; break;</div><div class="line">            case &apos;m&apos;: c-&gt;flags |= REDIS_CMD_DENYOOM; break;</div><div class="line">            case &apos;a&apos;: c-&gt;flags |= REDIS_CMD_ADMIN; break;</div><div class="line">            case &apos;p&apos;: c-&gt;flags |= REDIS_CMD_PUBSUB; break;</div><div class="line">            case &apos;s&apos;: c-&gt;flags |= REDIS_CMD_NOSCRIPT; break;</div><div class="line">            case &apos;R&apos;: c-&gt;flags |= REDIS_CMD_RANDOM; break;</div><div class="line">            case &apos;S&apos;: c-&gt;flags |= REDIS_CMD_SORT_FOR_SCRIPT; break;</div><div class="line">            case &apos;l&apos;: c-&gt;flags |= REDIS_CMD_LOADING; break;</div><div class="line">            case &apos;t&apos;: c-&gt;flags |= REDIS_CMD_STALE; break;</div><div class="line">            case &apos;M&apos;: c-&gt;flags |= REDIS_CMD_SKIP_MONITOR; break;</div><div class="line">            case &apos;k&apos;: c-&gt;flags |= REDIS_CMD_ASKING; break;</div><div class="line">            case &apos;F&apos;: c-&gt;flags |= REDIS_CMD_FAST; break;</div><div class="line">            default: redisPanic(&quot;Unsupported command flag&quot;); break;</div><div class="line">            &#125;</div><div class="line">            f++;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        retval1 = dictAdd(server.commands, sdsnew(c-&gt;name), c);</div><div class="line">        /* Populate an additional dictionary that will be unaffected</div><div class="line">         * by rename-command statements in redis.conf. */</div><div class="line">        retval2 = dictAdd(server.orig_commands, sdsnew(c-&gt;name), c);</div><div class="line">        redisAssert(retval1 == DICT_OK &amp;&amp; retval2 == DICT_OK);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Redis在启动的时候会生成这个字典：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void initServerConfig(void) &#123;</div><div class="line">    ...忽略...</div><div class="line">    populateCommandTable();</div><div class="line">    server.delCommand = lookupCommandByCString(&quot;del&quot;);</div><div class="line">    server.multiCommand = lookupCommandByCString(&quot;multi&quot;);</div><div class="line">    ...忽略...</div></pre></td></tr></table></figure>
+<p>下面的方法用于从字典中获取命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">struct redisCommand *lookupCommand(sds name) &#123;</div><div class="line">    return dictFetchValue(server.commands, name);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>proccessCommand包含了命令寻找的逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">int processCommand(redisClient *c) &#123;</div><div class="line">    c-&gt;cmd = c-&gt;lastcmd = lookupCommand(c-&gt;argv[0]-&gt;ptr);</div></pre></td></tr></table></figure>
+<h4 id="12-以getCommand为例子，它在t-string-c中。"><a href="#12-以getCommand为例子，它在t-string-c中。" class="headerlink" title="12.以getCommand为例子，它在t_string.c中。"></a>12.以getCommand为例子，它在t_string.c中。</h4><p>getCommand会调用getGenericCommand，getGenericCommand会从数据库(db.c)中查询对应的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">int getGenericCommand(redisClient *c) &#123;</div><div class="line">    robj *o;</div><div class="line"></div><div class="line">    if ((o = lookupKeyReadOrReply(c,c-&gt;argv[1],shared.nullbulk)) == NULL)</div><div class="line">        return REDIS_OK;</div><div class="line"></div><div class="line">    if (o-&gt;type != REDIS_STRING) &#123;</div><div class="line">        addReply(c,shared.wrongtypeerr);</div><div class="line">        return REDIS_ERR;</div><div class="line">    &#125; else &#123;</div><div class="line">        addReplyBulk(c,o);</div><div class="line">        return REDIS_OK;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void getCommand(redisClient *c) &#123;</div><div class="line">    getGenericCommand(c);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="13-db-c是数据库的处理逻辑，Redis默认有16个数据库-cluster只有一个-定义如下："><a href="#13-db-c是数据库的处理逻辑，Redis默认有16个数据库-cluster只有一个-定义如下：" class="headerlink" title="13. db.c是数据库的处理逻辑，Redis默认有16个数据库(cluster只有一个),定义如下："></a>13. db.c是数据库的处理逻辑，Redis默认有16个数据库(cluster只有一个),定义如下：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">struct redisServer &#123;</div><div class="line">    /* General */</div><div class="line">    pid_t pid;                  /* Main process pid. */</div><div class="line">    char *configfile;           /* Absolute config file path, or NULL */</div><div class="line">    int hz;                     /* serverCron() calls frequency in hertz */</div><div class="line">    redisDb *db;</div><div class="line">    dict *commands;             /* Command table */</div><div class="line">    dict *orig_commands;        /* Command table before command renaming. */</div><div class="line">    aeEventLoop *el;</div><div class="line">	...忽略...</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">typedef struct redisDb &#123;</div><div class="line">    dict *dict;                 /* The keyspace for this DB */</div><div class="line">    dict *expires;              /* Timeout of keys with a timeout set */</div><div class="line">    dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP) */</div><div class="line">    dict *ready_keys;           /* Blocked keys that received a PUSH */</div><div class="line">    dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */</div><div class="line">    struct evictionPoolEntry *eviction_pool;    /* Eviction pool of keys */</div><div class="line">    int id;                     /* Database ID */</div><div class="line">    long long avg_ttl;          /* Average TTL, just for stats */</div><div class="line">&#125; redisDb;</div></pre></td></tr></table></figure>
+<p>其中包含了key-value字典、expires字典等，存储所有的数据。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/19/Hbase学习开启-看图理解HBase/" rel="next" title="看图理解HBase">
+                <i class="fa fa-chevron-left"></i> 看图理解HBase
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/27/分布式服务学习1-一个最简最简单/" rel="prev" title="分布式服务框架学习1-一个最简单的RPC服务">
+                分布式服务框架学习1-一个最简单的RPC服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/23/Redis从客户端请求到命令处理/"
+           data-title="Redis源码学习一：客户端请求处理到命令执行" data-url="http://yoursite.com/2016/05/23/Redis从客户端请求到命令处理/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Redis实例启动的时候，创建TcpHandler来处理客户端的请求"><span class="nav-number">1.</span> <span class="nav-text">1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-networking-c中包含了acceptTcpHandler的详细定义，其中acceptCommonHandler是accpet后的处理逻辑"><span class="nav-number">2.</span> <span class="nav-text">2.networking.c中包含了acceptTcpHandler的详细定义，其中acceptCommonHandler是accpet后的处理逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-networking-c中包含了acceptCommonHandler的详细定义，其中createClient用来创建客户端连接结构体。"><span class="nav-number">3.</span> <span class="nav-text">3.networking.c中包含了acceptCommonHandler的详细定义，其中createClient用来创建客户端连接结构体。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-networking-c中包含了createClient的详细定义，其中readQueryFromClient就是处理客户端输入数据"><span class="nav-number">4.</span> <span class="nav-text">4.networking.c中包含了createClient的详细定义，其中readQueryFromClient就是处理客户端输入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-networking-c中包含了readQueryFromClient的详细定义，其中processInputBuffer就是解析和处理数据"><span class="nav-number">5.</span> <span class="nav-text">5.networking.c中包含了readQueryFromClient的详细定义，其中processInputBuffer就是解析和处理数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-networking-c中包含了processInputBuffer的详细定义，其中："><span class="nav-number">6.</span> <span class="nav-text">6.networking.c中包含了processInputBuffer的详细定义，其中：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-redis-c中包含了processCommand的详细定义，其中：call-c-REDIS-CALL-FULL-是普通命令的调用逻辑"><span class="nav-number">7.</span> <span class="nav-text">7.redis.c中包含了processCommand的详细定义，其中：call(c,REDIS_CALL_FULL)是普通命令的调用逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-redis-c中包含了call的定义，其中c-cmd-gt-proc是命令的真正执行逻辑，显然redisClient中包含了cmd属性-cmd有proc方法。"><span class="nav-number">8.</span> <span class="nav-text">8.redis.c中包含了call的定义，其中c-cmd->proc是命令的真正执行逻辑，显然redisClient中包含了cmd属性,cmd有proc方法。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-redis-h中包含了redisClient的定义，redisCommand-cmd就是那个cmd"><span class="nav-number">9.</span> <span class="nav-text">9.redis.h中包含了redisClient的定义，redisCommand cmd就是那个cmd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-redis-h包含redisCmd的定义，其中包含redisCommandProc"><span class="nav-number">10.</span> <span class="nav-text">10. redis.h包含redisCmd的定义，其中包含redisCommandProc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-redis-c中包含：在初始化时候会加载所有命令，就是RedisCommand数组，其中第二个参数就是redisCommandProc，也就是各个命令的处理逻辑"><span class="nav-number">11.</span> <span class="nav-text">11.redis.c中包含：在初始化时候会加载所有命令，就是RedisCommand数组，其中第二个参数就是redisCommandProc，也就是各个命令的处理逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-以getCommand为例子，它在t-string-c中。"><span class="nav-number">12.</span> <span class="nav-text">12.以getCommand为例子，它在t_string.c中。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-db-c是数据库的处理逻辑，Redis默认有16个数据库-cluster只有一个-定义如下："><span class="nav-number">13.</span> <span class="nav-text">13. db.c是数据库的处理逻辑，Redis默认有16个数据库(cluster只有一个),定义如下：</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
