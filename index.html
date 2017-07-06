@@ -236,7 +236,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/06/一、现象/" itemprop="url">
+                <a class="post-title-link" href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/" itemprop="url">
                   Direct Memory OOM造成Region Server挂掉
                 </a>
               
@@ -280,8 +280,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/07/06/一、现象/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/06/一、现象/" itemprop="commentsCount"></span>
+                <a href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/06/Direct Memory OOM造成Region Server挂掉/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -291,7 +291,7 @@
 
           
           
-             <span id="/2017/07/06/一、现象/" class="leancloud_visitors" data-flag-title="Direct Memory OOM造成Region Server挂掉">
+             <span id="/2017/07/06/Direct Memory OOM造成Region Server挂掉/" class="leancloud_visitors" data-flag-title="Direct Memory OOM造成Region Server挂掉">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -318,7 +318,7 @@
 <h3 id="一、现象"><a href="#一、现象" class="headerlink" title="一、现象"></a>一、现象</h3><p>RegionServer自行挂掉：zk + shutdown hook</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">2017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x25a38b51be18b65 closed</div><div class="line">2017-06-04 09:14:06,194 INFO  [main-EventThread] zookeeper.ClientCnxn: EventThread shut down</div><div class="line">2017-06-04 09:14:06,216 ERROR [main] regionserver.HRegionServerCommandLine: Region server exiting</div><div class="line">java.lang.RuntimeException: HRegionServer Aborted</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.start(HRegionServerCommandLine.java:68)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.run(HRegionServerCommandLine.java:87)</div><div class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)</div><div class="line">	at org.apache.hadoop.hbase.util.ServerCommandLine.doMain(ServerCommandLine.java:126)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServer.main(HRegionServer.java:2665)</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook starting; hbase.shutdown.hook=true; fsShutdownHook=org.apache.hadoop.fs.FileSystem$Cache$ClientFinalizer@318603db</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Starting fs shutdown hook thread.</div><div class="line">2017-06-04 09:14:06,239 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook finished.</div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/07/06/一、现象/#more" rel="contents">
+            <a class="btn" href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
