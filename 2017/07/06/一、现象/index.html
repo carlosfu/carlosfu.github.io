@@ -1,0 +1,832 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="故障时间：2017-06-04 09:15 一、现象RegionServer自行挂掉：zk + shutdown hook 1234567891011122017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Direct Memory OOM造成Region Server挂掉">
+<meta property="og:url" content="http://yoursite.com/2017/07/06/一、现象/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="故障时间：2017-06-04 09:15 一、现象RegionServer自行挂掉：zk + shutdown hook 1234567891011122017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x">
+<meta property="og:image" content="http://i3.itc.cn/20170706/3084_3c7cb1d4_9b38_a045_ef60_e25ad01478d6_1.png">
+<meta property="og:image" content="http://i1.itc.cn/20170706/3084_80b425c5_4c95_04ca_0c1c_cff20021b6ee_1.png">
+<meta property="og:image" content="http://i3.itc.cn/20170706/3084_5956c7be_6fbc_b64e_3bfb_b7569ac67750_1.png">
+<meta property="og:image" content="http://i1.itc.cn/20170706/3084_cc118f15_283c_3827_f247_c4c1895e8fc1_1.png">
+<meta property="og:image" content="http://i3.itc.cn/20170706/3084_6a473919_e97b_8f60_79cc_545c54d5d226_1.png">
+<meta property="og:updated_time" content="2017-07-06T06:09:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Direct Memory OOM造成Region Server挂掉">
+<meta name="twitter:description" content="故障时间：2017-06-04 09:15 一、现象RegionServer自行挂掉：zk + shutdown hook 1234567891011122017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x">
+<meta name="twitter:image" content="http://i3.itc.cn/20170706/3084_3c7cb1d4_9b38_a045_ef60_e25ad01478d6_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Direct Memory OOM造成Region Server挂掉 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Direct Memory OOM造成Region Server挂掉
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-06T12:20:00+08:00" content="2017-07-06">
+              2017-07-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/06/一、现象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/06/一、现象/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/06/一、现象/" class="leancloud_visitors" data-flag-title="Direct Memory OOM造成Region Server挂掉">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>故障时间：2017-06-04 09:15</p>
+<h3 id="一、现象"><a href="#一、现象" class="headerlink" title="一、现象"></a>一、现象</h3><p>RegionServer自行挂掉：zk + shutdown hook</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">2017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x25a38b51be18b65 closed</div><div class="line">2017-06-04 09:14:06,194 INFO  [main-EventThread] zookeeper.ClientCnxn: EventThread shut down</div><div class="line">2017-06-04 09:14:06,216 ERROR [main] regionserver.HRegionServerCommandLine: Region server exiting</div><div class="line">java.lang.RuntimeException: HRegionServer Aborted</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.start(HRegionServerCommandLine.java:68)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.run(HRegionServerCommandLine.java:87)</div><div class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)</div><div class="line">	at org.apache.hadoop.hbase.util.ServerCommandLine.doMain(ServerCommandLine.java:126)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServer.main(HRegionServer.java:2665)</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook starting; hbase.shutdown.hook=true; fsShutdownHook=org.apache.hadoop.fs.FileSystem$Cache$ClientFinalizer@318603db</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Starting fs shutdown hook thread.</div><div class="line">2017-06-04 09:14:06,239 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook finished.</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>从之前的日志发现了大量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">2017-06-04 09:13:19,756 ERROR [MemStoreFlusher.1] regionserver.HStore: Failed to open store file : hdfs://hbasezwcluster/hbase/data/default/rc_entire/c6fe2d013a27158a68af5f8b74bb9d6b/.tmp/09cc827c27bb4659aa9f6d97fb38fe65, keeping it in tmp location</div><div class="line">org.apache.hadoop.hbase.io.hfile.CorruptHFileException: Problem reading HFile Trailer from file hdfs://hbasezwcluster/hbase/data/default/rc_entire/c6fe2d013a27158a68af5f8b74bb9d6b/.tmp/09cc827c27bb4659aa9f6d97fb38fe65</div><div class="line">	at org.apache.hadoop.hbase.io.hfile.HFile.pickReaderVersion(HFile.java:494)</div><div class="line">	at org.apache.hadoop.hbase.io.hfile.HFile.createReader(HFile.java:522)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.StoreFile$Reader.&lt;init&gt;(StoreFile.java:1084)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.StoreFileInfo.open(StoreFileInfo.java:254)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.StoreFile.open(StoreFile.java:399)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.StoreFile.createReader(StoreFile.java:504)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.StoreFile.createReader(StoreFile.java:494)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HStore.createStoreFileAndReader(HStore.java:653)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HStore.createStoreFileAndReader(HStore.java:645)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HStore.validateStoreFile(HStore.java:1724)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HStore.flushCache(HStore.java:920)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HStore$StoreFlusherImpl.flushCache(HStore.java:2271)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegion.internalFlushCacheAndCommit(HRegion.java:2375)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegion.internalFlushcache(HRegion.java:2105)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegion.internalFlushcache(HRegion.java:2067)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegion.flushcache(HRegion.java:1958)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegion.flush(HRegion.java:1884)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.MemStoreFlusher.flushRegion(MemStoreFlusher.java:510)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.MemStoreFlusher.flushRegion(MemStoreFlusher.java:471)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.MemStoreFlusher.access$900(MemStoreFlusher.java:75)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.MemStoreFlusher$FlushHandler.run(MemStoreFlusher.java:259)</div><div class="line">	at java.lang.Thread.run(Thread.java:745)</div><div class="line">Caused by: java.lang.OutOfMemoryError: Direct buffer memory</div><div class="line">	at java.nio.Bits.reserveMemory(Bits.java:658)</div><div class="line">	at java.nio.DirectByteBuffer.&lt;init&gt;(DirectByteBuffer.java:123)</div><div class="line">	at java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:306)</div><div class="line">	at org.apache.hadoop.hdfs.util.DirectBufferPool.getBuffer(DirectBufferPool.java:70)</div><div class="line">	at org.apache.hadoop.hdfs.BlockReaderLocal.createDataBufIfNeeded(BlockReaderLocal.java:244)</div><div class="line">	at org.apache.hadoop.hdfs.BlockReaderLocal.readWithBounceBuffer(BlockReaderLocal.java:570)</div><div class="line">	at org.apache.hadoop.hdfs.BlockReaderLocal.read(BlockReaderLocal.java:538)</div><div class="line">	at org.apache.hadoop.hdfs.DFSInputStream$ByteArrayStrategy.doRead(DFSInputStream.java:686)</div><div class="line">	at org.apache.hadoop.hdfs.DFSInputStream.readBuffer(DFSInputStream.java:742)</div><div class="line">	at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:799)</div><div class="line">	at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:840)</div><div class="line">	at java.io.DataInputStream.readFully(DataInputStream.java:195)</div><div class="line">	at org.apache.hadoop.hbase.io.hfile.FixedFileTrailer.readFromStream(FixedFileTrailer.java:390)</div><div class="line">	at org.apache.hadoop.hbase.io.hfile.HFile.pickReaderVersion(HFile.java:479)</div><div class="line">	... 21 more</div></pre></td></tr></table></figure>
+<p>从表面现象看，这个和DirectMemory发生OOM有关</p>
+<h3 id="二、初步检查"><a href="#二、初步检查" class="headerlink" title="二、初步检查"></a>二、初步检查</h3><h4 id="1-配置不均："><a href="#1-配置不均：" class="headerlink" title="1. 配置不均："></a>1. 配置不均：</h4><p>HBase-zw中只有如下机器配置了bucketcache.size，但是配置略有不同。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>机器</th>
+<th>MaxDirectMemorySize</th>
+<th>bucketcache.size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>10.10.102.68</td>
+<td>13G</td>
+<td>12288(12G)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>10.10.102.69</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10.10.102.70</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10.10.102.71</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>10.10.102.72</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>10.10.102.73</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>10.10.102.226</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>10.10.102.227</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>10.10.65.86</td>
+<td>7G</td>
+<td>6144(6G)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>其他机器</td>
+<td>没有显式指定</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">由于文档是后补的，再问题解决之前，上述1~9中的几个RegionServer均发生了上述问题。</div></pre></td></tr></table></figure>
+<h4 id="2-内存统计"><a href="#2-内存统计" class="headerlink" title="2. 内存统计"></a>2. 内存统计</h4><p>在RegionServer挂掉后，内存下降(正常情况)，之前内存在60%左右，应该是正常</p>
+<h5 id="1-mm统计："><a href="#1-mm统计：" class="headerlink" title="(1)mm统计："></a>(1)mm统计：</h5><p><img src="http://i3.itc.cn/20170706/3084_3c7cb1d4_9b38_a045_ef60_e25ad01478d6_1.png" alt=""></p>
+<h4 id="2-tsar统计"><a href="#2-tsar统计" class="headerlink" title="(2) tsar统计"></a>(2) tsar统计</h4><p><img src="http://i1.itc.cn/20170706/3084_80b425c5_4c95_04ca_0c1c_cff20021b6ee_1.png" alt=""></p>
+<h3 id="3-读写量"><a href="#3-读写量" class="headerlink" title="3. 读写量"></a>3. 读写量</h3><p>从读写请求量看基本属于正常情况。<br><img src="http://i3.itc.cn/20170706/3084_5956c7be_6fbc_b64e_3bfb_b7569ac67750_1.png" alt=""></p>
+<h3 id="4-GC"><a href="#4-GC" class="headerlink" title="4.GC"></a>4.GC</h3><h4 id="1-从图表看比较正常。"><a href="#1-从图表看比较正常。" class="headerlink" title="(1) 从图表看比较正常。"></a>(1) 从图表看比较正常。</h4><p><img src="http://i1.itc.cn/20170706/3084_cc118f15_283c_3827_f247_c4c1895e8fc1_1.png" alt=""></p>
+<h4 id="2-gc日志："><a href="#2-gc日志：" class="headerlink" title="(2) gc日志："></a>(2) gc日志：</h4><p>09点12开始发生了很多次fullgc：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">2017-06-04T09:12:35.759+0800: 5071440.974: [GC pause (young), 0.1301810 secs]</div><div class="line">2017-06-04T09:12:55.143+0800: 5071460.358: [Full GC 11G-&gt;1206M(20G), 2.8186760 secs]</div><div class="line">2017-06-04T09:13:03.122+0800: 5071468.337: [Full GC 2305M-&gt;1120M(20G), 2.0535820 secs]</div><div class="line">2017-06-04T09:13:14.729+0800: 5071479.944: [Full GC 2812M-&gt;1158M(20G), 1.9584960 secs]</div><div class="line">2017-06-04T09:13:17.813+0800: 5071483.028: [Full GC 1473M-&gt;1180M(20G), 1.8418870 secs]</div><div class="line">2017-06-04T09:13:20.781+0800: 5071485.996: [Full GC 1383M-&gt;1187M(20G), 1.7836590 secs]</div><div class="line">2017-06-04T09:13:23.690+0800: 5071488.905: [Full GC 1360M-&gt;1194M(20G), 1.7804030 secs]</div><div class="line">2017-06-04T09:13:26.595+0800: 5071491.810: [Full GC 1383M-&gt;1202M(20G), 1.7664520 secs]</div><div class="line">2017-06-04T09:13:28.716+0800: 5071493.931: [Full GC 1303M-&gt;1215M(20G), 1.7689500 secs]</div><div class="line">2017-06-04T09:13:30.514+0800: 5071495.729: [Full GC 1244M-&gt;1221M(20G), 1.6835710 secs]</div><div class="line">2017-06-04T09:13:32.479+0800: 5071497.694: [Full GC 1337M-&gt;1226M(20G), 1.8048440 secs]</div><div class="line">2017-06-04T09:13:34.326+0800: 5071499.541: [Full GC 1250M-&gt;1236M(20G), 1.5021000 secs]</div><div class="line">2017-06-04T09:13:35.836+0800: 5071501.051: [Full GC 1248M-&gt;1244M(20G), 1.4851340 secs]</div><div class="line">2017-06-04T09:13:38.346+0800: 5071503.561: [Full GC 1632M-&gt;1253M(20G), 2.0687720 secs]</div><div class="line">2017-06-04T09:13:40.453+0800: 5071505.668: [Full GC 1284M-&gt;1260M(20G), 1.6977380 secs]</div><div class="line">2017-06-04T09:13:43.179+0800: 5071508.394: [Full GC 1471M-&gt;1263M(20G), 1.8358100 secs]</div><div class="line">2017-06-04T09:13:45.041+0800: 5071510.256: [Full GC 1298M-&gt;1275M(20G), 1.7325290 secs]</div><div class="line">2017-06-04T09:13:47.800+0800: 5071513.015: [Full GC 1522M-&gt;1277M(20G), 1.8715070 secs]</div><div class="line">2017-06-04T09:13:49.697+0800: 5071514.912: [Full GC 1311M-&gt;1288M(20G), 1.7041390 secs]</div><div class="line">2017-06-04T09:13:52.434+0800: 5071517.649: [Full GC 1497M-&gt;1288M(20G), 1.8675380 secs]</div><div class="line">2017-06-04T09:13:55.426+0800: 5071520.641: [Full GC 1457M-&gt;1288M(20G), 1.6890270 secs]</div><div class="line">2017-06-04T09:13:58.243+0800: 5071523.458: [Full GC 1428M-&gt;1288M(20G), 1.6103100 secs]</div><div class="line">2017-06-04T09:14:00.980+0800: 5071526.195: [Full GC 1382M-&gt;1288M(20G), 1.5230450 secs]</div><div class="line">2017-06-04T09:14:03.628+0800: 5071528.843: [Full GC 1396M-&gt;1288M(20G), 1.5169950 secs]</div></pre></td></tr></table></figure>
+<p>从上面的内存变化可以看到，这种fullgc显然是不正常的，从历史的堆统计看以看到：</p>
+<p><img src="http://i3.itc.cn/20170706/3084_6a473919_e97b_8f60_79cc_545c54d5d226_1.png" alt=""></p>
+<p>所以这里可以初步怀疑是堆外内存造成的fullgc。</p>
+<h3 id="三、分析原因-堆外内存不足"><a href="#三、分析原因-堆外内存不足" class="headerlink" title="三、分析原因: 堆外内存不足"></a>三、分析原因: 堆外内存不足</h3><p>由于本机器显示配置了MaxDirectMemorySize为7G，同时配置RegionServer的blockCache使用堆外内存作为二级缓存6G，也就是剩下给RegionServer的只有1G(堆外内存是预分配)。<br>根据JVM的原理，当堆外内存不足时，触发fullgc。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">package test.oom;</div><div class="line">import java.nio.ByteBuffer;</div><div class="line">import java.util.ArrayList;</div><div class="line">import java.util.List;</div><div class="line">/**</div><div class="line"> * -XX:+PrintGCDetails -XX:MaxDirectMemorySize=500M -XX:+UseG1GC -Xmx1G</div><div class="line"> * @author leifu</div><div class="line"> * @Date 2017年7月6日</div><div class="line"> * @Time 上午9:33:37</div><div class="line"> */</div><div class="line">public class DirectMemoryOOM &#123;</div><div class="line">    /**</div><div class="line">     * 300MB</div><div class="line">     */</div><div class="line">    private static final int _300MB = 1024 * 1024 * 300;</div><div class="line">    </div><div class="line">    public static void main(String[] args) throws Exception &#123;</div><div class="line">        int count = 0;</div><div class="line">        List&lt;ByteBuffer&gt; bufs = new ArrayList&lt;ByteBuffer&gt;();</div><div class="line">        while(true) &#123;</div><div class="line">            count++;</div><div class="line">            System.out.println(&quot;count=&quot; + count);</div><div class="line">            Thread.sleep(2000);</div><div class="line">            System.out.println(&quot;allocate direct.&quot;);</div><div class="line">            ByteBuffer buf = ByteBuffer.allocateDirect(_300MB);</div><div class="line">            bufs.add(buf);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从日志看出，从第二次分配开始，就会触发fullgc，但是heap几乎就没怎么用，同时没有打印堆外内存信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">count=1</div><div class="line">allocate direct.</div><div class="line">count=2</div><div class="line">allocate direct.</div><div class="line">[Full GC (System.gc())  983K-&gt;278K(8192K), 0.0081902 secs]</div><div class="line">   [Eden: 1024.0K(24.0M)-&gt;0.0B(4096.0K) Survivors: 0.0B-&gt;0.0B Heap: 983.1K(256.0M)-&gt;278.4K(8192.0K)], [Metaspace: 2642K-&gt;2642K(1056768K)]</div><div class="line"> [Times: user=0.01 sys=0.01, real=0.01 secs] </div><div class="line">count=3</div><div class="line">allocate direct.</div><div class="line">[Full GC (System.gc())  360K-&gt;276K(8192K), 0.0031508 secs]</div><div class="line">   [Eden: 1024.0K(4096.0K)-&gt;0.0B(4096.0K) Survivors: 0.0B-&gt;0.0B Heap: 360.3K(8192.0K)-&gt;276.7K(8192.0K)], [Metaspace: 2643K-&gt;2643K(1056768K)]</div><div class="line"> [Times: user=0.00 sys=0.00, real=0.01 secs] </div><div class="line">......</div></pre></td></tr></table></figure>
+<p>如果加-XX:+DisableExplicitGC，就不会触发System.gc()，直接会发生OOM。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">count=1</div><div class="line">allocate direct.</div><div class="line">count=2</div><div class="line">allocate direct.</div><div class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Direct buffer memory</div><div class="line">	at java.nio.Bits.reserveMemory(Bits.java:693)</div><div class="line">	at java.nio.DirectByteBuffer.&lt;init&gt;(DirectByteBuffer.java:123)</div><div class="line">	at java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:311)</div><div class="line">	at test.oom.DirectMemoryOOM.main(DirectMemoryOOM.java:27)</div><div class="line">Heap</div><div class="line"> garbage-first heap   total 262144K, used 0K [0x0000000780000000, 0x0000000780100800, 0x00000007c0000000)</div><div class="line">  region size 1024K, 1 young (1024K), 0 survivors (0K)</div><div class="line"> Metaspace       used 2673K, capacity 4486K, committed 4864K, reserved 1056768K</div><div class="line">  class space    used 290K, capacity 386K, committed 512K, reserved 1048576K</div><div class="line">```  </div><div class="line">  </div><div class="line">  </div><div class="line">这里可以参考毕玄的一篇文章：[http://hellojava.info/?p=56](http://hellojava.info/?p=56)</div></pre></td></tr></table></figure>
+<p>最好是在启动参数上增加-XX:MaxDirectMemorySize=x[m|g]，例如-XX:MaxDirectMemorySize=500m<br>这个参数默认的大小是-Xmx的值（在没设置MaxDirectMemorySize参数的情况下，用jinfo -flag等方式会看到默认值是-1，但VM.maxDirectMemory这个方法里发现是-1，则会以-Xmx作为默认值），此参数的含义是当Direct ByteBuffer分配的堆外内存到达指定大小后，即触发Full GC（这段逻辑请见Bits.reserveMemory的代码），如Full GC后仍然分配不出Direct ByteBuffer需要的空间，则会报OOM错误：<br>java.lang.OutOfMemoryError: Direct buffer memory<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 四、RegionServer与堆外内存</div><div class="line"></div><div class="line">从日志看RegionServer在执行flush操作将数据刷到Hfile(HDFS，一般是多备份，通过网络)，其中涉及到了数据传输和HFile远程读取，看下HBase源码应该是用到了NIO。</div></pre></td></tr></table></figure></p>
+<p>Caused by: java.lang.OutOfMemoryError: Direct buffer memory<br>    at java.nio.Bits.reserveMemory(Bits.java:658)<br>    at java.nio.DirectByteBuffer.<init>(DirectByteBuffer.java:123)<br>    at java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:306)<br>    at org.apache.hadoop.hdfs.util.DirectBufferPool.getBuffer(DirectBufferPool.java:70)<br>    at org.apache.hadoop.hdfs.BlockReaderLocal.createDataBufIfNeeded(BlockReaderLocal.java:244)<br>    at org.apache.hadoop.hdfs.BlockReaderLocal.readWithBounceBuffer(BlockReaderLocal.java:570)<br>    at org.apache.hadoop.hdfs.BlockReaderLocal.read(BlockReaderLocal.java:538)<br>    at org.apache.hadoop.hdfs.DFSInputStream$ByteArrayStrategy.doRead(DFSInputStream.java:686)<br>    at org.apache.hadoop.hdfs.DFSInputStream.readBuffer(DFSInputStream.java:742)<br>    at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:799)<br>    at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:840)<br>    at java.io.DataInputStream.readFully(DataInputStream.java:195)<br>    at org.apache.hadoop.hbase.io.hfile.FixedFileTrailer.readFromStream(FixedFileTrailer.java:390)<br>    at org.apache.hadoop.hbase.io.hfile.HFile.pickReaderVersion(HFile.java:479)<br>    … 21 more<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    </div><div class="line">这篇文章分析了标准的HBase客户端可能会大量用到堆外内存。(https://groups.google.com/forum/#!topic/asynchbase/xFvHuniLI1c](https://groups.google.com/forum/#!topic/asynchbase/xFvHuniLI1c)</div></pre></td></tr></table></figure></init></p>
+<p>I thought I’d take a moment to explain what I discovered trying to track down serious problems with the regular (non-async) hbase client and Java’s nio implementation.<br>We were having issues running out of direct memory and here’s a stack trace which says it all:<br>        java.nio.Buffer.<init>(Buffer.java:172)<br>        java.nio.ByteBuffer.<init>(ByteBuffer.java:259)<br>        java.nio.ByteBuffer.<init>(ByteBuffer.java:267)<br>        java.nio.MappedByteBuffer.<init>(MappedByteBuffer.java:64)<br>        java.nio.DirectByteBuffer.<init>(DirectByteBuffer.java:97)<br>        java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:288)<br>        sun.nio.ch.Util.getTemporaryDirectBuffer(Util.java:155)<br>        sun.nio.ch.IOUtil.write(IOUtil.java:37)<br>        sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:334)<br>        org.apache.hadoop.net.SocketOutputStream$Writer.performIO(SocketOutputStream.java:55)<br>        org.apache.hadoop.net.SocketIOWithTimeout.doIO(SocketIOWithTimeout.java:142)<br>        org.apache.hadoop.net.SocketOutputStream.write(SocketOutputStream.java:146)<br>        org.apache.hadoop.net.SocketOutputStream.write(SocketOutputStream.java:107)<br>        java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:65)<br>        java.io.BufferedOutputStream.flush(BufferedOutputStream.java:123)<br>        java.io.DataOutputStream.flush(DataOutputStream.java:106)<br>        org.apache.hadoop.hbase.ipc.HBaseClient$Connection.sendParam(HBaseClient.java:518)<br>        org.apache.hadoop.hbase.ipc.HBaseClient.call(HBaseClient.java:751)<br>        org.apache.hadoop.hbase.ipc.HBaseRPC$Invoker.invoke(HBaseRPC.java:257)<br>        $Proxy11.getProtocolVersion(<unknown source="">:Unknown line)<br>Here you can see that an HBaseClient request is flushing a stream which has a socket channel at the other end of it. HBase has decided not to use direct memory for its byte buffers which I thought was smart since they are difficult to manage. Unfortunately, behind the scenes the JDK is noticing the lack of direct memory buffer in the socket channel write call, and it is allocating a direct memory buffer on your behalf! The size of that direct memory buffer depends on the amount of data you want to write at that time, so if you are writing 1M of data, the JDK will allocate 1M of direct memory.<br>The same is done on the reading side as well. If you perform channel I/O with a non-direct memory buffer, the JDK will allocate a direct memory buffer for you. In the reading case it allocates a size that equals the amount of room you have in the direct memory buffer you passed in to the read call. WTF!? That can be a very large value.<br>To make matters worse, the JDK caches these direct memory buffers in thread local storage and it caches not one, but three of these arbitrarily sized buffers. (Look in sun.nio.ch.Util.getTemporaryDirectBuffer and let me know if I have interpreted the code incorrectly.) So if you have a large number of threads talking to hbase you can find yourself overflowing with direct memory buffers that you have not allocated and didn’t even know about.<br>This issue is what caused us to check out the asynchbase client, which happily didn’t have any of these problems. The reason is that asynchbase uses netty and netty knows the proper way of using direct memory buffers for I/O. The correct way is to use direct memory buffers in manageable sizes, 16k to 64k or something like that, for the purpose of invoking a read or write system call. Netty has algorithms for calculating the best size given a particular socket connection, based on the amount of data it seems to be able to read at once, etc. Netty reads the data from the OS using direct memory and copies that data into Java byte buffers.<br>Now you might be wondering why you don’t just pass a regular Java byte array into the read/write calls, to avoid the copy from direct memory to java heap memory, and here’s the story about that. Let’s assume you’re doing a file or socket read. There are two cases:<br>If the amount being read is &lt; 8k, it uses a native char array on the C stack for the read system call, and then copies the result into your Java buffer.<br>If the amount being read is &gt; 8k, the JDK calls malloc, does the read system call with that buffer, copies the result into your Java buffer, and then calls free.<br>The reason for this is that the the compacting Java garbage collector might move your Java buffer while you’re blocked in the read system call and clearly that will not do. But if you are not aware of the malloc/free being called every time you perform a read larger than 8k, you might be surprised by the performance of that. Direct memory buffers were created to avoid the malloc/free every time you read. You still need to copy but you don’t need to malloc/free every time.<br>People get into trouble with direct memory because you cannot free them up when you know you are done. Instead you need to wait for the garbage collector to run and THEN the finalizers to be executed. You can never tell when the GC will run and/or your finalizers be run, so it’s really a crap shoot. That’s why the JDK caches these buffers (that it shouldn’t be creating in the first place). And the larger your heap size, the less frequent the GCs. And actually, I saw some code in the JDK which called System.gc() manually when a direct memory buffer allocation failed, which is an absolute no-no. That might work with small heap sizes but with large heap sizes, a full System.gc() can take 15 or 20 seconds. We were trying to use the G1 collector which allows for very large heap sizes without long GC delays, but those delays were occurring because some piece of code was manually running GC. When I disabled System.gc() with a command line option, we ran out of direct memory instead.<br>This is long but I hope informative.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">大致意思：</div><div class="line"></div><div class="line">+ 因为堆外内存很难管理，所以HBase没有直接使用，但JDK会在大的读写时候主动使用堆外内存，而且有很多是ThreadLocal级别。</div><div class="line">+ 建议不使用原生客户端，可以考虑使用netty版本的客户端。</div><div class="line"></div><div class="line">### 五、解决方法与注意事项</div><div class="line">#### 1.解决方法：</div><div class="line"></div><div class="line">当原理清楚后，解决方法很简单：</div><div class="line">+ 不用bucket：这个要看系统是否需要这个。</div><div class="line">+ 增加堆外内存配置：例如不显示配置就是和xmx一致。</div><div class="line"></div><div class="line">无论怎样调整：保证有足够的堆外内存可以使用，但要保证机器内存的稳定</div><div class="line"></div><div class="line">#### 2. 注意事项：</div><div class="line"></div><div class="line">+ 监控RegionServer配置一致性。</div><div class="line">+ 深入了解RegionServer原理。</div><div class="line"></div><div class="line"></div><div class="line">### 六、参考文献</div><div class="line"></div><div class="line">+ [CMS GC会不会回收Direct ByteBuffer的内存](http://hellojava.info/?p=56)</div><div class="line">+ [jvm-堆外内存GC问题](http://mouzt.github.io/2014/10/24/jvm1-note/)</div><div class="line">+ [HBASE-4956](https://issues.apache.org/jira/browse/HBASE-4956)</div><div class="line">+ [HDFS HBase NIO相关知识](http://bupt04406.iteye.com/blog/1686008)</div><div class="line">+ [standard hbase client, asynchbase client, netty and direct memory buffers](https://groups.google.com/forum/?fromgroups=#!topic/asynchbase/xFvHuniLI1c)</div><div class="line">+ [Warn if hbase.bucketcache.size too close or equal to](https://issues.apache.org/jira/browse/HBASE-12369)</div><div class="line"></div><div class="line">附注一个bucketCache的统计，可以看到堆外内存是几乎没用，而且也可以确认堆外内存是预分配的。</div></pre></td></tr></table></figure></unknown></init></init></init></init></init></p>
+<p>2017-06-04 09:13:49,672 INFO  [BucketCacheStatsExecutor] bucket.BucketCache: failedBlockAdditions=0, totalSize=12.00 GB, freeSize=12.00 GB, usedSize=10 KB, cacheSize=621 B, accesses=32573928, hits=12607, IOhitsPerSecond=0, IOTimePerHit=NaN, hitRatio=0.04%, cachingAccesses=78220, cachingHits=12607, cachingHitsRatio=16.12%, evictions=0, evicted=0, evictedPerRun=NaN<br>```</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/" rel="next" title="看图理解HBase-2.HBase组件部署拓扑">
+                <i class="fa fa-chevron-left"></i> 看图理解HBase-2.HBase组件部署拓扑
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/06/一、现象/"
+           data-title="Direct Memory OOM造成Region Server挂掉" data-url="http://yoursite.com/2017/07/06/一、现象/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、现象"><span class="nav-number">1.</span> <span class="nav-text">一、现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、初步检查"><span class="nav-number">2.</span> <span class="nav-text">二、初步检查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-配置不均："><span class="nav-number">2.1.</span> <span class="nav-text">1. 配置不均：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-内存统计"><span class="nav-number">2.2.</span> <span class="nav-text">2. 内存统计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-mm统计："><span class="nav-number">2.2.1.</span> <span class="nav-text">(1)mm统计：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-tsar统计"><span class="nav-number">2.3.</span> <span class="nav-text">(2) tsar统计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-读写量"><span class="nav-number">3.</span> <span class="nav-text">3. 读写量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-GC"><span class="nav-number">4.</span> <span class="nav-text">4.GC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-从图表看比较正常。"><span class="nav-number">4.1.</span> <span class="nav-text">(1) 从图表看比较正常。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-gc日志："><span class="nav-number">4.2.</span> <span class="nav-text">(2) gc日志：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、分析原因-堆外内存不足"><span class="nav-number">5.</span> <span class="nav-text">三、分析原因: 堆外内存不足</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -236,6 +236,139 @@
             
               
                 
+                <a class="post-title-link" href="/2017/07/06/一、现象/" itemprop="url">
+                  Direct Memory OOM造成Region Server挂掉
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-06T12:20:00+08:00" content="2017-07-06">
+              2017-07-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/06/一、现象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/06/一、现象/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/06/一、现象/" class="leancloud_visitors" data-flag-title="Direct Memory OOM造成Region Server挂掉">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>故障时间：2017-06-04 09:15</p>
+<h3 id="一、现象"><a href="#一、现象" class="headerlink" title="一、现象"></a>一、现象</h3><p>RegionServer自行挂掉：zk + shutdown hook</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">2017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x25a38b51be18b65 closed</div><div class="line">2017-06-04 09:14:06,194 INFO  [main-EventThread] zookeeper.ClientCnxn: EventThread shut down</div><div class="line">2017-06-04 09:14:06,216 ERROR [main] regionserver.HRegionServerCommandLine: Region server exiting</div><div class="line">java.lang.RuntimeException: HRegionServer Aborted</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.start(HRegionServerCommandLine.java:68)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.run(HRegionServerCommandLine.java:87)</div><div class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)</div><div class="line">	at org.apache.hadoop.hbase.util.ServerCommandLine.doMain(ServerCommandLine.java:126)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServer.main(HRegionServer.java:2665)</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook starting; hbase.shutdown.hook=true; fsShutdownHook=org.apache.hadoop.fs.FileSystem$Cache$ClientFinalizer@318603db</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Starting fs shutdown hook thread.</div><div class="line">2017-06-04 09:14:06,239 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook finished.</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/06/一、现象/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/" itemprop="url">
                   看图理解HBase-2.HBase组件部署拓扑
                 </a>
@@ -1496,141 +1629,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/06/1.Redis3.0与3.2/" itemprop="url">
-                  Redis 3.2.0 new-1.对比3.0
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/06/1.Redis3.0与3.2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/1.Redis3.0与3.2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/06/1.Redis3.0与3.2/" class="leancloud_visitors" data-flag-title="Redis 3.2.0 new-1.对比3.0">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、Redis3-0与3-2文件对比"><a href="#一、Redis3-0与3-2文件对比" class="headerlink" title="一、Redis3.0与3.2文件对比"></a>一、Redis3.0与3.2文件对比</h3><h4 id="1-clone-redis"><a href="#1-clone-redis" class="headerlink" title="1. clone redis"></a>1. clone redis</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/antirez/redis.git</div></pre></td></tr></table></figure>
-<h4 id="2-checkout分支"><a href="#2-checkout分支" class="headerlink" title="2. checkout分支"></a>2. checkout分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd redis</div><div class="line">git checkout 3.0</div><div class="line">git checkout 3.2</div></pre></td></tr></table></figure>
-<h4 id="3-比较"><a href="#3-比较" class="headerlink" title="3. 比较"></a>3. 比较</h4><p>(1) 比较3.0和3.2文件变化数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; git rev-list 3.0..3.2 --count</div><div class="line">1708</div></pre></td></tr></table></figure>
-<p>(2) 比较3.0和3.2文件变化统计<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; git diff 3.0..3.2 --shortstat</div><div class="line">比较3.0和3.2文件变化数</div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/06/1.Redis3.0与3.2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1676,7 +1674,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
