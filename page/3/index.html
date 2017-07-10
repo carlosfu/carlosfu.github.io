@@ -82,7 +82,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="carlosfu">
-<meta property="og:url" content="http://yoursite.com/archives/2016/05/index.html">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="carlosfu">
@@ -103,7 +103,7 @@
   };
 </script>
 
-  <title> 归档 | carlosfu </title>
+  <title> carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -134,7 +134,9 @@
     
   
 
-  <div class="container one-collumn sidebar-position-right  page-archive  ">
+  <div class="container one-collumn sidebar-position-right 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -211,251 +213,147 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
+  <section id="posts" class="posts-expand">
+    
+      
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  
+  
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 21 篇日志。 继续努力。
-    </span>
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
 
-      
-      
-      
-
-      
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/11/mysql问题-1/" itemprop="url">
+                  mysql问题-死锁问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-11T17:31:40+08:00" content="2016-05-11">
+              2016-05-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/11/mysql问题-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/11/mysql问题-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/11/mysql问题-1/" class="leancloud_visitors" data-flag-title="mysql问题-死锁问题">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
         </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
         
-            <a class="post-title-link" href="/2016/05/27/Redis 3.2/" itemprop="url">
-              
-                <span itemprop="name">分布式服务框架学习1-一个最简单的RPC服务</span>
-              
+          <h3 id="本文只给出现象和解决方法，并没有深度分析原因-mysql功力不够。"><a href="#本文只给出现象和解决方法，并没有深度分析原因-mysql功力不够。" class="headerlink" title="本文只给出现象和解决方法，并没有深度分析原因(mysql功力不够。)"></a>本文只给出现象和解决方法，并没有深度分析原因(mysql功力不够。)</h3><h4 id="一、表结构"><a href="#一、表结构" class="headerlink" title="一、表结构"></a>一、表结构</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `app_client_value_minute_stat` (</div><div class="line">  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT <span class="string">'id'</span>,</div><div class="line">  `app_id` bigint(20) NOT NULL COMMENT <span class="string">'应用id'</span>,</div><div class="line">  `collect_time` bigint(20) NOT NULL COMMENT <span class="string">'统计时间:格式yyyyMMddHHmm00'</span>,</div><div class="line">  `update_time` datetime NOT NULL COMMENT <span class="string">'创建时间'</span>,</div><div class="line">  `<span class="built_in">command</span>` varchar(20) NOT NULL COMMENT <span class="string">'命令'</span>,</div><div class="line">  `distribute_type` tinyint(4) NOT NULL COMMENT <span class="string">'值分布类型'</span>,</div><div class="line">  `count` int(11) NOT NULL COMMENT <span class="string">'调用次数'</span>,</div><div class="line">  PRIMARY KEY (`id`),</div><div class="line">  UNIQUE KEY `app_collect_command_dis` (`app_id`,`collect_time`,`<span class="built_in">command</span>`,`distribute_type`),</div><div class="line">  KEY `idx_collect_time` (`collect_time`)</div><div class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=<span class="string">'客户端每分钟值分布上报数据统计'</span>;</div></pre></td></tr></table></figure>
+<pre><code>注意：id是primary key, 四个列组成了unique_key
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/11/mysql问题-1/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
+          </div>
         
-      </h1>
+      
+    </div>
+    
+    <div>
+      
+    </div>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-27T13:19:50+08:00"
-              content="2016-05-27" >
-          05-27
-        </time>
-      </div>
+    <div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </article>
 
 
-
     
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/27/2017-06问题汇总/" itemprop="url">
-              
-                <span itemprop="name">HBase故障记录：由jstack引起的RegionServer宕机。</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-27T13:19:50+08:00"
-              content="2016-05-27" >
-          05-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="url">
-              
-                <span itemprop="name">分布式服务框架学习1-一个最简单的RPC服务</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-27T13:19:50+08:00"
-              content="2016-05-27" >
-          05-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/23/Redis从客户端请求到命令处理/" itemprop="url">
-              
-                <span itemprop="name">Redis源码学习一：客户端请求处理到命令执行</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-23T22:20:00+08:00"
-              content="2016-05-23" >
-          05-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/19/Hbase学习开启-看图理解HBase/" itemprop="url">
-              
-                <span itemprop="name">看图理解HBase</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-19T09:39:18+08:00"
-              content="2016-05-19" >
-          05-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/11/mysql问题-1/" itemprop="url">
-              
-                <span itemprop="name">mysql问题-死锁问题</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-11T17:31:40+08:00"
-              content="2016-05-11" >
-          05-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
   </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
 
 
 
@@ -652,12 +550,6 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
-
 
   
 

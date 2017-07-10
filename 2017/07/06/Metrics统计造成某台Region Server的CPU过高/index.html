@@ -80,19 +80,18 @@
 
 
 
-<meta name="description" content="1.整体架构">
+<meta name="description" content="一、现象该机器的RegionServer的CPU几乎吃满，造成负载过高。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud相关图">
-<meta property="og:url" content="http://yoursite.com/2016/06/06/Spring Cloud相关图/index.html">
+<meta property="og:title" content="Direct Memory OOM造成Region Server挂掉">
+<meta property="og:url" content="http://yoursite.com/2017/07/06/Metrics统计造成某台Region Server的CPU过高/index.html">
 <meta property="og:site_name" content="carlosfu">
-<meta property="og:description" content="1.整体架构">
-<meta property="og:image" content="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg">
-<meta property="og:image" content="http://i1.itc.cn/20170518/3084_86998369_7bfb_2117_9b08_f4588c711003_1.png">
-<meta property="og:updated_time" content="2017-05-18T02:20:27.000Z">
+<meta property="og:description" content="一、现象该机器的RegionServer的CPU几乎吃满，造成负载过高。">
+<meta property="og:image" content="http://i2.itc.cn/20170710/3084_15c1cfcd_0237_e418_113d_d836e60563ca_1.png">
+<meta property="og:updated_time" content="2017-07-10T01:41:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring Cloud相关图">
-<meta name="twitter:description" content="1.整体架构">
-<meta name="twitter:image" content="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg">
+<meta name="twitter:title" content="Direct Memory OOM造成Region Server挂掉">
+<meta name="twitter:description" content="一、现象该机器的RegionServer的CPU几乎吃满，造成负载过高。">
+<meta name="twitter:image" content="http://i2.itc.cn/20170710/3084_15c1cfcd_0237_e418_113d_d836e60563ca_1.png">
 
 
 
@@ -110,7 +109,7 @@
   };
 </script>
 
-  <title> Spring Cloud相关图 | carlosfu </title>
+  <title> Direct Memory OOM造成Region Server挂掉 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -240,7 +239,7 @@
             
             
               
-                Spring Cloud相关图
+                Direct Memory OOM造成Region Server挂掉
               
             
           </h1>
@@ -252,8 +251,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
+            <time itemprop="dateCreated" datetime="2017-07-06T12:20:00+08:00" content="2017-07-06">
+              2017-07-06
             </time>
           </span>
 
@@ -266,8 +265,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud</span>
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
                   </a>
                 </span>
 
@@ -282,8 +281,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/06/Spring Cloud相关图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/Spring Cloud相关图/" itemprop="commentsCount"></span>
+                <a href="/2017/07/06/Metrics统计造成某台Region Server的CPU过高/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/06/Metrics统计造成某台Region Server的CPU过高/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -293,7 +292,7 @@
 
           
           
-             <span id="/2016/06/06/Spring Cloud相关图/" class="leancloud_visitors" data-flag-title="Spring Cloud相关图">
+             <span id="/2017/07/06/Metrics统计造成某台Region Server的CPU过高/" class="leancloud_visitors" data-flag-title="Direct Memory OOM造成Region Server挂掉">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -315,9 +314,19 @@
       
 
       
-        <h3 id="1-整体架构"><a href="#1-整体架构" class="headerlink" title="1.整体架构"></a>1.整体架构</h3><p><img src="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg" alt=""></p>
+        <h3 id="一、现象"><a href="#一、现象" class="headerlink" title="一、现象"></a>一、现象</h3><p>该机器的RegionServer的CPU几乎吃满，造成负载过高。</p>
+<p><img src="http://i2.itc.cn/20170710/3084_15c1cfcd_0237_e418_113d_d836e60563ca_1.png" alt=""></p>
 <a id="more"></a>
-<h3 id="2-Eureka"><a href="#2-Eureka" class="headerlink" title="2. Eureka"></a>2. Eureka</h3><p><img src="http://i1.itc.cn/20170518/3084_86998369_7bfb_2117_9b08_f4588c711003_1.png" alt=""></p>
+<h3 id="二、定位"><a href="#二、定位" class="headerlink" title="二、定位"></a>二、定位</h3><p>通过top -H -p + jstack 组合，找到消耗CPU的TOP 20线程，发现大量是Metrics线程，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">tid: 20438 cpu: %57.4</div><div class="line">&quot;B.defaultRpcServer.handler=49,queue=1,port=16020&quot; daemon prio=10 tid=0x00007f28a7a12800 nid=0x4fd6 runnable [0x00007f2836a5d000]</div><div class="line">java.lang.Thread.State: RUNNABLE</div><div class="line">at java.lang.ThreadLocal$ThreadLocalMap.expungeStaleEntry(ThreadLocal.java:579)</div><div class="line">at java.lang.ThreadLocal$ThreadLocalMap.remove(ThreadLocal.java:461)</div><div class="line">at java.lang.ThreadLocal$ThreadLocalMap.access$200(ThreadLocal.java:261)</div><div class="line">at java.lang.ThreadLocal.remove(ThreadLocal.java:202)</div><div class="line">at java.util.concurrent.locks.ReentrantReadWriteLock$Sync.tryReleaseShared(ReentrantReadWriteLock.java:429)</div><div class="line">at java.util.concurrent.locks.AbstractQueuedSynchronizer.releaseShared(AbstractQueuedSynchronizer.java:1340)</div><div class="line">at java.util.concurrent.locks.ReentrantReadWriteLock$ReadLock.unlock(ReentrantReadWriteLock.java:883)</div><div class="line">at com.yammer.metrics.stats.ExponentiallyDecayingSample.unlockForRegularUsage(ExponentiallyDecayingSample.java:196)</div><div class="line">at com.yammer.metrics.stats.ExponentiallyDecayingSample.update(ExponentiallyDecayingSample.java:113)</div><div class="line">at com.yammer.metrics.stats.ExponentiallyDecayingSample.update(ExponentiallyDecayingSample.java:81)</div><div class="line">at org.apache.hadoop.metrics2.lib.MutableHistogram.add(MutableHistogram.java:81)</div><div class="line">at org.apache.hadoop.metrics2.lib.MutableRangeHistogram.add(MutableRangeHistogram.java:59)</div><div class="line">at org.apache.hadoop.hbase.regionserver.MetricsRegionServerSourceImpl.updatePut(MetricsRegionServerSourceImpl.java:98)</div><div class="line">at org.apache.hadoop.hbase.regionserver.MetricsRegionServer.updatePut(MetricsRegionServer.java:65)</div><div class="line">at org.apache.hadoop.hbase.regionserver.RSRpcServices.doBatchOp(RSRpcServices.java:791)</div><div class="line">at org.apache.hadoop.hbase.regionserver.RSRpcServices.doNonAtomicRegionMutation(RSRpcServices.java:717)</div><div class="line">at org.apache.hadoop.hbase.regionserver.RSRpcServices.multi(RSRpcServices.java:2146)</div><div class="line">at org.apache.hadoop.hbase.protobuf.generated.ClientProtos$ClientService$2.callBlockingMethod(ClientProtos.java:33656)</div><div class="line">at org.apache.hadoop.hbase.ipc.RpcServer.call(RpcServer.java:2178)</div></pre></td></tr></table></figure>
+<p>可以使用如下脚本，获取top N的线程:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">############################################################################</div><div class="line"># @desc: 统计top N消耗CPU的线程栈</div><div class="line"># @author: leifu</div><div class="line">###########################################################################</div><div class="line"></div><div class="line">if [ $# -eq 0 ];then</div><div class="line">    echo &quot;please enter java pid&quot;</div><div class="line">    exit -1</div><div class="line">fi</div><div class="line"></div><div class="line">jstack_cmd=&quot;&quot;</div><div class="line">if [[ $JAVA_HOME != &quot;&quot; ]]; then</div><div class="line">    jstack_cmd=&quot;$JAVA_HOME/bin/jstack&quot;</div><div class="line">else</div><div class="line">    r=`which jstack 2&gt;/dev/null`</div><div class="line">    if [[ $r != &quot;&quot; ]]; then</div><div class="line">        jstack_cmd=$r</div><div class="line">    else</div><div class="line">        echo &quot;can not find jstack&quot;</div><div class="line">        exit -2</div><div class="line">    fi</div><div class="line">fi</div><div class="line"></div><div class="line">pid=$1</div><div class="line">topN=$2</div><div class="line">now=$(date &quot;+%Y%m%d%H%M%S&quot;)</div><div class="line">jstackFile=jstack_$&#123;pid&#125;_$&#123;now&#125;.txt</div><div class="line">topFile=top_$&#123;pid&#125;_$&#123;now&#125;.txt</div><div class="line">resultFile=result_$&#123;pid&#125;_$&#123;now&#125;.txt</div><div class="line">#jstack到本地</div><div class="line">jstack $pid &gt; $&#123;jstackFile&#125;</div><div class="line">#top -H -p 按照cpu消耗倒排将线程到本地</div><div class="line">top -H -b -n 1 -p $pid | sed &apos;1,/^$/d&apos; | sed &apos;1d;/^$/d&apos; | grep -v $pid | sort -nrk9 | head -$&#123;topN&#125; &gt; $&#123;topFile&#125;</div><div class="line">#从jstack中找到对应线程信息</div><div class="line">cat $&#123;topFile&#125; | while read line</div><div class="line">do</div><div class="line">    echo &quot;$line&quot; | awk &apos;&#123;print &quot;tid: &quot;$1,&quot; cpu: %&quot;$9&#125;&apos; &gt;&gt; $&#123;resultFile&#125;</div><div class="line">    tid_0x=`printf &quot;%0x&quot; $(echo &quot;$line&quot; | awk &apos;&#123;print $1&#125;&apos;)`</div><div class="line">    cat $&#123;jstackFile&#125; | grep $tid_0x -A20 | sed -n &apos;1,/^$/p&apos; &gt;&gt; $&#123;resultFile&#125;</div><div class="line">done</div><div class="line">#备份jstack和top信息</div><div class="line">mkdir -p backup</div><div class="line">mv $&#123;jstackFile&#125; backup/</div><div class="line">mv $&#123;topFile&#125; backup/</div></pre></td></tr></table></figure>
+<p>使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh jstack_top_cpu.sh $&#123;pid&#125; $&#123;top&#125;</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">backup文件夹包含jstack和top cpu thread。</div><div class="line">result_$&#123;timestamp&#125;是topN线程结果。</div></pre></td></tr></table></figure>
+<h3 id="三、临时解决"><a href="#三、临时解决" class="headerlink" title="三、临时解决"></a>三、临时解决</h3><p>重启后恢复。</p>
+<h3 id="四、真实原因"><a href="#四、真实原因" class="headerlink" title="四、真实原因"></a>四、真实原因</h3><p>抓取到线程CPU消耗在metrics.updatePut方法，内部采有JDK的ReentrantReadWriteLock实现，出现问题概率不高，可能是表象。貌似是hbase的一个bug，已经进行了修复。<a href="https://issues.apache.org/jira/browse/HBASE-15222" target="_blank" rel="external">https://issues.apache.org/jira/browse/HBASE-15222</a></p>
 
       
     </div>
@@ -341,17 +350,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/01/Netty学习1-BIO的阻塞分析/" rel="next" title="Netty学习1-BIO的阻塞分析">
-                <i class="fa fa-chevron-left"></i> Netty学习1-BIO的阻塞分析
+              <a href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/" rel="next" title="Direct Memory OOM造成Region Server挂掉">
+                <i class="fa fa-chevron-left"></i> Direct Memory OOM造成Region Server挂掉
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/06/06/1.Redis3.0与3.2/" rel="prev" title="Redis 3.2.0 new-1.对比3.0">
-                Redis 3.2.0 new-1.对比3.0 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -377,8 +382,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/06/Spring Cloud相关图/"
-           data-title="Spring Cloud相关图" data-url="http://yoursite.com/2016/06/06/Spring Cloud相关图/">
+      <div class="ds-thread" data-thread-key="2017/07/06/Metrics统计造成某台Region Server的CPU过高/"
+           data-title="Direct Memory OOM造成Region Server挂掉" data-url="http://yoursite.com/2017/07/06/Metrics统计造成某台Region Server的CPU过高/">
       </div>
     
   </div>
@@ -491,7 +496,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-整体架构"><span class="nav-number">1.</span> <span class="nav-text">1.整体架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Eureka"><span class="nav-number">2.</span> <span class="nav-text">2. Eureka</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、现象"><span class="nav-number">1.</span> <span class="nav-text">一、现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、定位"><span class="nav-number">2.</span> <span class="nav-text">二、定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、临时解决"><span class="nav-number">3.</span> <span class="nav-text">三、临时解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、真实原因"><span class="nav-number">4.</span> <span class="nav-text">四、真实原因</span></a></li></ol></div>
             
           </div>
         </section>
