@@ -80,19 +80,16 @@
 
 
 
-<meta name="description" content="1.整体架构">
+<meta name="description" content="一、作用由于某些原因，Java进程需要快速重启或者直接kill -9，但为了便于后期的问题分析和定位，有必要保存当前机器以及进程的各种状态现场。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud相关图">
-<meta property="og:url" content="http://yoursite.com/2016/06/06/Spring Cloud相关图/index.html">
+<meta property="og:title" content="常用脚本-2.保存java进程相关现场">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/常用脚本-2.保存java进程相关现场/index.html">
 <meta property="og:site_name" content="carlosfu">
-<meta property="og:description" content="1.整体架构">
-<meta property="og:image" content="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg">
-<meta property="og:image" content="http://i1.itc.cn/20170518/3084_86998369_7bfb_2117_9b08_f4588c711003_1.png">
-<meta property="og:updated_time" content="2017-05-18T02:20:27.000Z">
+<meta property="og:description" content="一、作用由于某些原因，Java进程需要快速重启或者直接kill -9，但为了便于后期的问题分析和定位，有必要保存当前机器以及进程的各种状态现场。">
+<meta property="og:updated_time" content="2017-07-12T06:16:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring Cloud相关图">
-<meta name="twitter:description" content="1.整体架构">
-<meta name="twitter:image" content="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg">
+<meta name="twitter:title" content="常用脚本-2.保存java进程相关现场">
+<meta name="twitter:description" content="一、作用由于某些原因，Java进程需要快速重启或者直接kill -9，但为了便于后期的问题分析和定位，有必要保存当前机器以及进程的各种状态现场。">
 
 
 
@@ -110,7 +107,7 @@
   };
 </script>
 
-  <title> Spring Cloud相关图 | carlosfu </title>
+  <title> 常用脚本-2.保存java进程相关现场 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -240,7 +237,7 @@
             
             
               
-                Spring Cloud相关图
+                常用脚本-2.保存java进程相关现场
               
             
           </h1>
@@ -252,8 +249,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
+            <time itemprop="dateCreated" datetime="2017-07-12T14:20:00+08:00" content="2017-07-12">
+              2017-07-12
             </time>
           </span>
 
@@ -266,8 +263,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud</span>
+                  <a href="/categories/脚本/" itemprop="url" rel="index">
+                    <span itemprop="name">脚本</span>
                   </a>
                 </span>
 
@@ -282,8 +279,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/06/Spring Cloud相关图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/Spring Cloud相关图/" itemprop="commentsCount"></span>
+                <a href="/2017/07/12/常用脚本-2.保存java进程相关现场/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/12/常用脚本-2.保存java进程相关现场/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -293,7 +290,7 @@
 
           
           
-             <span id="/2016/06/06/Spring Cloud相关图/" class="leancloud_visitors" data-flag-title="Spring Cloud相关图">
+             <span id="/2017/07/12/常用脚本-2.保存java进程相关现场/" class="leancloud_visitors" data-flag-title="常用脚本-2.保存java进程相关现场">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -315,9 +312,11 @@
       
 
       
-        <h3 id="1-整体架构"><a href="#1-整体架构" class="headerlink" title="1.整体架构"></a>1.整体架构</h3><p><img src="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg" alt=""></p>
+        <h3 id="一、作用"><a href="#一、作用" class="headerlink" title="一、作用"></a>一、作用</h3><p>由于某些原因，Java进程需要快速重启或者直接kill -9，但为了便于后期的问题分析和定位，有必要保存当前机器以及进程的各种状态现场。</p>
 <a id="more"></a>
-<h3 id="2-Eureka"><a href="#2-Eureka" class="headerlink" title="2. Eureka"></a>2. Eureka</h3><p><img src="http://i1.itc.cn/20170518/3084_86998369_7bfb_2117_9b08_f4588c711003_1.png" alt=""></p>
+<h3 id="二、使用方法"><a href="#二、使用方法" class="headerlink" title="二、使用方法"></a>二、使用方法</h3><h4 id="1-代码"><a href="#1-代码" class="headerlink" title="1. 代码"></a>1. 代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">cd `dirname $0`</div><div class="line">PID=$1</div><div class="line">BIN_DIR=`pwd`</div><div class="line">cd $BIN_DIR</div><div class="line">DUMP_DIR=./</div><div class="line">DUMP_DATE=`date +%Y%m%d%H%M%S`</div><div class="line">DATE_DIR=$DUMP_DIR/$DUMP_DATE</div><div class="line">if [ ! -d $DATE_DIR ]; then</div><div class="line">	mkdir $DATE_DIR</div><div class="line">fi</div><div class="line"></div><div class="line">echo -e &quot;Dumping the jdump ...\c&quot;</div><div class="line">jstack $PID &gt; $DATE_DIR/jstack-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">jinfo $PID &gt; $DATE_DIR/jinfo-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">jstat -gcutil $PID &gt; $DATE_DIR/jstat-gcutil-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">jstat -gccapacity $PID &gt; $DATE_DIR/jstat-gccapacity-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">jmap $PID &gt; $DATE_DIR/jmap-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">jmap -heap $PID &gt; $DATE_DIR/jmap-heap-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">jmap -histo $PID &gt; $DATE_DIR/jmap-histo-$PID.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">if [ -r /usr/sbin/lsof ]; then</div><div class="line">/usr/sbin/lsof -p $PID &gt; $DATE_DIR/lsof-$PID.dump</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line"></div><div class="line">if [ -r /bin/netstat ]; then</div><div class="line">/bin/netstat -an &gt; $DATE_DIR/netstat.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line">if [ -r /usr/bin/iostat ]; then</div><div class="line">/usr/bin/iostat &gt; $DATE_DIR/iostat.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line">if [ -r /usr/bin/mpstat ]; then</div><div class="line">/usr/bin/mpstat -P ALL &gt; $DATE_DIR/mpstat.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line">if [ -r /usr/bin/vmstat ]; then</div><div class="line">/usr/bin/vmstat &gt; $DATE_DIR/vmstat.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line">if [ -r /usr/bin/free ]; then</div><div class="line">/usr/bin/free -t &gt; $DATE_DIR/free.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line">if [ -r /usr/bin/sar ]; then</div><div class="line">/usr/bin/sar &gt; $DATE_DIR/sar.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line">if [ -r /usr/bin/uptime ]; then</div><div class="line">/usr/bin/uptime &gt; $DATE_DIR/uptime.dump 2&gt;&amp;1</div><div class="line">echo -e &quot;.\c&quot;</div><div class="line">fi</div><div class="line"></div><div class="line">echo &quot;OK!&quot;</div><div class="line">echo &quot;DUMP: $DATE_DIR&quot;</div></pre></td></tr></table></figure>
+<h4 id="2-使用"><a href="#2-使用" class="headerlink" title="2. 使用"></a>2. 使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh jdump.sh $&#123;pid&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-返回结果"><a href="#3-返回结果" class="headerlink" title="3. 返回结果"></a>3. 返回结果</h4><p>(1) jstack、jinfo、jmap(heap、histo)、jstat等。<br>(2) lsof、sar、free、vmstat、netstat、uptime等。</p>
 
       
     </div>
@@ -341,17 +340,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/01/Netty学习1-BIO的阻塞分析/" rel="next" title="Netty学习1-BIO的阻塞分析">
-                <i class="fa fa-chevron-left"></i> Netty学习1-BIO的阻塞分析
+              <a href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" rel="next" title="常用脚本-1.计算java进程cpu消耗topN">
+                <i class="fa fa-chevron-left"></i> 常用脚本-1.计算java进程cpu消耗topN
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/06/06/1.Redis3.0与3.2/" rel="prev" title="Redis 3.2.0 new-1.对比3.0">
-                Redis 3.2.0 new-1.对比3.0 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -377,8 +372,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/06/Spring Cloud相关图/"
-           data-title="Spring Cloud相关图" data-url="http://yoursite.com/2016/06/06/Spring Cloud相关图/">
+      <div class="ds-thread" data-thread-key="2017/07/12/常用脚本-2.保存java进程相关现场/"
+           data-title="常用脚本-2.保存java进程相关现场" data-url="http://yoursite.com/2017/07/12/常用脚本-2.保存java进程相关现场/">
       </div>
     
   </div>
@@ -491,7 +486,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-整体架构"><span class="nav-number">1.</span> <span class="nav-text">1.整体架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Eureka"><span class="nav-number">2.</span> <span class="nav-text">2. Eureka</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、作用"><span class="nav-number">1.</span> <span class="nav-text">一、作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用方法"><span class="nav-number">2.</span> <span class="nav-text">二、使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-代码"><span class="nav-number">2.1.</span> <span class="nav-text">1. 代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-使用"><span class="nav-number">2.2.</span> <span class="nav-text">2. 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-返回结果"><span class="nav-number">2.3.</span> <span class="nav-text">3. 返回结果</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
