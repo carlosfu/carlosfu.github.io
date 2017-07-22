@@ -1,0 +1,767 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一.获取redis-pyRedis官网提供了很多python语言的客户端(http://redis.io/clients#python)，但最被广泛认可的客户端是redis-py。redis-py需要python 2.7以上版本，有关python的安装本书不会介绍，因为作为使用python语言的开发者来说这个无需介绍，主要来看一下如何获取安装redis-py，安装redis-py有三种方法： 第一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis-py使用入门(1)">
+<meta property="og:url" content="http://yoursite.com/2016/05/23/redis-py使用入门(1)/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="一.获取redis-pyRedis官网提供了很多python语言的客户端(http://redis.io/clients#python)，但最被广泛认可的客户端是redis-py。redis-py需要python 2.7以上版本，有关python的安装本书不会介绍，因为作为使用python语言的开发者来说这个无需介绍，主要来看一下如何获取安装redis-py，安装redis-py有三种方法： 第一">
+<meta property="og:updated_time" content="2017-07-22T07:48:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis-py使用入门(1)">
+<meta name="twitter:description" content="一.获取redis-pyRedis官网提供了很多python语言的客户端(http://redis.io/clients#python)，但最被广泛认可的客户端是redis-py。redis-py需要python 2.7以上版本，有关python的安装本书不会介绍，因为作为使用python语言的开发者来说这个无需介绍，主要来看一下如何获取安装redis-py，安装redis-py有三种方法： 第一">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> redis-py使用入门(1) | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                redis-py使用入门(1)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-23T21:20:00+08:00" content="2016-05-23">
+              2016-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/23/redis-py使用入门(1)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/redis-py使用入门(1)/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/23/redis-py使用入门(1)/" class="leancloud_visitors" data-flag-title="redis-py使用入门(1)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一-获取redis-py"><a href="#一-获取redis-py" class="headerlink" title="一.获取redis-py"></a>一.获取redis-py</h3><p>Redis官网提供了很多python语言的客户端(<a href="http://redis.io/clients#python)，但最被广泛认可的客户端是redis-py。redis-py需要python" target="_blank" rel="external">http://redis.io/clients#python)，但最被广泛认可的客户端是redis-py。redis-py需要python</a> 2.7以上版本，有关python的安装本书不会介绍，因为作为使用python语言的开发者来说这个无需介绍，主要来看一下如何获取安装redis-py，安装redis-py有<br>三种方法：</p>
+<p>第一：使用pip进行安装(推荐)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install redis</div></pre></td></tr></table></figure>
+<p>第二：使用easy_install进行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">easy_install redis</div></pre></td></tr></table></figure>
+<p>第三：使用源码安装(以2.10.5版本为例子)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/andymccurdy/redis-py/archive/2.10.5.zip</div><div class="line">unzip redis-2.10.5.zip</div><div class="line">cd redis-2.10.5</div><div class="line">python setup.py install</div></pre></td></tr></table></figure>
+<h3 id="二-redis-py的基本使用"><a href="#二-redis-py的基本使用" class="headerlink" title="二.redis-py的基本使用"></a>二.redis-py的基本使用</h3><p>redis-py的使用方法也比较简单，我们逐步骤介绍：</p>
+<h4 id="1-导入依赖库"><a href="#1-导入依赖库" class="headerlink" title="1.导入依赖库"></a>1.导入依赖库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import redis</div></pre></td></tr></table></figure>
+<h4 id="2-生成客户端连接："><a href="#2-生成客户端连接：" class="headerlink" title="2.生成客户端连接："></a>2.生成客户端连接：</h4><p>需要Redis的节点IP和端口两个参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">client = redis.StrictRedis(host=&apos;127.0.0.1&apos;, port=6379)</div></pre></td></tr></table></figure>
+<h4 id="3-执行命令"><a href="#3-执行命令" class="headerlink" title="3.执行命令"></a>3.执行命令</h4><p>redis-py的API保留了Redis API的原始风格，所以使用起来不会有不习惯的感觉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">client.set(key, &quot;python-redis&quot;)</div><div class="line">client.get(key)</div></pre></td></tr></table></figure>
+<p>整个实例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import redis</div><div class="line">client = redis.StrictRedis(host=&apos;127.0.0.1&apos;, port=6379)</div><div class="line">key = &quot;hello&quot;</div><div class="line">setResult = client.set(key, &quot;python-redis&quot;)</div><div class="line">print setResult</div><div class="line">value = client.get(key)  </div><div class="line">print &quot;key:&quot; + key + &quot;, value:&quot; + value</div></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">True</div><div class="line">key:hello, value:python-redis</div></pre></td></tr></table></figure>
+<p>下面代码给出redis-py操作Redis五种数据结构的示例，输出结果写在了注释中：</p>
+<h5 id="1-string"><a href="#1-string" class="headerlink" title="(1).string"></a>(1).string</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#输出结果：True</div><div class="line">client.set(&quot;hello&quot;,&quot;world&quot;)</div><div class="line">#输出结果：world</div><div class="line">client.get(&quot;hello&quot;)</div><div class="line">#输出结果：1</div><div class="line">client.incr(&quot;counter&quot;)</div></pre></td></tr></table></figure>
+<h5 id="2-hash"><a href="#2-hash" class="headerlink" title="(2).hash"></a>(2).hash</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">client.hset(&quot;myhash&quot;,&quot;f1&quot;,&quot;v1&quot;)</div><div class="line">client.hset(&quot;myhash&quot;,&quot;f2&quot;,&quot;v2&quot;)</div><div class="line">#输出结果：&#123;&apos;f1&apos;: &apos;v1&apos;, &apos;f2&apos;: &apos;v2&apos;&#125;</div><div class="line">client.hgetall(&quot;myhash&quot;)</div></pre></td></tr></table></figure>
+<h5 id="3-list"><a href="#3-list" class="headerlink" title="(3).list"></a>(3).list</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">client.rpush(&quot;mylist&quot;,&quot;1&quot;)</div><div class="line">client.rpush(&quot;mylist&quot;,&quot;2&quot;)</div><div class="line">client.rpush(&quot;mylist&quot;,&quot;3&quot;)</div><div class="line">#输出结果：[&apos;1&apos;, &apos;2&apos;, &apos;3&apos;]</div><div class="line">client.lrange(&quot;mylist&quot;, 0, -1)</div></pre></td></tr></table></figure>
+<h5 id="4-set"><a href="#4-set" class="headerlink" title="(4).set"></a>(4).set</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">client.sadd(&quot;myset&quot;,&quot;a&quot;)</div><div class="line">client.sadd(&quot;myset&quot;,&quot;b&quot;)</div><div class="line">client.sadd(&quot;myset&quot;,&quot;a&quot;)</div><div class="line">#输出结果：set([&apos;a&apos;, &apos;b&apos;])</div><div class="line">client.smembers(&quot;myset&quot;)</div><div class="line">``` </div><div class="line"> </div><div class="line"> </div><div class="line">##### (5).zset</div></pre></td></tr></table></figure>
+<p>client.zadd(“myzset”,”99”,”tom”)<br>client.zadd(“myzset”,”66”,”peter”)<br>client.zadd(“myzset”,”33”,”james”)</p>
+<p>#输出结果：[(‘james’, 33.0), (‘peter’, 66.0), (‘tom’, 99.0)]<br>client.zrange(“myzset”, 0, -1, withscores=True)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">#### 3 redis-py中pipeline使用</div><div class="line"></div><div class="line">redis-py支持Redis的pipeline功能，下面将用一个简单的示例进行说明：</div><div class="line"></div><div class="line">(1).引入依赖，生成客户端连接</div></pre></td></tr></table></figure></p>
+<p>import redis<br>client = redis.StrictRedis(host=’127.0.0.1’, port=6379)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">(2). 生成pipeline：注意client.pipeline包含了一个参数，如果transaction=False代表不使用事务。</div></pre></td></tr></table></figure></p>
+<p>pipeline = client.pipeline(transaction=False)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">(3). 将命令封装到pipeline中，此时命令并没有真正执行</div></pre></td></tr></table></figure></p>
+<p>pipeline.set(“hello”,”world”)<br>pipeline.incr(“counter”)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">(4). 执行pipeline</div></pre></td></tr></table></figure></p>
+<p>#[True, 3]<br>result = pipeline.execute()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">我们将用redis-py的pipeline功能来mdel的功能</div></pre></td></tr></table></figure></p>
+<p>import redis<br>def mdel( keys ):<br>   client = redis.StrictRedis(host=’127.0.0.1’, port=6379)<br>   pipeline = client.pipeline(transaction=False)<br>   for key in keys:<br>     print pipeline.delete(key)<br>   return pipeline.execute();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line">#### 4. redis-py中的lua脚本使用</div><div class="line"></div><div class="line">redis-py中执行lua脚本和redis-cli十分类似，redis-py提供了三个重要的函数实现lua脚本的执行。</div></pre></td></tr></table></figure></p>
+<p>eval(String script, int keyCount, String… params)<br>script_load(String script)<br>evalsha(String sha1, int keyCount, String… params)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### (1). eval函数有三个参数，分别是</div></pre></td></tr></table></figure></p>
+<p>script: lua脚本内容<br>keyCount: key的个数<br>params: 相关参数KEYS和ARGV<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">以一个最简单的lua脚本为例子进行说明: get key</div></pre></td></tr></table></figure></p>
+<p>return redis.call(‘get’,KEYS[1])<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">在redis-py中执行，方法如下：</div></pre></td></tr></table></figure></p>
+<p>import redis<br>client = redis.StrictRedis(host=’127.0.0.1’, port=6379)<br>script = “return redis.call(‘get’,KEYS[1])”</p>
+<p>#输出结果为world<br>print client.eval(script,1,”hello”)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line"> </div><div class="line">##### (2) scriptLoad和evalsha函数         </div><div class="line"></div><div class="line">script_load和evalsha函数要一起使用，首先使用script_load将脚本加载到Redis中，代码如下</div></pre></td></tr></table></figure></p>
+<p>scriptSha = client.script_load(script)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">evalsha函数用来执行脚本的哈希值，它需要三个参数</div></pre></td></tr></table></figure></p>
+<p>scriptSha：脚本的哈希值，就是scriptLoad的结果。<br>keyCount: key的个数<br>params: 相关参数KEYS和ARGV<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">执行效果如下：</div></pre></td></tr></table></figure></p>
+<p>print jedis.evalsha(scriptSha, 1, “hello”);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">整个完整代码:</div></pre></td></tr></table></figure></p>
+<p>import redis<br>client = redis.StrictRedis(host=’127.0.0.1’, port=6379)<br>script = “return redis.call(‘get’,KEYS[1])”<br>scriptSha = client.script_load(script)<br>print client.evalsha(scriptSha, 1, “hello”);<br>```</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/19/Hbase学习开启-看图理解HBase/" rel="next" title="看图理解HBase">
+                <i class="fa fa-chevron-left"></i> 看图理解HBase
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/23/Redis从客户端请求到命令处理/" rel="prev" title="Redis源码学习一：客户端请求处理到命令执行">
+                Redis源码学习一：客户端请求处理到命令执行 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/23/redis-py使用入门(1)/"
+           data-title="redis-py使用入门(1)" data-url="http://yoursite.com/2016/05/23/redis-py使用入门(1)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-获取redis-py"><span class="nav-number">1.</span> <span class="nav-text">一.获取redis-py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-redis-py的基本使用"><span class="nav-number">2.</span> <span class="nav-text">二.redis-py的基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-导入依赖库"><span class="nav-number">2.1.</span> <span class="nav-text">1.导入依赖库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-生成客户端连接："><span class="nav-number">2.2.</span> <span class="nav-text">2.生成客户端连接：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-执行命令"><span class="nav-number">2.3.</span> <span class="nav-text">3.执行命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-string"><span class="nav-number">2.3.1.</span> <span class="nav-text">(1).string</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-hash"><span class="nav-number">2.3.2.</span> <span class="nav-text">(2).hash</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-list"><span class="nav-number">2.3.3.</span> <span class="nav-text">(3).list</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-set"><span class="nav-number">2.3.4.</span> <span class="nav-text">(4).set</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
