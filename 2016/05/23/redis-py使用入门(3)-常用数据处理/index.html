@@ -80,19 +80,16 @@
 
 
 
-<meta name="description" content="1.整体架构">
+<meta name="description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  12345678910111213def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.Strict">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud相关图">
-<meta property="og:url" content="http://yoursite.com/2016/06/06/Spring Cloud相关图/index.html">
+<meta property="og:title" content="redis-py使用入门(3)-常用数据处理">
+<meta property="og:url" content="http://yoursite.com/2016/05/23/redis-py使用入门(3)-常用数据处理/index.html">
 <meta property="og:site_name" content="carlosfu">
-<meta property="og:description" content="1.整体架构">
-<meta property="og:image" content="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg">
-<meta property="og:image" content="http://i1.itc.cn/20170518/3084_86998369_7bfb_2117_9b08_f4588c711003_1.png">
-<meta property="og:updated_time" content="2017-05-18T02:20:27.000Z">
+<meta property="og:description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  12345678910111213def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.Strict">
+<meta property="og:updated_time" content="2017-07-24T10:13:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring Cloud相关图">
-<meta name="twitter:description" content="1.整体架构">
-<meta name="twitter:image" content="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg">
+<meta name="twitter:title" content="redis-py使用入门(3)-常用数据处理">
+<meta name="twitter:description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  12345678910111213def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.Strict">
 
 
 
@@ -110,7 +107,7 @@
   };
 </script>
 
-  <title> Spring Cloud相关图 | carlosfu </title>
+  <title> redis-py使用入门(3)-常用数据处理 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -240,7 +237,7 @@
             
             
               
-                Spring Cloud相关图
+                redis-py使用入门(3)-常用数据处理
               
             
           </h1>
@@ -252,8 +249,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
+            <time itemprop="dateCreated" datetime="2016-05-23T21:20:00+08:00" content="2016-05-23">
+              2016-05-23
             </time>
           </span>
 
@@ -266,8 +263,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -282,8 +279,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/06/Spring Cloud相关图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/Spring Cloud相关图/" itemprop="commentsCount"></span>
+                <a href="/2016/05/23/redis-py使用入门(3)-常用数据处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/redis-py使用入门(3)-常用数据处理/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -293,7 +290,7 @@
 
           
           
-             <span id="/2016/06/06/Spring Cloud相关图/" class="leancloud_visitors" data-flag-title="Spring Cloud相关图">
+             <span id="/2016/05/23/redis-py使用入门(3)-常用数据处理/" class="leancloud_visitors" data-flag-title="redis-py使用入门(3)-常用数据处理">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -315,9 +312,43 @@
       
 
       
-        <h3 id="1-整体架构"><a href="#1-整体架构" class="headerlink" title="1.整体架构"></a>1.整体架构</h3><p><img src="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg" alt=""></p>
-<a id="more"></a>
-<h3 id="2-Eureka"><a href="#2-Eureka" class="headerlink" title="2. Eureka"></a>2. Eureka</h3><p><img src="http://i1.itc.cn/20170518/3084_86998369_7bfb_2117_9b08_f4588c711003_1.png" alt=""></p>
+        <p>主要引入如下模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import redis</div><div class="line">import rediscluster</div></pre></td></tr></table></figure></p>
+<h3 id="一-删除指定模式的key"><a href="#一-删除指定模式的key" class="headerlink" title="一.删除指定模式的key"></a>一.删除指定模式的key</h3><h4 id="1-单个节点"><a href="#1-单个节点" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + pipeline + del(每次扫描100个) </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def delInstancePatternKeys(host, port, pattern, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=pattern, count=100)</div><div class="line">        if len(keys) &gt; 0:</div><div class="line">            for key in keys:</div><div class="line">                pipeline.delete(key)</div><div class="line">            pipeline.execute()</div><div class="line">        if cursor == 0:</div><div class="line">            break</div><div class="line">``` </div><div class="line">例如删除127.0.0.1:6380中以video开头的key，可以执行如下</div></pre></td></tr></table></figure>
+<p>delInstancePatternKeys(“127.0.0.1”,6380,”video*”)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#### 2.集群</div><div class="line"></div><div class="line">借助cluster nodes获取所有master节点，执行上面的函数：</div></pre></td></tr></table></figure></p>
+<p>def delClusterPatternKey(startupNodes, pattern):<br>    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)<br>    clusterInfos = clusterClient.cluster_nodes()<br>    for clusternode in clusterInfos:<br>        slots = clusternode[“slots”]</p>
+<pre><code># only check master
+if len(slots) &gt; 0:
+    print &quot;{tempHost}:{tempPort} start to del pattern keys&quot;.format(tempHost=clusternode[&quot;host&quot;],
+                                                               tempPort=clusternode[&quot;port&quot;])
+    delInstancePatternKeys(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], pattern)
+    print &quot;{tempHost}:{tempPort} end to del pattern keys&quot;.format(tempHost=clusternode[&quot;host&quot;],
+                                                             tempPort=clusternode[&quot;port&quot;])
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</div></pre></td></tr></table></figure>
+<p>startupNodes = [{“host”:”127.0.0.1”,”port”:7000}]<br>delClusterPatternKey(startupNodes, “video*”)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 二.寻找bigkey</div><div class="line"></div><div class="line">#### 1.单个节点</div><div class="line"></div><div class="line">使用scan + strlen(字符串) | debug object(非字符串)找到字节数在startBytes与endBytes之间的key</div></pre></td></tr></table></figure></p>
+<p>def findInstanceBigKey(host, port, startBytes, endBytes, password=None):<br>    client = redis.StrictRedis(host=host, port=port, password=password)<br>    while True:<br>        cursor, keys = client.scan(cursor=0, match=None, count=100)<br>        for key in keys:<br>            try:<br>                keyType = client.type(key)<br>                if “string” == keyType.lower():<br>                    strlen = client.strlen(key)<br>                    if (strlen &gt; startBytes and strlen &lt; endBytes):<br>                        print “{key} strlen is {strlen} byte”.format(key=key, strlen=strlen)<br>                else:<br>                    keyObjectDict = client.debug_object(key)<br>                    serializedlength = keyObjectDict[“serializedlength”]<br>                    if (serializedlength &gt; startBytes and serializedlength &lt; endBytes):<br>                        print “{key} serializedlength is {serializedlength} byte”.format(key=key,<br>                                                                                         serializedlength=serializedlength)<br>            except Exception, ex:<br>                print ex<br>        if cursor == 0:<br>            break</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">例如寻找127.0.0.1:6380中10KB~20KB(大约)的key，可以执行如下:</div></pre></td></tr></table></figure>
+<p>findInstanceBigKey(“127.0.0.1”,6380,10000,20000)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#### 2.集群</div></pre></td></tr></table></figure></p>
+<p>def findClusterBigKey(startupNodes, startBytes, endBytes):<br>    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)<br>    clusterInfos = clusterClient.cluster_nodes()<br>    for clusternode in clusterInfos:<br>        slots = clusternode[“slots”]</p>
+<pre><code># only check master
+if len(slots) &gt; 0:
+    print &quot;{tempHost}:{tempPort} start to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],
+                                                            tempPort=clusternode[&quot;port&quot;])
+    findInstanceBigKey(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], startBytes, endBytes)
+    print &quot;{tempHost}:{tempPort} end to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],
+                                                            tempPort=clusternode[&quot;port&quot;])
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</div></pre></td></tr></table></figure>
+<p>startupNodes = [{“host”:”127.0.0.1”,”port”:7000}]<br>findClusterBigKey(startupNodes, 10000, 20000)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 三.空闲key</div><div class="line"></div><div class="line">#### 1.单个节点</div><div class="line"></div><div class="line">scan + debug object找到出空闲时间大于idleDays(单位：天)的key</div></pre></td></tr></table></figure></p>
+<p>def findInstanceIdleKeys(host, port, idleDays, password=None):<br>    client = redis.StrictRedis(host=host, port=port, password=password)<br>    while True:<br>        cursor, keys = client.scan(cursor=0, match=None, count=100)<br>        if len(keys) &gt; 0:<br>            for key in keys:<br>                keyObjectDict = client.debug_object(key)<br>                lruSecondsIdle = keyObjectDict[“lru_seconds_idle”]<br>                if lruSecondsIdle &gt; idleDays <em> 3600 </em>24:<br>                    print “{key} idle days is {lruSecondsIdle}”.format(key=key, lruSecondsIdle=lruSecondsIdle/24/3600)<br>        if cursor == 0:<br>            break<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#### 2.集群</div></pre></td></tr></table></figure></p>
+<p>def findClusterIdleKeys(startupNodes, idleDays):<br>    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)<br>    clusterInfos = clusterClient.cluster_nodes()<br>    for clusternode in clusterInfos:<br>        slots = clusternode[“slots”]</p>
+<pre><code># only check master
+if len(slots) &gt; 0:
+    print &quot;{tempHost}:{tempPort} start to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],
+                                                               tempPort=clusternode[&quot;port&quot;])
+    findInstanceIdleKeys(host, port, idleDays)
+    print &quot;{tempHost}:{tempPort} end to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],
+                                                             tempPort=clusternode[&quot;port&quot;])
+</code></pre><p>```</p>
 
       
     </div>
@@ -341,16 +372,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/06/1.Redis3.0与3.2/" rel="next" title="Redis 3.2.0 new-1.对比3.0">
-                <i class="fa fa-chevron-left"></i> Redis 3.2.0 new-1.对比3.0
+              <a href="/2016/05/19/Hbase学习开启-看图理解HBase/" rel="next" title="看图理解HBase">
+                <i class="fa fa-chevron-left"></i> 看图理解HBase
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/14/jvm学习之-jmap/" rel="prev" title="jvm学习之-jmap">
-                jvm学习之-jmap <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/23/redis-py使用入门(1)/" rel="prev" title="redis-py使用入门(1)">
+                redis-py使用入门(1) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -377,8 +408,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/06/Spring Cloud相关图/"
-           data-title="Spring Cloud相关图" data-url="http://yoursite.com/2016/06/06/Spring Cloud相关图/">
+      <div class="ds-thread" data-thread-key="2016/05/23/redis-py使用入门(3)-常用数据处理/"
+           data-title="redis-py使用入门(3)-常用数据处理" data-url="http://yoursite.com/2016/05/23/redis-py使用入门(3)-常用数据处理/">
       </div>
     
   </div>
@@ -491,7 +522,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-整体架构"><span class="nav-number">1.</span> <span class="nav-text">1.整体架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Eureka"><span class="nav-number">2.</span> <span class="nav-text">2. Eureka</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-删除指定模式的key"><span class="nav-number">1.</span> <span class="nav-text">一.删除指定模式的key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点"><span class="nav-number">1.1.</span> <span class="nav-text">1.单个节点</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
