@@ -373,6 +373,315 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/25/redis-py使用(3)-常用数据处理/" itemprop="url">
+                  redis-py使用入门(3)-常用数据处理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-25T21:20:00+08:00" content="2016-05-25">
+              2016-05-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/25/redis-py使用(3)-常用数据处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/25/redis-py使用(3)-常用数据处理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/25/redis-py使用(3)-常用数据处理/" class="leancloud_visitors" data-flag-title="redis-py使用入门(3)-常用数据处理">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主要引入如下模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import redis</div><div class="line">import rediscluster</div></pre></td></tr></table></figure></p>
+<h3 id="一-删除指定模式的key"><a href="#一-删除指定模式的key" class="headerlink" title="一.删除指定模式的key"></a>一.删除指定模式的key</h3><h4 id="1-单个节点"><a href="#1-单个节点" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + pipeline + del(每次扫描100个) </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def delInstancePatternKeys(host, port, pattern, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=pattern, count=100)</div><div class="line">        if len(keys) &gt; 0:</div><div class="line">            for key in keys:</div><div class="line">                pipeline.delete(key)</div><div class="line">            pipeline.execute()</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
+<p>例如删除127.0.0.1:6380中以video开头的key，可以执行如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">delInstancePatternKeys(&quot;127.0.0.1&quot;,6380,&quot;video*&quot;)</div></pre></td></tr></table></figure>
+<h4 id="2-集群"><a href="#2-集群" class="headerlink" title="2.集群"></a>2.集群</h4><p>借助cluster nodes获取所有master节点，执行上面的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def delClusterPatternKey(startupNodes, pattern):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to del pattern keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                       tempPort=clusternode[&quot;port&quot;])</div><div class="line">            delInstancePatternKeys(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], pattern)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to del pattern keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                     tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
+<p>对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">delClusterPatternKey(startupNodes, &quot;video*&quot;)</div></pre></td></tr></table></figure>
+<h3 id="二-寻找bigkey"><a href="#二-寻找bigkey" class="headerlink" title="二.寻找bigkey"></a>二.寻找bigkey</h3><h4 id="1-单个节点-1"><a href="#1-单个节点-1" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + strlen(字符串) | debug object(非字符串)找到字节数在startBytes与endBytes之间的key</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def findInstanceBigKey(host, port, startBytes, endBytes, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=None, count=100)</div><div class="line">        for key in keys:</div><div class="line">            try:</div><div class="line">                keyType = client.type(key)</div><div class="line">                if &quot;string&quot; == keyType.lower():</div><div class="line">                    strlen = client.strlen(key)</div><div class="line">                    if (strlen &gt; startBytes and strlen &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; strlen is &#123;strlen&#125; byte&quot;.format(key=key, strlen=strlen)</div><div class="line">                else:</div><div class="line">                    keyObjectDict = client.debug_object(key)</div><div class="line">                    serializedlength = keyObjectDict[&quot;serializedlength&quot;]</div><div class="line">                    if (serializedlength &gt; startBytes and serializedlength &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; serializedlength is &#123;serializedlength&#125; byte&quot;.format(key=key,</div><div class="line">                                                                                         serializedlength=serializedlength)</div><div class="line">            except Exception, ex:</div><div class="line">                print ex</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
+<p>例如寻找127.0.0.1:6380中10KB~20KB(大约)的key，可以执行如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findInstanceBigKey(&quot;127.0.0.1&quot;,6380,10000,20000)</div></pre></td></tr></table></figure>
+<h4 id="2-集群-1"><a href="#2-集群-1" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findClusterBigKey(startupNodes, startBytes, endBytes):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                    tempPort=clusternode[&quot;port&quot;])</div><div class="line">            findInstanceBigKey(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], startBytes, endBytes)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                    tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
+<p>对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">findClusterBigKey(startupNodes, 10000, 20000)</div></pre></td></tr></table></figure>
+<h3 id="三-空闲key"><a href="#三-空闲key" class="headerlink" title="三.空闲key"></a>三.空闲key</h3><h4 id="1-单个节点-2"><a href="#1-单个节点-2" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>scan + debug object找到出空闲时间大于idleDays(单位：天)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findInstanceIdleKeys(host, port, idleDays, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=None, count=100)</div><div class="line">        if len(keys) &gt; 0:</div><div class="line">            for key in keys:</div><div class="line">                keyObjectDict = client.debug_object(key)</div><div class="line">                lruSecondsIdle = keyObjectDict[&quot;lru_seconds_idle&quot;]</div><div class="line">                if lruSecondsIdle &gt; idleDays * 3600 *24:</div><div class="line">                    print &quot;&#123;key&#125; idle days is &#123;lruSecondsIdle&#125;&quot;.format(key=key, lruSecondsIdle=lruSecondsIdle/24/3600)</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
+<p>例如寻找127.0.0.1:6380中闲置时间大于1天的key，可以执行如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findInstanceIdleKeys(&quot;127.0.0.1&quot;,6380,1)</div></pre></td></tr></table></figure>
+<h4 id="2-集群-2"><a href="#2-集群-2" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findClusterIdleKeys(startupNodes, idleDays):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                       tempPort=clusternode[&quot;port&quot;])</div><div class="line">            findInstanceIdleKeys(host, port, idleDays)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                     tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
+<p>对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">findClusterIdleKeys(startupNodes, 1)</div></pre></td></tr></table></figure>
+<h3 id="四-死键"><a href="#四-死键" class="headerlink" title="四.死键"></a>四.死键</h3><h4 id="1-单个节点-3"><a href="#1-单个节点-3" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>对于死键问题仅仅需要scan即可解决，有关什么是死键可以参考如下：<a href="https://zhuoroger.github.io/2016/08/05/redis-useless-keys/" target="_blank" rel="external">Redis的“死键”问题</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def delInstanceDieKeys(host, port, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=pattern, count=100)</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
+<h4 id="2-集群-3"><a href="#2-集群-3" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def delClusterDieKeys(startupNodes):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to find die keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                         tempPort=clusternode[&quot;port&quot;])</div><div class="line">            delInstanceDieKeys(host,port)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                       tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/24/redis-py使用(2)-redis-py-cluster/" itemprop="url">
+                  redis-py使用(2)-redis-py-cluster
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-24T21:20:00+08:00" content="2016-05-24">
+              2016-05-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/24/redis-py使用(2)-redis-py-cluster/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/24/redis-py使用(2)-redis-py-cluster/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/24/redis-py使用(2)-redis-py-cluster/" class="leancloud_visitors" data-flag-title="redis-py使用(2)-redis-py-cluster">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一-获取redis-py-cluster"><a href="#一-获取redis-py-cluster" class="headerlink" title="一.获取redis-py-cluster"></a>一.获取redis-py-cluster</h3><p>redis-py并没有支持Redis Cluster。社区中有人开发了<a href="https://github.com/Grokzen/redis-py-cluster" target="_blank" rel="external">redis-py-cluster</a>(非同一个作者)。两种方法获取。</p>
+<p>第一：使用pip进行安装(推荐)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install redis-py-cluster</div></pre></td></tr></table></figure>
+<p>第三：使用源码安装(以1.3.4版本为例子，可以在<a href="https://github.com/Grokzen/redis-py-cluster/releases" target="_blank" rel="external">release列表</a>选取需要)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/Grokzen/redis-py-cluster/releases/download/1.3.4/redis-py-cluster-1.3.4.tar.gz</div><div class="line">unzip redis-py-cluster-1.3.4.tar.gz</div><div class="line">cd redis-py-cluster-1.3.4</div><div class="line">python setup.py install</div></pre></td></tr></table></figure>
+<h3 id="二-redis-py-cluster的基本使用"><a href="#二-redis-py-cluster的基本使用" class="headerlink" title="二.redis-py-cluster的基本使用"></a>二.redis-py-cluster的基本使用</h3><p>redis-py-cluster的使用方法也比较简单，我们逐步骤介绍：</p>
+<h4 id="1-导入依赖库"><a href="#1-导入依赖库" class="headerlink" title="1.导入依赖库"></a>1.导入依赖库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import rediscluster</div></pre></td></tr></table></figure>
+<h4 id="2-生成客户端连接："><a href="#2-生成客户端连接：" class="headerlink" title="2.生成客户端连接："></a>2.生成客户端连接：</h4><p>需要传入Redis Cluster的全部节点（其实一个节点也行，内部会通过一个节点自动获取），例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">startup_nodes = [&#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7000&quot;&#125;, &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7001&quot;&#125;,</div><div class="line">                 &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7002&quot;&#125;, &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7003&quot;&#125;,</div><div class="line">                 &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7004&quot;&#125;, &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7005&quot;&#125;]</div><div class="line">clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startup_nodes, decode_responses=True)</div></pre></td></tr></table></figure>
+<h4 id="3-执行命令"><a href="#3-执行命令" class="headerlink" title="3.执行命令"></a>3.执行命令</h4><p>redis-py的API保留了Redis API的原始风格，所以使用起来不会有不习惯的感觉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">clusterClient.set(key, &quot;python-redis&quot;)</div><div class="line">clusterClient.get(key)</div></pre></td></tr></table></figure>
+<h3 id="三、集群下的命令"><a href="#三、集群下的命令" class="headerlink" title="三、集群下的命令"></a>三、集群下的命令</h3><p>redis-py-cluster中的命令按照执行范围的不同可以分为三种,下面只是简单说明，具体参考官方文档：<a href="http://redis-py-cluster.readthedocs.io/en/master/commands.html#" target="_blank" rel="external">http://redis-py-cluster.readthedocs.io/en/master/commands.html#</a></p>
+<h4 id="1-Fanout-Commands（发送到全部节点）"><a href="#1-Fanout-Commands（发送到全部节点）" class="headerlink" title="1.Fanout Commands（发送到全部节点）"></a>1.Fanout Commands（发送到全部节点）</h4><p>(1) 一些管理命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">bgrewriteaof</div><div class="line">bgsave</div><div class="line">client_getname</div><div class="line">client_kill</div><div class="line">client_list</div><div class="line">client_setname</div><div class="line">config_get</div><div class="line">config_resetstat</div><div class="line">config_rewrite</div><div class="line">config_set</div><div class="line">dbsize</div><div class="line">echo</div><div class="line">info</div><div class="line">lastsave</div><div class="line">ping</div><div class="line">save</div><div class="line">slowlog_get</div><div class="line">slowlog_len</div><div class="line">slowlog_reset</div><div class="line">time</div></pre></td></tr></table></figure>
+<p>(2) 数据命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">keys</div><div class="line">flushall</div><div class="line">flushdb</div><div class="line">scan</div></pre></td></tr></table></figure>
+<h3 id="2-Blocked-commands"><a href="#2-Blocked-commands" class="headerlink" title="2.Blocked commands"></a>2.Blocked commands</h3><p>有些命令是禁止使用的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">bitop - Currently to hard to implement a solution in python space</div><div class="line">client_setname - Not yet implemented</div><div class="line">move - It is not possible to move a key from one db to another in cluster mode</div><div class="line">restore</div><div class="line">script_kill - Not yet implemented</div><div class="line">sentinel</div><div class="line">sentinel_get_master_addr_by_name</div><div class="line">sentinel_master</div><div class="line">sentinel_masters</div><div class="line">sentinel_monitor</div><div class="line">sentinel_remove</div><div class="line">sentinel_sentinels</div><div class="line">sentinel_set</div><div class="line">sentinel_slaves</div><div class="line">shutdown</div><div class="line">slaveof - Cluster management should be done via redis-trib.rb manually</div><div class="line">unwatch - Not yet implemented</div><div class="line">watch - Not yet implemented</div></pre></td></tr></table></figure>
+<h3 id="3-Overridden-methods-重写命令"><a href="#3-Overridden-methods-重写命令" class="headerlink" title="3.Overridden methods(重写命令)"></a>3.Overridden methods(重写命令)</h3><p>下面命令在集群下使用会略有不同，具体使用时候可以了解下.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">brpoplpus</div><div class="line">mget</div><div class="line">mset</div><div class="line">msetnx</div><div class="line">pfmerge</div><div class="line">randomkey</div><div class="line">rename</div><div class="line">renamenx</div><div class="line">rpoplpush</div><div class="line">sdiff</div><div class="line">sdiffstore</div><div class="line">sinter</div><div class="line">sinterstore</div><div class="line">smove</div><div class="line">sort</div><div class="line">sunion</div><div class="line">sunionstore</div><div class="line">zinterstore</div><div class="line">zunionstore</div></pre></td></tr></table></figure>
+<h4 id="4-集群命令：有些命令是在全部节点执行，有些是在一个节点上执行。"><a href="#4-集群命令：有些命令是在全部节点执行，有些是在一个节点上执行。" class="headerlink" title="4.集群命令：有些命令是在全部节点执行，有些是在一个节点上执行。"></a>4.集群命令：有些命令是在全部节点执行，有些是在一个节点上执行。</h4><h5 id="1-cluster-info"><a href="#1-cluster-info" class="headerlink" title="(1) cluster info"></a>(1) cluster info</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import rediscluster</div><div class="line"></div><div class="line">startup_nodes = [&#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7000&quot;&#125;, &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7001&quot;&#125;,</div><div class="line">                 &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7002&quot;&#125;, &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7003&quot;&#125;,</div><div class="line">                 &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7004&quot;&#125;, &#123;&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: &quot;7005&quot;&#125;]</div><div class="line">clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startup_nodes, decode_responses=True)</div><div class="line">clusterInfos = clusterClient.cluster_info()</div><div class="line">for (hostPort,clusterInfo) in clusterInfos.items():</div><div class="line">    print  &quot;==================&#123;hostPort&#125;==================&quot;.format(hostPort=hostPort)</div><div class="line">    for (configKey,configValue) in clusterInfo.items():</div><div class="line">        print configKey + &quot;:&quot; + str(configValue)</div></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7 /Users/carlosfu/Desktop/py/py/redis/redis-py-first2.py</div><div class="line">==================127.0.0.1:7000==================</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_known_nodes:6</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_stats_messages_received:150148</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:7</div><div class="line">cluster_stats_messages_sent:150146</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_my_epoch:7</div><div class="line">cluster_slots_ok:16384</div><div class="line">==================127.0.0.1:7001==================</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_known_nodes:6</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_stats_messages_received:155413</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:7</div><div class="line">cluster_stats_messages_sent:155412</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_my_epoch:2</div><div class="line">cluster_slots_ok:16384</div><div class="line">==================127.0.0.1:7002==================</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_known_nodes:6</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_stats_messages_received:155704</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:7</div><div class="line">cluster_stats_messages_sent:155703</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_my_epoch:3</div><div class="line">cluster_slots_ok:16384</div><div class="line">==================127.0.0.1:7003==================</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_known_nodes:6</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_stats_messages_received:152197</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:7</div><div class="line">cluster_stats_messages_sent:152205</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_my_epoch:7</div><div class="line">cluster_slots_ok:16384</div><div class="line">==================127.0.0.1:7004==================</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_known_nodes:6</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_stats_messages_received:147089</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:7</div><div class="line">cluster_stats_messages_sent:147087</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_my_epoch:2</div><div class="line">cluster_slots_ok:16384</div><div class="line">==================127.0.0.1:7005==================</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_known_nodes:6</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_stats_messages_received:153097</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:7</div><div class="line">cluster_stats_messages_sent:153095</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_my_epoch:3</div><div class="line">cluster_slots_ok:16384</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure>
+<p>需要注意的结果是和startup_nodes个数无关的。</p>
+<h5 id="2-cluster-nodes"><a href="#2-cluster-nodes" class="headerlink" title="(2) cluster nodes"></a>(2) cluster nodes</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">clusterNodes = clusterClient.cluster_nodes();</div><div class="line">for clusterNode in clusterNodes:</div><div class="line">    print clusterNode</div></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<p><img src="http://i0.itc.cn/20170725/3084_34958641_53fc_6067_fca4_893408cd3049_1.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/23/Redis从客户端请求到命令处理/" itemprop="url">
                   Redis源码学习一：客户端请求处理到命令执行
                 </a>
@@ -505,7 +814,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/23/redis-py使用入门(1)/" itemprop="url">
+                <a class="post-title-link" href="/2016/05/23/redis-py使用(1)-入门/" itemprop="url">
                   redis-py使用入门(1)
                 </a>
               
@@ -549,8 +858,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/23/redis-py使用入门(1)/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/redis-py使用入门(1)/" itemprop="commentsCount"></span>
+                <a href="/2016/05/23/redis-py使用(1)-入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/redis-py使用(1)-入门/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -560,7 +869,7 @@
 
           
           
-             <span id="/2016/05/23/redis-py使用入门(1)/" class="leancloud_visitors" data-flag-title="redis-py使用入门(1)">
+             <span id="/2016/05/23/redis-py使用(1)-入门/" class="leancloud_visitors" data-flag-title="redis-py使用入门(1)">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -641,160 +950,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print jedis.evalsha(scriptSha, 1, &quot;hello&quot;);</div></pre></td></tr></table></figure>
 <p>整个完整代码:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import redis</div><div class="line">client = redis.StrictRedis(host=&apos;127.0.0.1&apos;, port=6379)</div><div class="line">script = &quot;return redis.call(&apos;get&apos;,KEYS[1])&quot;</div><div class="line">scriptSha = client.script_load(script)</div><div class="line">print client.evalsha(scriptSha, 1, &quot;hello&quot;);</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/23/redis-py使用入门(3)-常用数据处理/" itemprop="url">
-                  redis-py使用入门(3)-常用数据处理
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T21:20:00+08:00" content="2016-05-23">
-              2016-05-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/23/redis-py使用入门(3)-常用数据处理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/redis-py使用入门(3)-常用数据处理/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/23/redis-py使用入门(3)-常用数据处理/" class="leancloud_visitors" data-flag-title="redis-py使用入门(3)-常用数据处理">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>主要引入如下模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import redis</div><div class="line">import rediscluster</div></pre></td></tr></table></figure></p>
-<h3 id="一-删除指定模式的key"><a href="#一-删除指定模式的key" class="headerlink" title="一.删除指定模式的key"></a>一.删除指定模式的key</h3><h4 id="1-单个节点"><a href="#1-单个节点" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + pipeline + del(每次扫描100个) </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def delInstancePatternKeys(host, port, pattern, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=pattern, count=100)</div><div class="line">        if len(keys) &gt; 0:</div><div class="line">            for key in keys:</div><div class="line">                pipeline.delete(key)</div><div class="line">            pipeline.execute()</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
-<p>例如删除127.0.0.1:6380中以video开头的key，可以执行如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">delInstancePatternKeys(&quot;127.0.0.1&quot;,6380,&quot;video*&quot;)</div></pre></td></tr></table></figure>
-<h4 id="2-集群"><a href="#2-集群" class="headerlink" title="2.集群"></a>2.集群</h4><p>借助cluster nodes获取所有master节点，执行上面的函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def delClusterPatternKey(startupNodes, pattern):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to del pattern keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                       tempPort=clusternode[&quot;port&quot;])</div><div class="line">            delInstancePatternKeys(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], pattern)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to del pattern keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                     tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
-<p>对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">delClusterPatternKey(startupNodes, &quot;video*&quot;)</div></pre></td></tr></table></figure>
-<h3 id="二-寻找bigkey"><a href="#二-寻找bigkey" class="headerlink" title="二.寻找bigkey"></a>二.寻找bigkey</h3><h4 id="1-单个节点-1"><a href="#1-单个节点-1" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + strlen(字符串) | debug object(非字符串)找到字节数在startBytes与endBytes之间的key</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def findInstanceBigKey(host, port, startBytes, endBytes, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=None, count=100)</div><div class="line">        for key in keys:</div><div class="line">            try:</div><div class="line">                keyType = client.type(key)</div><div class="line">                if &quot;string&quot; == keyType.lower():</div><div class="line">                    strlen = client.strlen(key)</div><div class="line">                    if (strlen &gt; startBytes and strlen &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; strlen is &#123;strlen&#125; byte&quot;.format(key=key, strlen=strlen)</div><div class="line">                else:</div><div class="line">                    keyObjectDict = client.debug_object(key)</div><div class="line">                    serializedlength = keyObjectDict[&quot;serializedlength&quot;]</div><div class="line">                    if (serializedlength &gt; startBytes and serializedlength &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; serializedlength is &#123;serializedlength&#125; byte&quot;.format(key=key,</div><div class="line">                                                                                         serializedlength=serializedlength)</div><div class="line">            except Exception, ex:</div><div class="line">                print ex</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
-<p>例如寻找127.0.0.1:6380中10KB~20KB(大约)的key，可以执行如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findInstanceBigKey(&quot;127.0.0.1&quot;,6380,10000,20000)</div></pre></td></tr></table></figure>
-<h4 id="2-集群-1"><a href="#2-集群-1" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findClusterBigKey(startupNodes, startBytes, endBytes):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                    tempPort=clusternode[&quot;port&quot;])</div><div class="line">            findInstanceBigKey(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], startBytes, endBytes)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                    tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
-<p>对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">findClusterBigKey(startupNodes, 10000, 20000)</div></pre></td></tr></table></figure>
-<h3 id="三-空闲key"><a href="#三-空闲key" class="headerlink" title="三.空闲key"></a>三.空闲key</h3><h4 id="1-单个节点-2"><a href="#1-单个节点-2" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>scan + debug object找到出空闲时间大于idleDays(单位：天)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findInstanceIdleKeys(host, port, idleDays, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=None, count=100)</div><div class="line">        if len(keys) &gt; 0:</div><div class="line">            for key in keys:</div><div class="line">                keyObjectDict = client.debug_object(key)</div><div class="line">                lruSecondsIdle = keyObjectDict[&quot;lru_seconds_idle&quot;]</div><div class="line">                if lruSecondsIdle &gt; idleDays * 3600 *24:</div><div class="line">                    print &quot;&#123;key&#125; idle days is &#123;lruSecondsIdle&#125;&quot;.format(key=key, lruSecondsIdle=lruSecondsIdle/24/3600)</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
-<p>例如寻找127.0.0.1:6380中闲置时间大于1天的key，可以执行如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findInstanceIdleKeys(&quot;127.0.0.1&quot;,6380,1)</div></pre></td></tr></table></figure>
-<h4 id="2-集群-2"><a href="#2-集群-2" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findClusterIdleKeys(startupNodes, idleDays):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                       tempPort=clusternode[&quot;port&quot;])</div><div class="line">            findInstanceIdleKeys(host, port, idleDays)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                     tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
-<p>对于使用者来讲，只需要提供集群中一个可用的节点即可，例如如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">findClusterIdleKeys(startupNodes, 1)</div></pre></td></tr></table></figure>
-<h3 id="四-死键"><a href="#四-死键" class="headerlink" title="四.死键"></a>四.死键</h3><h4 id="1-单个节点-3"><a href="#1-单个节点-3" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>对于死键问题仅仅需要scan即可解决，有关什么是死键可以参考如下：<a href="https://zhuoroger.github.io/2016/08/05/redis-useless-keys/" target="_blank" rel="external">Redis的“死键”问题</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def delInstanceDieKeys(host, port, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=pattern, count=100)</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
-<h4 id="2-集群-3"><a href="#2-集群-3" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def delClusterDieKeys(startupNodes):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to find die keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                         tempPort=clusternode[&quot;port&quot;])</div><div class="line">            delInstanceDieKeys(host,port)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to find idle keys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                       tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
-
           
         
       
@@ -1268,7 +1423,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
