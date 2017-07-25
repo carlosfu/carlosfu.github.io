@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="RPC,socket,netty," />
 
 
 
@@ -81,12 +81,13 @@
 
 
 <meta name="description" content="一、介绍上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。">
+<meta name="keywords" content="RPC,socket,netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Netty学习4-Netty客户端基本结构">
 <meta property="og:url" content="http://yoursite.com/2016/06/01/Netty学习4-Netty客户端基本结构/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="一、介绍上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。">
-<meta property="og:updated_time" content="2016-06-01T06:45:25.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:14:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Netty学习4-Netty客户端基本结构">
 <meta name="twitter:description" content="一、介绍上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。">
@@ -199,6 +200,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -263,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
+                  <a href="/categories/RPC/" itemprop="url" rel="index">
+                    <span itemprop="name">RPC</span>
                   </a>
                 </span>
 
@@ -336,6 +347,16 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RPC/" rel="tag">#RPC</a>
+          
+            <a href="/tags/socket/" rel="tag">#socket</a>
+          
+            <a href="/tags/netty/" rel="tag">#netty</a>
+          
+        </div>
       
 
       
@@ -424,7 +445,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -432,12 +453,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis,Redis开发与运维,Redis内存优化," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。Redis所有的数据都在内存中，而内存又是非常宝贵的资源。对于如何优化内存使用一直是Redis用户非常关注的问题。本文让我们深入到Redis细节中，学习内存优化的技巧。分为如下几个部分： 一. redisObject对象二. 缩减键值对象三. 共享对象池四. 字符串优化五. 编码优化六. 控制key的数量  一. redisObj">
+<meta name="keywords" content="Redis,Redis开发与运维,Redis内存优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis的内存优化">
 <meta property="og:url" content="http://yoursite.com/2017/02/16/Redis内存优化/index.html">
@@ -98,7 +99,7 @@
 <meta property="og:image" content="http://i1.itc.cn/20170216/3084_5417a9b7_6050_0614_09f1_ce8565f04eca_1.png">
 <meta property="og:image" content="http://i1.itc.cn/20170216/3084_d48315af_6789_08d6_823d_beec6378e7da_1.png">
 <meta property="og:image" content="http://i2.itc.cn/20170216/3084_4c9daaae_5820_6cf4_dcdb_83f29c1afc4f_1.jpg">
-<meta property="og:updated_time" content="2017-06-04T08:56:57.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:27:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis的内存优化">
 <meta name="twitter:description" content="声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。Redis所有的数据都在内存中，而内存又是非常宝贵的资源。对于如何优化内存使用一直是Redis用户非常关注的问题。本文让我们深入到Redis细节中，学习内存优化的技巧。分为如下几个部分： 一. redisObject对象二. 缩减键值对象三. 共享对象池四. 字符串优化五. 编码优化六. 控制key的数量  一. redisObj">
@@ -209,6 +210,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -859,6 +870,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+            <a href="/tags/Redis开发与运维/" rel="tag">#Redis开发与运维</a>
+          
+            <a href="/tags/Redis内存优化/" rel="tag">#Redis内存优化</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -946,7 +967,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -954,12 +975,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

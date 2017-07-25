@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="RPC,socket,netty," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="一、简介最早学Java的时候，肯定学过ServerSocket、Socket这些类，然后完成所谓客户端与服务端的建立连接，客户端发送消息、服务端接受消息并返回给客户端消息，客户端接受来自服务端的消息。有点绕嘴，因为很多时候在开发中对于Socket使用不太多，对于这些的了解也仅限于此了。 二. 无线程池实现1.代码1234567891011121314151617181920212223242526">
+<meta name="keywords" content="RPC,socket,netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Netty学习1-BIO的阻塞分析">
 <meta property="og:url" content="http://yoursite.com/2016/06/01/Netty学习1-BIO的阻塞分析/index.html">
@@ -88,7 +89,7 @@
 <meta property="og:description" content="一、简介最早学Java的时候，肯定学过ServerSocket、Socket这些类，然后完成所谓客户端与服务端的建立连接，客户端发送消息、服务端接受消息并返回给客户端消息，客户端接受来自服务端的消息。有点绕嘴，因为很多时候在开发中对于Socket使用不太多，对于这些的了解也仅限于此了。 二. 无线程池实现1.代码1234567891011121314151617181920212223242526">
 <meta property="og:image" content="http://i3.itc.cn/20160601/3084_cdf87c26_32b6_d100_39c5_c158a9f6746c_1.png">
 <meta property="og:image" content="http://i2.itc.cn/20160601/3084_a98ad890_532e_4f41_d21d_8c212d615be2_1.png">
-<meta property="og:updated_time" content="2016-06-01T09:27:54.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:09:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Netty学习1-BIO的阻塞分析">
 <meta name="twitter:description" content="一、简介最早学Java的时候，肯定学过ServerSocket、Socket这些类，然后完成所谓客户端与服务端的建立连接，客户端发送消息、服务端接受消息并返回给客户端消息，客户端接受来自服务端的消息。有点绕嘴，因为很多时候在开发中对于Socket使用不太多，对于这些的了解也仅限于此了。 二. 无线程池实现1.代码1234567891011121314151617181920212223242526">
@@ -202,6 +203,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -266,8 +277,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
+                  <a href="/categories/RPC/" itemprop="url" rel="index">
+                    <span itemprop="name">RPC</span>
                   </a>
                 </span>
 
@@ -337,6 +348,16 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RPC/" rel="tag">#RPC</a>
+          
+            <a href="/tags/socket/" rel="tag">#socket</a>
+          
+            <a href="/tags/netty/" rel="tag">#netty</a>
+          
+        </div>
       
 
       
@@ -425,7 +446,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -433,12 +454,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

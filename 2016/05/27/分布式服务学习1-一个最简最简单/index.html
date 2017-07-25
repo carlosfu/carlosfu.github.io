@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="RPC,socket,反射," />
 
 
 
@@ -81,12 +81,13 @@
 
 
 <meta name="description" content="一、实现思路 SocketServer作为服务端，Socket作为客户端。 定义公共接口，例如XXXService。 在服务端，定义XXXService的实现类，例如XXXService。 客户端将要调用XXXService、方法名、参数，通过Socket的中的OutPutStream传到服务端，服务端利用反射拿到要调用的实现类、方法、参数类型、参数进行本地调用，然后通过Socket返回给客户端。">
+<meta name="keywords" content="RPC,socket,反射">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式服务框架学习1-一个最简单的RPC服务">
 <meta property="og:url" content="http://yoursite.com/2016/05/27/分布式服务学习1-一个最简最简单/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="一、实现思路 SocketServer作为服务端，Socket作为客户端。 定义公共接口，例如XXXService。 在服务端，定义XXXService的实现类，例如XXXService。 客户端将要调用XXXService、方法名、参数，通过Socket的中的OutPutStream传到服务端，服务端利用反射拿到要调用的实现类、方法、参数类型、参数进行本地调用，然后通过Socket返回给客户端。">
-<meta property="og:updated_time" content="2016-05-27T05:19:50.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:02:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式服务框架学习1-一个最简单的RPC服务">
 <meta name="twitter:description" content="一、实现思路 SocketServer作为服务端，Socket作为客户端。 定义公共接口，例如XXXService。 在服务端，定义XXXService的实现类，例如XXXService。 客户端将要调用XXXService、方法名、参数，通过Socket的中的OutPutStream传到服务端，服务端利用反射拿到要调用的实现类、方法、参数类型、参数进行本地调用，然后通过Socket返回给客户端。">
@@ -199,6 +200,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -263,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
+                  <a href="/categories/RPC/" itemprop="url" rel="index">
+                    <span itemprop="name">RPC</span>
                   </a>
                 </span>
 
@@ -346,6 +357,16 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RPC/" rel="tag">#RPC</a>
+          
+            <a href="/tags/socket/" rel="tag">#socket</a>
+          
+            <a href="/tags/反射/" rel="tag">#反射</a>
+          
+        </div>
       
 
       
@@ -434,7 +455,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -442,12 +463,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

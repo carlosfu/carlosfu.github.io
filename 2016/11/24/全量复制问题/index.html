@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis,Redis开发与运维,无限复制," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="本文部分内容来自《Redis开发与运维》一书，转载请声明。一、现象和危害线上有台机器内存接近了90%，总内存为24G，整个部署如下图：  现要将Redis-2迁移走，由于特殊原因此节点没有slave节点，需要添加一个slave节点，然后做failover操作。  通过对日志的观察，发现主从不停地做全量复制。">
+<meta name="keywords" content="Redis,Redis开发与运维,无限复制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis无限全量复制问题分析与优化">
 <meta property="og:url" content="http://yoursite.com/2016/11/24/全量复制问题/index.html">
@@ -90,7 +91,7 @@
 <meta property="og:image" content="http://i3.itc.cn/20161124/3084_60720f13_6f4e_61a5_44bb_02101ea3019a_1.jpg">
 <meta property="og:image" content="http://i0.itc.cn/20161124/3084_6a4131ac_5d59_5895_1b8e_ce2a546dbeaa_1.jpg">
 <meta property="og:image" content="http://i1.itc.cn/20161124/3084_88a14c78_bf0c_a04a_4d95_4dca7f59d0fb_1.png">
-<meta property="og:updated_time" content="2016-11-30T03:19:51.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:23:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis无限全量复制问题分析与优化">
 <meta name="twitter:description" content="本文部分内容来自《Redis开发与运维》一书，转载请声明。一、现象和危害线上有台机器内存接近了90%，总内存为24G，整个部署如下图：  现要将Redis-2迁移走，由于特殊原因此节点没有slave节点，需要添加一个slave节点，然后做failover操作。  通过对日志的观察，发现主从不停地做全量复制。">
@@ -201,6 +202,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -354,6 +365,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+            <a href="/tags/Redis开发与运维/" rel="tag">#Redis开发与运维</a>
+          
+            <a href="/tags/无限复制/" rel="tag">#无限复制</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -441,7 +462,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -449,12 +470,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="HBase,Region Server,堆外内存,HBase故障," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="故障时间：2017-06-04 09:15 一、现象RegionServer自行挂掉：zk + shutdown hook 1234567891011122017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x">
+<meta name="keywords" content="HBase,Region Server,堆外内存,HBase故障">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Direct Memory OOM造成Region Server挂掉">
 <meta property="og:url" content="http://yoursite.com/2017/07/06/Direct Memory OOM造成Region Server挂掉/index.html">
@@ -92,7 +93,7 @@
 <meta property="og:image" content="http://i1.itc.cn/20170706/3084_cc118f15_283c_3827_f247_c4c1895e8fc1_1.png">
 <meta property="og:image" content="http://i3.itc.cn/20170706/3084_6a473919_e97b_8f60_79cc_545c54d5d226_1.png">
 <meta property="og:image" content="http://i0.itc.cn/20170706/3084_8b53df00_c442_132d_6c04_02e2fcb6b737_1.png">
-<meta property="og:updated_time" content="2017-07-06T06:22:00.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:19:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Direct Memory OOM造成Region Server挂掉">
 <meta name="twitter:description" content="故障时间：2017-06-04 09:15 一、现象RegionServer自行挂掉：zk + shutdown hook 1234567891011122017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x">
@@ -203,6 +204,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -462,6 +473,18 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/HBase/" rel="tag">#HBase</a>
+          
+            <a href="/tags/Region-Server/" rel="tag">#Region Server</a>
+          
+            <a href="/tags/堆外内存/" rel="tag">#堆外内存</a>
+          
+            <a href="/tags/HBase故障/" rel="tag">#HBase故障</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -549,7 +572,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -557,12 +580,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

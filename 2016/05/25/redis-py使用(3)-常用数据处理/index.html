@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis,redis-py,常用数据处理," />
 
 
 
@@ -81,12 +81,13 @@
 
 
 <meta name="description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  1234567891011def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.StrictRedi">
+<meta name="keywords" content="Redis,redis-py,常用数据处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-py使用入门(3)-常用数据处理">
 <meta property="og:url" content="http://yoursite.com/2016/05/25/redis-py使用(3)-常用数据处理/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  1234567891011def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.StrictRedi">
-<meta property="og:updated_time" content="2017-07-25T01:28:28.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:20:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-py使用入门(3)-常用数据处理">
 <meta name="twitter:description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  1234567891011def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.StrictRedi">
@@ -196,6 +197,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -356,6 +367,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+            <a href="/tags/redis-py/" rel="tag">#redis-py</a>
+          
+            <a href="/tags/常用数据处理/" rel="tag">#常用数据处理</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -369,8 +390,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/27/Redis 3.2/" rel="prev" title="分布式服务框架学习1-一个最简单的RPC服务">
-                分布式服务框架学习1-一个最简单的RPC服务 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/27/2017-06问题汇总/" rel="prev" title="HBase故障记录：由jstack引起的RegionServer宕机。">
+                HBase故障记录：由jstack引起的RegionServer宕机。 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -443,7 +464,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -451,12 +472,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

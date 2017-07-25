@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="HBase," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次读写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
+<meta name="keywords" content="HBase">
 <meta property="og:type" content="article">
 <meta property="og:title" content="看图理解HBase-1.HBase组件角色和交互">
 <meta property="og:url" content="http://yoursite.com/2017/05/23/看图理解HBase-1.HBase组件职责和交互/index.html">
@@ -89,7 +90,7 @@
 <meta property="og:image" content="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png">
 <meta property="og:image" content="http://i0.itc.cn/20170522/3084_6bea028c_2cbf_81af_1216_b8804eeed739_1.png">
 <meta property="og:image" content="http://i3.itc.cn/20170524/3084_9dc53e86_b86e_9c64_5354_cf9e4f2751c3_1.png">
-<meta property="og:updated_time" content="2017-05-25T01:06:28.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:15:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="看图理解HBase-1.HBase组件角色和交互">
 <meta name="twitter:description" content="一.Client1.角色 普通API(get、put、delete等) Admin API(create、alter、compact等)  2.交互 与Zookeeper 第一次读写数据，需要从Zookeeper获取Meta表所在的RegionServer。 Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart cli">
@@ -200,6 +201,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -404,13 +415,19 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/HBase/" rel="tag">#HBase</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/23/看图理解HBase-2.HBase组件部署拓扑/" rel="next" title="看图理解HBase-2.HBase组件部署拓扑">
-                <i class="fa fa-chevron-left"></i> 看图理解HBase-2.HBase组件部署拓扑
+              <a href="/2017/05/23/Hbase学习2-shell操作/" rel="next" title="HBase学习2-shell客户端基本使用">
+                <i class="fa fa-chevron-left"></i> HBase学习2-shell客户端基本使用
               </a>
             
           </div>
@@ -491,7 +508,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -499,12 +516,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

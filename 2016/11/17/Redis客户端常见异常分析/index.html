@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis,Redis开发与运维,Redis客户端," />
 
 
 
@@ -81,12 +81,13 @@
 
 
 <meta name="description" content="本文部分内容来自《Redis开发与运维》一书，转载请声明。在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况： 一.无法从连接池获取到连接JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisP">
+<meta name="keywords" content="Redis,Redis开发与运维,Redis客户端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis客户端常见异常分析">
 <meta property="og:url" content="http://yoursite.com/2016/11/17/Redis客户端常见异常分析/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="本文部分内容来自《Redis开发与运维》一书，转载请声明。在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况： 一.无法从连接池获取到连接JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisP">
-<meta property="og:updated_time" content="2016-11-28T01:01:09.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:26:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis客户端常见异常分析">
 <meta name="twitter:description" content="本文部分内容来自《Redis开发与运维》一书，转载请声明。在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况： 一.无法从连接池获取到连接JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisP">
@@ -199,6 +200,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -263,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
                   </a>
                 </span>
 
@@ -477,6 +488,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+            <a href="/tags/Redis开发与运维/" rel="tag">#Redis开发与运维</a>
+          
+            <a href="/tags/Redis客户端/" rel="tag">#Redis客户端</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -564,7 +585,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -572,12 +593,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

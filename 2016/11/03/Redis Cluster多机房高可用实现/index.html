@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis Cluster,跨机房," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="1本文以Redis-Cluster为例子，实际使用中Redis-Sentinel和Redis Standalone也是一样的。 一、现有问题由于Redis本身的一些特性(例如复制)以及使用场景，造成Redis不太适合部署在不同的机房，所以通常来看Redis集群都是在同一个机房部署的。虽然Redis集群自身已经具备了高可用的特性，即使几个Redis节点异常或者挂掉，Redis Cluster也会实现">
+<meta name="keywords" content="Redis Cluster,跨机房">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis Cluster多机房高可用实现--基于客户端">
 <meta property="og:url" content="http://yoursite.com/2016/11/03/Redis Cluster多机房高可用实现/index.html">
@@ -92,7 +93,7 @@
 <meta property="og:image" content="http://mfiles.sohu.com/20161103/3084_6d73285f_3c01_c34f_dedf_f195653d1514_1.gif">
 <meta property="og:image" content="http://mfiles.sohu.com/20161103/3084_457dfcdc_35b6_822c_b667_8d0b263785e4_1.gif">
 <meta property="og:image" content="http://i0.itc.cn/20161103/3084_bc78eec6_cbf2_c525_f59a_cd599f4a8a31_1.png">
-<meta property="og:updated_time" content="2016-11-04T01:46:19.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:25:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis Cluster多机房高可用实现--基于客户端">
 <meta name="twitter:description" content="1本文以Redis-Cluster为例子，实际使用中Redis-Sentinel和Redis Standalone也是一样的。 一、现有问题由于Redis本身的一些特性(例如复制)以及使用场景，造成Redis不太适合部署在不同的机房，所以通常来看Redis集群都是在同一个机房部署的。虽然Redis集群自身已经具备了高可用的特性，即使几个Redis节点异常或者挂掉，Redis Cluster也会实现">
@@ -206,6 +207,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -270,8 +281,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -436,6 +447,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis-Cluster/" rel="tag">#Redis Cluster</a>
+          
+            <a href="/tags/跨机房/" rel="tag">#跨机房</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -523,7 +542,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -531,12 +550,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

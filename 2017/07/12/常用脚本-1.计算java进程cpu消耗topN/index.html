@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="cpu top,jstack," />
 
 
 
@@ -81,12 +81,13 @@
 
 
 <meta name="description" content="一、作用由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。">
+<meta name="keywords" content="cpu top,jstack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用脚本-1.计算java进程cpu消耗topN">
 <meta property="og:url" content="http://yoursite.com/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="一、作用由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。">
-<meta property="og:updated_time" content="2017-07-12T05:56:31.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:16:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用脚本-1.计算java进程cpu消耗topN">
 <meta name="twitter:description" content="一、作用由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。">
@@ -196,6 +197,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -342,6 +353,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/cpu-top/" rel="tag">#cpu top</a>
+          
+            <a href="/tags/jstack/" rel="tag">#jstack</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -429,7 +448,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -437,12 +456,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis,Redis开发与运维,Redis热点key," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。热门新闻事件或商品通常会给系统带来巨大的流量，但对存储这类信息的Redis来说是一个巨大的挑战。以Redis Cluster为例，它会造成整体流量的不均衡，个别节点出现OPS过大的情况，极端情况下热点key甚至会超过Redis本身能够承受的OPS，因此寻找热点key对于开发和运维人员非常重要。 1.客户端客户端其实是距离key”">
+<meta name="keywords" content="Redis,Redis开发与运维,Redis热点key">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis热点key寻找与优化">
 <meta property="og:url" content="http://yoursite.com/2017/02/20/Redis热点key寻找与优化/index.html">
@@ -90,7 +91,7 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1493878-203a9c188515976e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1493878-9280061f90498964.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://i2.itc.cn/20170216/3084_4c9daaae_5820_6cf4_dcdb_83f29c1afc4f_1.jpg">
-<meta property="og:updated_time" content="2017-06-04T08:56:20.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:27:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis热点key寻找与优化">
 <meta name="twitter:description" content="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。热门新闻事件或商品通常会给系统带来巨大的流量，但对存储这类信息的Redis来说是一个巨大的挑战。以Redis Cluster为例，它会造成整体流量的不均衡，个别节点出现OPS过大的情况，极端情况下热点key甚至会超过Redis本身能够承受的OPS，因此寻找热点key对于开发和运维人员非常重要。 1.客户端客户端其实是距离key”">
@@ -201,6 +202,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -402,6 +413,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+            <a href="/tags/Redis开发与运维/" rel="tag">#Redis开发与运维</a>
+          
+            <a href="/tags/Redis热点key/" rel="tag">#Redis热点key</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -489,7 +510,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -497,12 +518,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>

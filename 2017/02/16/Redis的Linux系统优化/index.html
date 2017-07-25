@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis,Redis开发与运维,Redis Linux," />
 
 
 
@@ -81,6 +81,7 @@
 
 
 <meta name="description" content="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。通常来看，Redis开发和运维人员更加关注的是Redis本身的一些配置优化，例如AOF和RDB的配置优化、数据结构的配置优化等，但是对于操作系统是否需要针对Redis做一些配置优化不甚了解或者不太关心，然而事实证明一个良好的系统操作配置能够为Redis服务良好运行保驾护航。 众所周知Redis的作者对于Windows操作系统并不">
+<meta name="keywords" content="Redis,Redis开发与运维,Redis Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis的Linux系统优化">
 <meta property="og:url" content="http://yoursite.com/2017/02/16/Redis的Linux系统优化/index.html">
@@ -88,7 +89,7 @@
 <meta property="og:description" content="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。通常来看，Redis开发和运维人员更加关注的是Redis本身的一些配置优化，例如AOF和RDB的配置优化、数据结构的配置优化等，但是对于操作系统是否需要针对Redis做一些配置优化不甚了解或者不太关心，然而事实证明一个良好的系统操作配置能够为Redis服务良好运行保驾护航。 众所周知Redis的作者对于Windows操作系统并不">
 <meta property="og:image" content="http://i3.itc.cn/20170216/3084_3bb93b70_695d_bfa8_69d4_6acce0e01f40_1.png">
 <meta property="og:image" content="http://i2.itc.cn/20170216/3084_4c9daaae_5820_6cf4_dcdb_83f29c1afc4f_1.jpg">
-<meta property="og:updated_time" content="2017-06-04T08:55:53.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:26:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis的Linux系统优化">
 <meta name="twitter:description" content="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。通常来看，Redis开发和运维人员更加关注的是Redis本身的一些配置优化，例如AOF和RDB的配置优化、数据结构的配置优化等，但是对于操作系统是否需要针对Redis做一些配置优化不甚了解或者不太关心，然而事实证明一个良好的系统操作配置能够为Redis服务良好运行保驾护航。 众所周知Redis的作者对于Windows操作系统并不">
@@ -199,6 +200,16 @@
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -471,6 +482,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#Redis</a>
+          
+            <a href="/tags/Redis开发与运维/" rel="tag">#Redis开发与运维</a>
+          
+            <a href="/tags/Redis-Linux/" rel="tag">#Redis Linux</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -558,7 +579,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -566,12 +587,19 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
