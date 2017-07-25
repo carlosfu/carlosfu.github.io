@@ -226,8 +226,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="url">
-                  分布式服务框架学习1-一个最简单的RPC服务
+                <a class="post-title-link" href="/2016/05/27/2017-06问题汇总/" itemprop="url">
+                  HBase故障记录：由jstack引起的RegionServer宕机。
                 </a>
               
             
@@ -254,8 +254,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
                   </a>
                 </span>
 
@@ -270,8 +270,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/分布式服务学习1-一个最简最简单/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/2017-06问题汇总/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/2017-06问题汇总/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -281,7 +281,7 @@
 
           
           
-             <span id="/2016/05/27/分布式服务学习1-一个最简最简单/" class="leancloud_visitors" data-flag-title="分布式服务框架学习1-一个最简单的RPC服务">
+             <span id="/2016/05/27/2017-06问题汇总/" class="leancloud_visitors" data-flag-title="HBase故障记录：由jstack引起的RegionServer宕机。">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -304,18 +304,9 @@
 
       
         
-          <h3 id="一、实现思路"><a href="#一、实现思路" class="headerlink" title="一、实现思路"></a>一、实现思路</h3><ul>
-<li>SocketServer作为服务端，Socket作为客户端。</li>
-<li>定义公共接口，例如XXXService。</li>
-<li>在服务端，定义XXXService的实现类，例如XXXService。</li>
-<li>客户端将要调用XXXService、方法名、参数，通过Socket的中的OutPutStream传到服务端，服务端利用反射拿到要调用的实现类、方法、参数类型、参数进行本地调用，然后通过Socket返回给客户端。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">整个过程，基本上述所描述，基本的RPC思路已经出来了(先不讨论分布式服务框架的层面)，单单作为RPC已经足够，那么SocketServer和Socket对于要传的参数的含义、顺序等应该打成一致，其实也就是所谓的协议，后面在介绍dubbo源码的时候再进行分析。</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/分布式服务学习1-一个最简最简单/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3>
+          
         
       
     </div>
