@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、Redis3.0与3.2文件对比1. clone redis1git clone https://github.com/antirez/redis.git 2. checkout分支123cd redisgit checkout 3.0git checkout 3.2 3. 比较(1) 比较3.0和3.2文件变化数 12&amp;gt; git rev-list 3.0..3.2 --count170">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 3.2.0 new-1.对比3.0">
+<meta property="og:url" content="http://yoursite.com/2016/06/06/1.Redis3.0与3.2/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="一、Redis3.0与3.2文件对比1. clone redis1git clone https://github.com/antirez/redis.git 2. checkout分支123cd redisgit checkout 3.0git checkout 3.2 3. 比较(1) 比较3.0和3.2文件变化数 12&amp;gt; git rev-list 3.0..3.2 --count170">
+<meta property="og:image" content="http://i0.itc.cn/20160602/3084_91a0e7ca_9f9b_7b82_da4f_1f779b97c16b_1.png">
+<meta property="og:updated_time" content="2016-06-06T01:35:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis 3.2.0 new-1.对比3.0">
+<meta name="twitter:description" content="一、Redis3.0与3.2文件对比1. clone redis1git clone https://github.com/antirez/redis.git 2. checkout分支123cd redisgit checkout 3.0git checkout 3.2 3. 比较(1) 比较3.0和3.2文件变化数 12&amp;gt; git rev-list 3.0..3.2 --count170">
+<meta name="twitter:image" content="http://i0.itc.cn/20160602/3084_91a0e7ca_9f9b_7b82_da4f_1f779b97c16b_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Redis 3.2.0 new-1.对比3.0 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Redis 3.2.0 new-1.对比3.0
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
+              2016-06-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/06/1.Redis3.0与3.2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/1.Redis3.0与3.2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/06/06/1.Redis3.0与3.2/" class="leancloud_visitors" data-flag-title="Redis 3.2.0 new-1.对比3.0">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、Redis3-0与3-2文件对比"><a href="#一、Redis3-0与3-2文件对比" class="headerlink" title="一、Redis3.0与3.2文件对比"></a>一、Redis3.0与3.2文件对比</h3><h4 id="1-clone-redis"><a href="#1-clone-redis" class="headerlink" title="1. clone redis"></a>1. clone redis</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/antirez/redis.git</div></pre></td></tr></table></figure>
+<h4 id="2-checkout分支"><a href="#2-checkout分支" class="headerlink" title="2. checkout分支"></a>2. checkout分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd redis</div><div class="line">git checkout 3.0</div><div class="line">git checkout 3.2</div></pre></td></tr></table></figure>
+<h4 id="3-比较"><a href="#3-比较" class="headerlink" title="3. 比较"></a>3. 比较</h4><p>(1) 比较3.0和3.2文件变化数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; git rev-list 3.0..3.2 --count</div><div class="line">1708</div></pre></td></tr></table></figure>
+<p>(2) 比较3.0和3.2文件变化统计<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; git diff 3.0..3.2 --shortstat</div><div class="line">比较3.0和3.2文件变化数</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="二、Redis3-0与3-2默认配置文件变化"><a href="#二、Redis3-0与3-2默认配置文件变化" class="headerlink" title="二、Redis3.0与3.2默认配置文件变化"></a>二、Redis3.0与3.2默认配置文件变化</h3><h4 id="1-配置变化"><a href="#1-配置变化" class="headerlink" title="1.配置变化"></a>1.配置变化</h4><p><img src="http://i0.itc.cn/20160602/3084_91a0e7ca_9f9b_7b82_da4f_1f779b97c16b_1.png" alt="配置变化"></p>
+<p>Redis3.2添加了两个配置：</p>
+<ul>
+<li>protected-mode yes</li>
+<li>supervised no</li>
+</ul>
+<p>Redis3.2修改了两个配置：<br>有关list的优化，由(1)改为(2)，虽然还没详细了解，应该是list的底层数据结构做了一些新的变化或者优化。</p>
+<p>配置一：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">list-max-ziplist-entries 512</div><div class="line">list-max-ziplist-value 64</div></pre></td></tr></table></figure></p>
+<p>配置二：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">list-max-ziplist-size -2</div><div class="line">list-compress-depth 0</div></pre></td></tr></table></figure></p>
+<p>配置三：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bind 127.0.0.1</div></pre></td></tr></table></figure></p>
+<p>bind在Redis3.2.0中默认改为127.0.0.1</p>
+<h4 id="2-新配置说明"><a href="#2-新配置说明" class="headerlink" title="2.新配置说明"></a>2.新配置说明</h4><ul>
+<li>(1).protected-mode(默认是yes)<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># Protected mode is a layer of security protection, in order to avoid that</div><div class="line"># Redis instances left open on the internet are accessed and exploited.</div><div class="line">#</div><div class="line"># When protected mode is on and if:</div><div class="line">#</div><div class="line"># 1) The server is not binding explicitly to a set of addresses using the</div><div class="line">#    &quot;bind&quot; directive.</div><div class="line"># 2) No password is configured.</div><div class="line">#</div><div class="line"># The server only accepts connections from clients connecting from the</div><div class="line"># IPv4 and IPv6 loopback addresses 127.0.0.1 and ::1, and from Unix domain</div><div class="line"># sockets.</div><div class="line">#</div><div class="line"># By default protected mode is enabled. You should disable it only if</div><div class="line"># you are sure you want clients from other hosts to connect to Redis</div><div class="line"># even if no authentication is configured, nor a specific set of interfaces</div><div class="line"># are explicitly listed using the &quot;bind&quot; directive.</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>说明</strong></p>
+<ul>
+<li><p>用一段代码就可以说明什么是protected-mode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if (protected-mode &amp;&amp; !requirepass &amp;&amp; !bind) &#123;</div><div class="line">	Allow only 127.0.0.1,::1 or socket connections</div><div class="line">    Deny (with the long message ever!) others </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>其实设置成默认是为了保护对redis不了解的人，提供安全性，但是对于对于不需要bind和requirepass的使用者（例如内网），需要将protected-mode设置为no </p>
+</li>
+</ul>
+<ul>
+<li>(2).supervised(默认是no)<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># If you run Redis from upstart or systemd, Redis can interact with your</div><div class="line"># supervision tree. Options:</div><div class="line">#   supervised no      - no supervision interaction</div><div class="line">#   supervised upstart - signal upstart by putting Redis into SIGSTOP mode</div><div class="line">#   supervised systemd - signal systemd by writing READY=1 to $NOTIFY_SOCKET</div><div class="line">#   supervised auto    - detect upstart or systemd method based on</div><div class="line">#                        UPSTART_JOB or NOTIFY_SOCKET environment variables</div><div class="line"># Note: these supervision methods only signal &quot;process is ready.&quot;</div><div class="line">#       They do not enable continuous liveness pings back to your supervisor.</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>说明</strong><br>可以通过upstart和systemd管理Redis守护进程，这个参数是和具体的操作系统相关的。</p>
+<ul>
+<li>(3).bind (Redis3.2.0中bind默认是127.0.0.1)<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># By default, if no &quot;bind&quot; configuration directive is specified, Redis listens</div><div class="line"># for connections from all the network interfaces available on the server.</div><div class="line"># It is possible to listen to just one or multiple selected interfaces using</div><div class="line"># the &quot;bind&quot; configuration directive, followed by one or more IP addresses.</div><div class="line">#</div><div class="line"># Examples:</div><div class="line">#</div><div class="line"># bind 192.168.1.100 10.0.0.1</div><div class="line"># bind 127.0.0.1 ::1</div><div class="line">#</div><div class="line"># ~~~ WARNING ~~~ If the computer running Redis is directly exposed to the</div><div class="line"># internet, binding to all the interfaces is dangerous and will expose the</div><div class="line"># instance to everybody on the internet. So by default we uncomment the</div><div class="line"># following bind directive, that will force Redis to listen only into</div><div class="line"># the IPv4 lookback interface address (this means Redis will be able to</div><div class="line"># accept connections only from clients running into the same computer it</div><div class="line"># is running).</div><div class="line">#</div><div class="line"># IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES</div><div class="line"># JUST COMMENT THE FOLLOWING LINE.</div><div class="line"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</div><div class="line">bind 127.0.0.1</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>说明</strong><br>bind在Redis3.2.0之前默认是0.0.0.0或者说””，为了保证不太了解Redis安全性的人，在Redis3.2.0中bind默认是127.0.0.1,也就是只有本机回环地址可以访问。如果需要配置sentinel、cluster或者需要机器机器可以访问该Redis实例请修改为0.0.0.0或者指定的内网IP.</p>
+<ul>
+<li><p>(4).list-max-ziplist-size(默认-2)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># Lists are also encoded in a special way to save a lot of space.</div><div class="line"># The number of entries allowed per internal list node can be specified</div><div class="line"># as a fixed maximum size or a maximum number of elements.</div><div class="line"># For a fixed maximum size, use -5 through -1, meaning:</div><div class="line"># -5: max size: 64 Kb  &lt;-- not recommended for normal workloads</div><div class="line"># -4: max size: 32 Kb  &lt;-- not recommended</div><div class="line"># -3: max size: 16 Kb  &lt;-- probably not recommended</div><div class="line"># -2: max size: 8 Kb   &lt;-- good</div><div class="line"># -1: max size: 4 Kb   &lt;-- good</div><div class="line"># Positive numbers mean store up to _exactly_ that number of elements</div><div class="line"># per list node.</div><div class="line"># The highest performing option is usually -2 (8 Kb size) or -1 (4 Kb size),</div><div class="line"># but if your use case is unique, adjust the settings as necessary.</div></pre></td></tr></table></figure>
+</li>
+<li><p>(5).list-compress-depth(默认是0)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># Lists may also be compressed.</div><div class="line"># Compress depth is the number of quicklist ziplist nodes from *each* side of</div><div class="line"># the list to *exclude* from compression.  The head and tail of the list</div><div class="line"># are always uncompressed for fast push/pop operations.  Settings are:</div><div class="line"># 0: disable all list compression</div><div class="line"># 1: depth 1 means &quot;don&apos;t start compressing until after 1 node into the list,</div><div class="line">#    going from either the head or tail&quot;</div><div class="line">#    So: [head]-&gt;node-&gt;node-&gt;...-&gt;node-&gt;[tail]</div><div class="line">#    [head], [tail] will always be uncompressed; inner nodes will compress.</div><div class="line"># 2: [head]-&gt;[next]-&gt;node-&gt;node-&gt;...-&gt;node-&gt;[prev]-&gt;[tail]</div><div class="line">#    2 here means: don&apos;t compress head or head-&gt;next or tail-&gt;prev or tail,</div><div class="line">#    but compress all nodes between them.</div><div class="line"># 3: [head]-&gt;[next]-&gt;[next]-&gt;node-&gt;node-&gt;...-&gt;node-&gt;[prev]-&gt;[prev]-&gt;[tail]</div><div class="line"># etc.</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>说明</strong><br>Redis3.2.0引入了新的quicklist的数据结构做了list的底层存储方案。废弃了原来的两个配置参数，list-max-ziplist-entries和list-max-ziplist-value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6388&gt; config get list-max-ziplist-size</div><div class="line">1) &quot;list-max-ziplist-size&quot;</div><div class="line">2) &quot;-2&quot;</div><div class="line">127.0.0.1:6388&gt; config get list-compress-depth</div><div class="line">1) &quot;list-compress-depth&quot;</div><div class="line">2) &quot;0&quot;</div><div class="line">127.0.0.1:6388&gt; lpush user_list u1 u2 u5 u7 u99 u10 u3</div><div class="line">(integer) 7</div><div class="line">127.0.0.1:6388&gt; object encoding user_list</div><div class="line">&quot;quicklist&quot;</div></pre></td></tr></table></figure>
+<p>在Redis3.2.0中设置原来的参数已经不生效了，应该是无法使用了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6388&gt; config set list-max-ziplist-entries 512</div><div class="line">(error) ERR Unsupported CONFIG parameter: list-max-ziplist-entries</div><div class="line">127.0.0.1:6388&gt; config set list-max-ziplist-value 64</div><div class="line">(error) ERR Unsupported CONFIG parameter: list-max-ziplist-value</div></pre></td></tr></table></figure></p>
+<p>有关quicklist的详细使用还需要查询文档和源码来研究</p>
+<h3 id="三、-Redis3-0与3-2关于Cluster的一些变化-来自3-2-release-notes"><a href="#三、-Redis3-0与3-2关于Cluster的一些变化-来自3-2-release-notes" class="headerlink" title="三、 Redis3.0与3.2关于Cluster的一些变化(来自3.2-release-notes)"></a>三、 Redis3.0与3.2关于Cluster的一些变化(来自<a href="https://raw.githubusercontent.com/antirez/redis/3.2/00-RELEASENOTES" target="_blank" rel="external">3.2-release-notes</a>)</h3><p>原文：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Redis Cluster changes:</div><div class="line"></div><div class="line">All the Redis Cluster changes in 3.2 were backported to 3.0, so there is</div><div class="line">technically nothing new for now in this release. The most important things</div><div class="line">are:</div><div class="line"></div><div class="line">* Cluster rebalancing.</div><div class="line">* A pipelined MIGRATE command which is 10x faster and makes resharding</div><div class="line">  and rebalancing faster.</div><div class="line">* Improved replicas migration.</div><div class="line">* As a side effect of quicklists encoding (see above items), moving big</div><div class="line">  lists between nodes is now a lot faster.</div></pre></td></tr></table></figure></p>
+<p>Redis3.2.0的cluster完全兼容Redis3.0,也就是说可以混合部署组成集群，在Redis Cluster上Redis3.2.0没有做什么新的技术，但是也有一些比较重要的事情：</p>
+<ul>
+<li>Redis Cluster均衡（应该是指redis-trib.rb中实现类将slot进行负载均衡的功能）</li>
+<li>提供了一个基于流水线的migrate命令，用于水平迁移数据，速度是原来的10倍多。</li>
+<li>提升了从几点迁移的功能。</li>
+<li>在quicklist这种新的数据结构的帮助下，在节点之间迁移大的big list快了很多.</li>
+</ul>
+<p><strong>注意</strong>：上述特性均在Redis3.0.7有体现，如果对于Redis3.2.0不太放心的话，可以使用Redis3.0.7。</p>
+<h3 id="四、-Redis3-0与3-2关于Sentinel的一些变化-来自3-2-release-notes"><a href="#四、-Redis3-0与3-2关于Sentinel的一些变化-来自3-2-release-notes" class="headerlink" title="四、 Redis3.0与3.2关于Sentinel的一些变化(来自3.2-release-notes)"></a>四、 Redis3.0与3.2关于Sentinel的一些变化(来自<a href="https://raw.githubusercontent.com/antirez/redis/3.2/00-RELEASENOTES" target="_blank" rel="external">3.2-release-notes</a>)</h3><p>原文：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Redis Sentinel changes:</div><div class="line"></div><div class="line">* [NEW] Sentinel connection sharing. Makes Sentinels able to scale to</div><div class="line">        monitor many masters. (Salvatore Sanfilippo)</div><div class="line">* [NEW] New SENTINEL INFO-CACHE command. (Matt Stancliff)</div><div class="line">* More things backported to Redis 3.0 in the past, so no longer news of 3.2.</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>Sentinel connection sharing</code>不太了解，看着像是添加新的sentinel节点后，可以共享其他sentinel节点的master，对于sentinel监控多个master比较有用，这样扩展sentinel节点时候比较方便配置，有关这个后面会继续试验。</li>
+<li>提供info-cache命令</li>
+</ul>
+<p>有关Sentinel，3.2.0完全向后兼容3.0</p>
+<p>#### </p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/06/Spring Cloud相关图/" rel="next" title="Spring Cloud相关图">
+                <i class="fa fa-chevron-left"></i> Spring Cloud相关图
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/14/jvm学习之-jmap/" rel="prev" title="jvm学习之-jmap">
+                jvm学习之-jmap <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/06/1.Redis3.0与3.2/"
+           data-title="Redis 3.2.0 new-1.对比3.0" data-url="http://yoursite.com/2016/06/06/1.Redis3.0与3.2/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Redis3-0与3-2文件对比"><span class="nav-number">1.</span> <span class="nav-text">一、Redis3.0与3.2文件对比</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-clone-redis"><span class="nav-number">1.1.</span> <span class="nav-text">1. clone redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-checkout分支"><span class="nav-number">1.2.</span> <span class="nav-text">2. checkout分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-比较"><span class="nav-number">1.3.</span> <span class="nav-text">3. 比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Redis3-0与3-2默认配置文件变化"><span class="nav-number">2.</span> <span class="nav-text">二、Redis3.0与3.2默认配置文件变化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-配置变化"><span class="nav-number">2.1.</span> <span class="nav-text">1.配置变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-新配置说明"><span class="nav-number">2.2.</span> <span class="nav-text">2.新配置说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、-Redis3-0与3-2关于Cluster的一些变化-来自3-2-release-notes"><span class="nav-number">3.</span> <span class="nav-text">三、 Redis3.0与3.2关于Cluster的一些变化(来自3.2-release-notes)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、-Redis3-0与3-2关于Sentinel的一些变化-来自3-2-release-notes"><span class="nav-number">4.</span> <span class="nav-text">四、 Redis3.0与3.2关于Sentinel的一些变化(来自3.2-release-notes)</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

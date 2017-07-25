@@ -1,0 +1,758 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="注意1. 需要oracle jdk 7+。 2. 单机版HBase: Master,Zookeeper,Region Server都在一起，使用本地磁盘代替HDFS存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载HBase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /opt/hb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase学习-1.单机版安装">
+<meta property="og:url" content="http://yoursite.com/2017/05/23/Hbase学习-1.单机版安装/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="注意1. 需要oracle jdk 7+。 2. 单机版HBase: Master,Zookeeper,Region Server都在一起，使用本地磁盘代替HDFS存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载HBase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /opt/hb">
+<meta property="og:image" content="http://i1.itc.cn/20170524/3084_3b90ccd0_fa7e_2a29_3b30_48fbce4e6038_1.png">
+<meta property="og:updated_time" content="2017-05-25T01:04:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HBase学习-1.单机版安装">
+<meta name="twitter:description" content="注意1. 需要oracle jdk 7+。 2. 单机版HBase: Master,Zookeeper,Region Server都在一起，使用本地磁盘代替HDFS存储。 3. 本示例使用的是1.2.5版本。 4. 生产环境不建议使用root启动。 一、安装、配置、启动1.下载HBase镜像：http://mirror.bit.edu.cn/apache/hbase/ 1234cd /opt/hb">
+<meta name="twitter:image" content="http://i1.itc.cn/20170524/3084_3b90ccd0_fa7e_2a29_3b30_48fbce4e6038_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> HBase学习-1.单机版安装 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                HBase学习-1.单机版安装
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T21:20:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/Hbase学习-1.单机版安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/Hbase学习-1.单机版安装/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/Hbase学习-1.单机版安装/" class="leancloud_visitors" data-flag-title="HBase学习-1.单机版安装">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><pre><code>1. 需要oracle jdk 7+。
+2. 单机版HBase: Master,Zookeeper,Region Server都在一起，使用本地磁盘代替HDFS存储。
+3. 本示例使用的是1.2.5版本。
+4. 生产环境不建议使用root启动。
+</code></pre><h4 id="一、安装、配置、启动"><a href="#一、安装、配置、启动" class="headerlink" title="一、安装、配置、启动"></a>一、安装、配置、启动</h4><h5 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h5><p>HBase镜像：<a href="http://mirror.bit.edu.cn/apache/hbase/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase/</div><div class="line">wget http://archive.apache.org/dist/hbase/1.2.5/hbase-1.2.5-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.5-bin.tar.gz</div><div class="line">ln -s /opt/hbase/hbase-1.2.5 hbase</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h5 id="2-相关目录"><a href="#2-相关目录" class="headerlink" title="2.相关目录"></a>2.相关目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase/zookeeper</div><div class="line">mkdir -p /opt/hbase/data</div></pre></td></tr></table></figure>
+<h5 id="3-修改HBase相关环境变量"><a href="#3-修改HBase相关环境变量" class="headerlink" title="3. 修改HBase相关环境变量"></a>3. 修改HBase相关环境变量</h5><p>vim /etc/profile </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/jdk</div><div class="line">HBASE_HOME=/opt/hbase/hbase</div><div class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/jre/lib</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin</div></pre></td></tr></table></figure>
+<p>生效：source /etc/profile</p>
+<h5 id="4-修改hbase-site-xml配置"><a href="#4-修改hbase-site-xml配置" class="headerlink" title="4. 修改hbase-site.xml配置"></a>4. 修改hbase-site.xml配置</h5><p>vim /opt/hbase/hbase/conf/hbase-site.xml</p>
+<p>如果不添加HBase会将数据存在在/tmp/hbase-${user.name}目录下，在机器重启时候会删掉</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///opt/hbase/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.zookeeper.property.dataDir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/hbase/zookeeper<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
+<h5 id="5-修改hbase-env-sh中的JAVA-HOME地址"><a href="#5-修改hbase-env-sh中的JAVA-HOME地址" class="headerlink" title="5. 修改hbase-env.sh中的JAVA_HOME地址"></a>5. 修改hbase-env.sh中的JAVA_HOME地址</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk/</div></pre></td></tr></table></figure>
+<h5 id="6-启动"><a href="#6-启动" class="headerlink" title="6. 启动"></a>6. 启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh /opt/hbase/hbase/bin/start-hbase.sh</div></pre></td></tr></table></figure>
+<h4 id="二、开始"><a href="#二、开始" class="headerlink" title="二、开始"></a>二、开始</h4><h5 id="1-相关确认"><a href="#1-相关确认" class="headerlink" title="1.相关确认"></a>1.相关确认</h5><ul>
+<li>进程：单机版的HBase将Master、Region Server、Zookeeper等放在一个进程里。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># jps -l</span></div><div class="line">25277 org.apache.hadoop.hbase.master.HMaster</div></pre></td></tr></table></figure>
+<p>可以通过netstat观察进程下的端口：</p>
+<ul>
+<li>HMaster管理：<br><a href="http://10.10.53.159:16010/" target="_blank" rel="external">http://10.10.53.159:16010/master-status</a></li>
+</ul>
+<p><img src="http://i1.itc.cn/20170524/3084_3b90ccd0_fa7e_2a29_3b30_48fbce4e6038_1.png" alt="Hbase status界面"></p>
+<h5 id="2-HBase-shell连接"><a href="#2-HBase-shell连接" class="headerlink" title="2. HBase shell连接"></a>2. HBase shell连接</h5><p>hbase shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hbase(main):001:0&gt; status</div><div class="line">1 active master, 0 backup masters, 1 servers, 0 dead, 2.0000 average load</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/28/Hbase学习1.2-伪分布式安装/" rel="next" title="Hbase学习1.2-伪分布式安装">
+                <i class="fa fa-chevron-left"></i> Hbase学习1.2-伪分布式安装
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/23/Hbase学习2-shell操作/" rel="prev" title="HBase学习2-shell客户端基本使用">
+                HBase学习2-shell客户端基本使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/23/Hbase学习-1.单机版安装/"
+           data-title="HBase学习-1.单机版安装" data-url="http://yoursite.com/2017/05/23/Hbase学习-1.单机版安装/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意"><span class="nav-number">1.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一、安装、配置、启动"><span class="nav-number">2.</span> <span class="nav-text">一、安装、配置、启动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-下载"><span class="nav-number">2.1.</span> <span class="nav-text">1.下载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-相关目录"><span class="nav-number">2.2.</span> <span class="nav-text">2.相关目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-修改HBase相关环境变量"><span class="nav-number">2.3.</span> <span class="nav-text">3. 修改HBase相关环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-修改hbase-site-xml配置"><span class="nav-number">2.4.</span> <span class="nav-text">4. 修改hbase-site.xml配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-修改hbase-env-sh中的JAVA-HOME地址"><span class="nav-number">2.5.</span> <span class="nav-text">5. 修改hbase-env.sh中的JAVA_HOME地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-启动"><span class="nav-number">2.6.</span> <span class="nav-text">6. 启动</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、开始"><span class="nav-number">3.</span> <span class="nav-text">二、开始</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-相关确认"><span class="nav-number">3.1.</span> <span class="nav-text">1.相关确认</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-HBase-shell连接"><span class="nav-number">3.2.</span> <span class="nav-text">2. HBase shell连接</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

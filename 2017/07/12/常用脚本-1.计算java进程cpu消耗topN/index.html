@@ -1,0 +1,741 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、作用由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用脚本-1.计算java进程cpu消耗topN">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="一、作用由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。">
+<meta property="og:updated_time" content="2017-07-12T05:56:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用脚本-1.计算java进程cpu消耗topN">
+<meta name="twitter:description" content="一、作用由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 常用脚本-1.计算java进程cpu消耗topN | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                常用脚本-1.计算java进程cpu消耗topN
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-12T13:20:00+08:00" content="2017-07-12">
+              2017-07-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/脚本/" itemprop="url" rel="index">
+                    <span itemprop="name">脚本</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" class="leancloud_visitors" data-flag-title="常用脚本-1.计算java进程cpu消耗topN">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、作用"><a href="#一、作用" class="headerlink" title="一、作用"></a>一、作用</h3><p>由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。</p>
+<a id="more"></a>
+<h3 id="二、使用方法"><a href="#二、使用方法" class="headerlink" title="二、使用方法"></a>二、使用方法</h3><h4 id="1-代码"><a href="#1-代码" class="headerlink" title="1. 代码"></a>1. 代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">############################################################################</div><div class="line"># @desc: 统计top N消耗CPU的线程栈</div><div class="line"># @author: leifu</div><div class="line">###########################################################################</div><div class="line"></div><div class="line">if [ $# -eq 0 ];then</div><div class="line">    echo &quot;please enter java pid&quot;</div><div class="line">    exit -1</div><div class="line">fi</div><div class="line"></div><div class="line">jstack_cmd=&quot;&quot;</div><div class="line">if [[ $JAVA_HOME != &quot;&quot; ]]; then</div><div class="line">    jstack_cmd=&quot;$JAVA_HOME/bin/jstack&quot;</div><div class="line">else</div><div class="line">    r=`which jstack 2&gt;/dev/null`</div><div class="line">    if [[ $r != &quot;&quot; ]]; then</div><div class="line">        jstack_cmd=$r</div><div class="line">    else</div><div class="line">        echo &quot;can not find jstack&quot;</div><div class="line">        exit -2</div><div class="line">    fi</div><div class="line">fi</div><div class="line"></div><div class="line">pid=$1</div><div class="line">topN=$2</div><div class="line">now=$(date &quot;+%Y%m%d%H%M%S&quot;)</div><div class="line">jstackFile=jstack_$&#123;pid&#125;_$&#123;now&#125;.txt</div><div class="line">topFile=top_$&#123;pid&#125;_$&#123;now&#125;.txt</div><div class="line">resultFile=result_$&#123;pid&#125;_$&#123;now&#125;.txt</div><div class="line">#jstack到本地</div><div class="line">jstack $pid &gt; $&#123;jstackFile&#125;</div><div class="line">#top -H -p 按照cpu消耗倒排将线程到本地</div><div class="line">top -H -b -n 1 -p $pid | sed &apos;1,/^$/d&apos; | sed &apos;1d;/^$/d&apos; | grep -v $pid | sort -nrk9 | head -$&#123;topN&#125; &gt; $&#123;topFile&#125;</div><div class="line">#从jstack中找到对应线程信息</div><div class="line">cat $&#123;topFile&#125; | while read line</div><div class="line">do</div><div class="line">    echo &quot;$line&quot; | awk &apos;&#123;print &quot;tid: &quot;$1,&quot; cpu: %&quot;$9&#125;&apos; &gt;&gt; $&#123;resultFile&#125;</div><div class="line">    tid_0x=`printf &quot;%0x&quot; $(echo &quot;$line&quot; | awk &apos;&#123;print $1&#125;&apos;)`</div><div class="line">    cat $&#123;jstackFile&#125; | grep $tid_0x -A20 | sed -n &apos;1,/^$/p&apos; &gt;&gt; $&#123;resultFile&#125;</div><div class="line">done</div><div class="line">#备份jstack和top信息</div><div class="line">mkdir -p backup</div><div class="line">mv $&#123;jstackFile&#125; backup/</div><div class="line">mv $&#123;topFile&#125; backup/</div></pre></td></tr></table></figure>
+<p>有关代码的实现细节，见第三节。</p>
+<h4 id="2-使用"><a href="#2-使用" class="headerlink" title="2. 使用"></a>2. 使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh jstack_top_cpu.sh $&#123;pid&#125; $&#123;topN&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-返回结果"><a href="#3-返回结果" class="headerlink" title="3. 返回结果"></a>3. 返回结果</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">backup目录中包含了: jstack的快照和top -H -p $&#123;pid&#125;的快照</div><div class="line">当前目录中： result_$&#123;timestamp&#125;是最终结果。</div></pre></td></tr></table></figure>
+<p>例如返回结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">tid: 37745  cpu: %27.7</div><div class="line">&quot;DubboServerHandler-10.10.34.11:20880-thread-254&quot; daemon prio=10 tid=0x00007ffaa0053000 nid=0x9371 waiting on condition [0x00007ff576458000]</div><div class="line">   java.lang.Thread.State: TIMED_WAITING (parking)</div><div class="line">	at sun.misc.Unsafe.park(Native Method)</div><div class="line">	- parking to wait for  &lt;0x00000006bfddea40&gt; (a java.util.concurrent.FutureTask)</div><div class="line">	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:226)</div><div class="line">	at java.util.concurrent.FutureTask.awaitDone(FutureTask.java:422)</div><div class="line">	at java.util.concurrent.FutureTask.get(FutureTask.java:199)</div><div class="line">	at com.sohu.tv.mobil.async.service.impl.AsyncComponentImpl.executeMultiTask(AsyncComponentImpl.java:76)</div><div class="line">	at com.sohu.tv.mobil.service.feature.data.UgcFeatureBatchDataComponentImplV5.get(UgcFeatureBatchDataComponentImplV5.java:115)</div><div class="line">	at com.sohu.tv.mobil.common.data.impl.BatchDataServiceImpl.mget(BatchDataServiceImpl.java:88)</div><div class="line">	at com.sohu.tv.mobil.service.feature.impl.UgcFeatureServiceImpl.getUgcFeatureBatch(UgcFeatureServiceImpl.java:66)</div><div class="line">	at com.sohu.tv.mobil.service.strategy.ugc.traffic.AbstractPairTrafficStrategy.getResult(AbstractPairTrafficStrategy.java:104)</div><div class="line">	at com.sohu.tv.mobil.service.api.BlogServiceImpl.dealStrategy(BlogServiceImpl.java:217)</div><div class="line">	at com.sohu.tv.mobil.service.api.BlogServiceImpl.doRecommend(BlogServiceImpl.java:130)</div><div class="line">	at com.sohu.tv.mobil.service.api.BlogServiceImpl.newRecommend(BlogServiceImpl.java:61)</div><div class="line">	at com.alibaba.dubbo.common.bytecode.Wrapper25.invokeMethod(Wrapper25.java)</div><div class="line">	at com.alibaba.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:46)</div><div class="line">	at com.alibaba.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:72)</div><div class="line">	at com.alibaba.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:53)</div><div class="line">	at com.alibaba.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:78)</div><div class="line">	at com.alibaba.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:91)</div><div class="line">tid: 37261  cpu: %25.9</div><div class="line">&quot;DubboServerHandler-10.10.34.11:20880-thread-136&quot; daemon prio=10 tid=0x00007ffaa8022000 nid=0x918d waiting on condition [0x00007ff57df3d000]</div><div class="line">   java.lang.Thread.State: TIMED_WAITING (parking)</div></pre></td></tr></table></figure>
+<h3 id="三、脚本实现思路"><a href="#三、脚本实现思路" class="headerlink" title="三、脚本实现思路"></a>三、脚本实现思路</h3><h4 id="1-利用top-H-p-pid-找到当前进程下所有线程，按照cpu倒序topN"><a href="#1-利用top-H-p-pid-找到当前进程下所有线程，按照cpu倒序topN" class="headerlink" title="1.利用top -H -p ${pid}找到当前进程下所有线程，按照cpu倒序topN"></a>1.利用top -H -p ${pid}找到当前进程下所有线程，按照cpu倒序topN</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">37745 root      20   0 34.3g  23g  18m S 27.7 76.3  53:45.06 java</div><div class="line">37261 root      20   0 34.3g  23g  18m S 25.9 76.3  15:58.38 java</div><div class="line">38167 root      20   0 34.3g  23g  18m S 24.0 76.3  16:48.27 java</div><div class="line">37070 root      20   0 34.3g  23g  18m R 24.0 76.3   2:50.49 java</div><div class="line">37400 root      20   0 34.3g  23g  18m S 22.2 76.3   5:24.99 java</div><div class="line">38116 root      20   0 34.3g  23g  18m S 20.3 76.3   5:48.78 java</div><div class="line">37437 root      20   0 34.3g  23g  18m S 16.6 76.3  11:34.33 java</div><div class="line">37895 root      20   0 34.3g  23g  18m S 14.8 76.3  22:10.59 java</div><div class="line">37005 root      20   0 34.3g  23g  18m S 11.1 76.3   9:52.72 java</div><div class="line">37426 root      20   0 34.3g  23g  18m S  5.5 76.3   1:45.73 java</div><div class="line">37105 root      20   0 34.3g  23g  18m S  3.7 76.3   8:53.36 java</div><div class="line">38602 root      20   0 34.3g  23g  18m S  1.8 76.3   0:04.94 java</div><div class="line">37775 root      20   0 34.3g  23g  18m S  1.8 76.3   0:24.95 java</div><div class="line">37431 root      20   0 34.3g  23g  18m S  1.8 76.3   3:45.74 java</div><div class="line">37310 root      20   0 34.3g  23g  18m S  1.8 76.3   0:49.59 java</div><div class="line">37277 root      20   0 34.3g  23g  18m S  1.8 76.3   3:19.19 java</div><div class="line">37179 root      20   0 34.3g  23g  18m S  1.8 76.3   0:45.26 java</div><div class="line">37169 root      20   0 34.3g  23g  18m S  1.8 76.3   0:54.43 java</div><div class="line">36972 root      20   0 34.3g  23g  18m S  1.8 76.3   2:50.36 java</div><div class="line">36965 root      20   0 34.3g  23g  18m S  1.8 76.3   2:49.13 java</div></pre></td></tr></table></figure>
+<h4 id="2-使用jstack-pid-记录下进程快照"><a href="#2-使用jstack-pid-记录下进程快照" class="headerlink" title="2.使用jstack ${pid}记录下进程快照"></a>2.使用jstack ${pid}记录下进程快照</h4><h4 id="3-将第一步中的线程id-第一列-转为是十六进制，在jstack中寻找进记录栈信息-grep-A"><a href="#3-将第一步中的线程id-第一列-转为是十六进制，在jstack中寻找进记录栈信息-grep-A" class="headerlink" title="3.将第一步中的线程id(第一列)转为是十六进制，在jstack中寻找进记录栈信息(grep -A)"></a>3.将第一步中的线程id(第一列)转为是十六进制，在jstack中寻找进记录栈信息(grep -A)</h4><p>例如十进制37745的十六进制是0x9371，可以在jstack的快照找到对应的堆栈:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">cat jstack_36645_20170712135221.txt | grep -A 20 0x9371</div><div class="line">&quot;DubboServerHandler-10.10.34.11:20880-thread-254&quot; daemon prio=10 tid=0x00007ffaa0053000 nid=0x9371 waiting on condition [0x00007ff576458000]</div><div class="line">   java.lang.Thread.State: TIMED_WAITING (parking)</div><div class="line">	at sun.misc.Unsafe.park(Native Method)</div><div class="line">	- parking to wait for  &lt;0x00000006bfddea40&gt; (a java.util.concurrent.FutureTask)</div><div class="line">	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:226)</div><div class="line">	at java.util.concurrent.FutureTask.awaitDone(FutureTask.java:422)</div><div class="line">	at java.util.concurrent.FutureTask.get(FutureTask.java:199)</div><div class="line">	at com.sohu.tv.mobil.async.service.impl.AsyncComponentImpl.executeMultiTask(AsyncComponentImpl.java:76)</div><div class="line">	at com.sohu.tv.mobil.service.feature.data.UgcFeatureBatchDataComponentImplV5.get(UgcFeatureBatchDataComponentImplV5.java:115)</div><div class="line">	at com.sohu.tv.mobil.common.data.impl.BatchDataServiceImpl.mget(BatchDataServiceImpl.java:88)</div><div class="line">	at com.sohu.tv.mobil.service.feature.impl.UgcFeatureServiceImpl.getUgcFeatureBatch(UgcFeatureServiceImpl.java:66)</div><div class="line">	at com.sohu.tv.mobil.service.strategy.ugc.traffic.AbstractPairTrafficStrategy.getResult(AbstractPairTrafficStrategy.java:104)</div><div class="line">	at com.sohu.tv.mobil.service.api.BlogServiceImpl.dealStrategy(BlogServiceImpl.java:217)</div><div class="line">	at com.sohu.tv.mobil.service.api.BlogServiceImpl.doRecommend(BlogServiceImpl.java:130)</div><div class="line">	at com.sohu.tv.mobil.service.api.BlogServiceImpl.newRecommend(BlogServiceImpl.java:61)</div><div class="line">	at com.alibaba.dubbo.common.bytecode.Wrapper25.invokeMethod(Wrapper25.java)</div><div class="line">	at com.alibaba.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:46)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">启发：除了可以按照cpu倒排，还可以按照time倒排，算出哪些线程生命周期比较长。</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/10/Metrics统计造成某台Region Server的CPU过高/" rel="next" title="Metrics统计造成某台Region Server的CPU过高">
+                <i class="fa fa-chevron-left"></i> Metrics统计造成某台Region Server的CPU过高
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/12/常用脚本-2.保存java进程相关现场/" rel="prev" title="常用脚本-2.保存java进程相关现场">
+                常用脚本-2.保存java进程相关现场 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/12/常用脚本-1.计算java进程cpu消耗topN/"
+           data-title="常用脚本-1.计算java进程cpu消耗topN" data-url="http://yoursite.com/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、作用"><span class="nav-number">1.</span> <span class="nav-text">一、作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用方法"><span class="nav-number">2.</span> <span class="nav-text">二、使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-代码"><span class="nav-number">2.1.</span> <span class="nav-text">1. 代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-使用"><span class="nav-number">2.2.</span> <span class="nav-text">2. 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-返回结果"><span class="nav-number">2.3.</span> <span class="nav-text">3. 返回结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、脚本实现思路"><span class="nav-number">3.</span> <span class="nav-text">三、脚本实现思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-利用top-H-p-pid-找到当前进程下所有线程，按照cpu倒序topN"><span class="nav-number">3.1.</span> <span class="nav-text">1.利用top -H -p ${pid}找到当前进程下所有线程，按照cpu倒序topN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-使用jstack-pid-记录下进程快照"><span class="nav-number">3.2.</span> <span class="nav-text">2.使用jstack ${pid}记录下进程快照</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-将第一步中的线程id-第一列-转为是十六进制，在jstack中寻找进记录栈信息-grep-A"><span class="nav-number">3.3.</span> <span class="nav-text">3.将第一步中的线程id(第一列)转为是十六进制，在jstack中寻找进记录栈信息(grep -A)</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。相关代码：https://github.com/carlosfu/hbase-train一、pom依赖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hbase学习3-java客户端基本使用">
+<meta property="og:url" content="http://yoursite.com/2016/11/28/Hbase学习3-java客户端/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。相关代码：https://github.com/carlosfu/hbase-train一、pom依赖">
+<meta property="og:updated_time" content="2017-05-25T01:15:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hbase学习3-java客户端基本使用">
+<meta name="twitter:description" content="注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。相关代码：https://github.com/carlosfu/hbase-train一、pom依赖">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Hbase学习3-java客户端基本使用 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Hbase学习3-java客户端基本使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-28T09:46:34+08:00" content="2016-11-28">
+              2016-11-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hbase/" itemprop="url" rel="index">
+                    <span itemprop="name">hbase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/28/Hbase学习3-java客户端/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/Hbase学习3-java客户端/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/28/Hbase学习3-java客户端/" class="leancloud_visitors" data-flag-title="Hbase学习3-java客户端基本使用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。"><a href="#注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。" class="headerlink" title="注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。"></a>注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。</h3><h3 id="相关代码：https-github-com-carlosfu-hbase-train"><a href="#相关代码：https-github-com-carlosfu-hbase-train" class="headerlink" title="相关代码：https://github.com/carlosfu/hbase-train"></a>相关代码：<a href="https://github.com/carlosfu/hbase-train" target="_blank" rel="external">https://github.com/carlosfu/hbase-train</a></h3><h4 id="一、pom依赖"><a href="#一、pom依赖" class="headerlink" title="一、pom依赖"></a>一、pom依赖</h4><a id="more"></a>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">hadoop.version</span>&gt;</span>2.7.1<span class="tag">&lt;/<span class="name">hadoop.version</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">hbase.version</span>&gt;</span>1.2.4<span class="tag">&lt;/<span class="name">hbase.version</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">junit.version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">junit.version</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">slf4j.version</span>&gt;</span>1.7.6<span class="tag">&lt;/<span class="name">slf4j.version</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">logback.version</span>&gt;</span>1.1.3<span class="tag">&lt;/<span class="name">logback.version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;junit.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;logback.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;logback.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hadoop-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;hadoop.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jsp-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet.jsp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hbase<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hbase-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;hbase.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hadoop-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hadoop-auth<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hadoop-mapreduce-client-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jdk.tools<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jdk.tools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="二、连接初始化"><a href="#二、连接初始化" class="headerlink" title="二、连接初始化"></a>二、连接初始化</h4><ul>
+<li>hbase-site.xml是直接从hbase服务器上拷贝过来的，直接用这个文件作为Hbase客户端初始化的客户端文件。</li>
+<li>Hbase0.98后，HTable,HTablePool已经被废弃，所有连接使用Connection类管理。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> HbaseUtil &#123;</div><div class="line">    HBASE_BX(HbaseUtil.MAJOR_HBASE_SITE);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String MAJOR_HBASE_SITE = <span class="string">"hbase/hbase-site.xml"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Configuration config;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Connection connection;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">HbaseUtil</span><span class="params">(String resource)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">this</span>.config = HBaseConfiguration.create();</div><div class="line">            <span class="keyword">this</span>.config.addResource(resource);</div><div class="line">            <span class="keyword">this</span>.connection = ConnectionFactory.createConnection(config);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            logger.error(e.getMessage(), e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="三、增删改查"><a href="#三、增删改查" class="headerlink" title="三、增删改查"></a>三、增删改查</h4><h5 id="3-1-查"><a href="#3-1-查" class="headerlink" title="3.1 查"></a>3.1 查</h5><ul>
+<li>通过tableName, rowkey, family, qualifier来定位到cell(但是cell可能涉及到多版本)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Result <span class="title">get</span><span class="params">(String tableName, <span class="keyword">byte</span>[] rowKey, <span class="keyword">byte</span>[] family, <span class="keyword">byte</span>[] qualifier)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">       Table table = <span class="keyword">null</span>;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           table = connection.getTable(TableName.valueOf(tableName));</div><div class="line">           Get get = <span class="keyword">new</span> Get(rowKey);</div><div class="line">           get.addColumn(family, qualifier);</div><div class="line">           Result result = table.get(get);</div><div class="line">           <span class="keyword">return</span> result;</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           <span class="keyword">throw</span> e;</div><div class="line">       &#125; <span class="keyword">finally</span> &#123;</div><div class="line">           <span class="keyword">if</span> (table != <span class="keyword">null</span>) &#123;</div><div class="line">               <span class="keyword">try</span> &#123;</div><div class="line">                   table.close();</div><div class="line">               &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                   <span class="keyword">throw</span> e;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>通过tableName, rowkey, family来定位到所有qualifier的cell(但是cell可能涉及到多版本)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Result <span class="title">get</span><span class="params">(String tableName, <span class="keyword">byte</span>[] rowKey, <span class="keyword">byte</span>[] family)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        Table table = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            table = connection.getTable(TableName.valueOf(tableName));</div><div class="line">            Get get = <span class="keyword">new</span> Get(rowKey);</div><div class="line">            get.addFamily(family);</div><div class="line">            Result result = table.get(get);</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">throw</span> e;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (table != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    table.close();</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    <span class="keyword">throw</span> e;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>打印Result</p>
+<p>  result.list()已经被废弃<br>  result.rawCells()中包含了rowkey,family,qualifier,value多维度信息，使用CellUtil即可获取。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">printResult</span><span class="params">(Result result)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//list()已经被废弃</span></div><div class="line">        List&lt;KeyValue&gt; keyValues = result.list();</div><div class="line">        Cell[] cells = result.rawCells();</div><div class="line">        <span class="keyword">for</span> (Cell cell : cells) &#123;</div><div class="line">            <span class="keyword">byte</span>[] rowKeyByte = CellUtil.cloneRow(cell);</div><div class="line">            <span class="keyword">byte</span>[] familyByte = CellUtil.cloneFamily(cell);</div><div class="line">            <span class="keyword">byte</span>[] qualifierByte = CellUtil.cloneQualifier(cell);</div><div class="line">            <span class="keyword">byte</span>[] valueByte = CellUtil.cloneValue(cell);</div><div class="line">            logger.info(<span class="string">"rowkey:&#123;&#125;, family:&#123;&#125;, column:&#123;&#125;, value:&#123;&#125;"</span>, Bytes.toString(rowKeyByte),Bytes.toString(familyByte), Bytes.toString(qualifierByte), Bytes.toString(valueByte));</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h5 id="3-2-增"><a href="#3-2-增" class="headerlink" title="3.2 增"></a>3.2 增</h5><p>增涉及到元素： tableName, rowKey, family, qualifier, version(可选), value<br>批量增：table.put(puts);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(String tableName, CustomHbaseModel customHbaseModel)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">       <span class="keyword">if</span> (customHbaseModel == <span class="keyword">null</span>) &#123;</div><div class="line">           <span class="keyword">return</span>;</div><div class="line">       &#125;</div><div class="line">       Table table = <span class="keyword">null</span>;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           table = connection.getTable(TableName.valueOf(tableName));</div><div class="line">           Put put = <span class="keyword">new</span> Put(customHbaseModel.getRowKey());</div><div class="line">           <span class="keyword">long</span> version = customHbaseModel.getVersion();</div><div class="line">           <span class="keyword">if</span> (version &gt; <span class="number">0</span>) &#123;</div><div class="line">               put.addColumn(customHbaseModel.getFamily(), customHbaseModel.getQualifier(), version,</div><div class="line">                       customHbaseModel.getValue());</div><div class="line">           &#125; <span class="keyword">else</span> &#123;</div><div class="line">               put.addColumn(customHbaseModel.getFamily(), customHbaseModel.getQualifier(),</div><div class="line">                       customHbaseModel.getValue());</div><div class="line">           &#125;</div><div class="line">           table.put(put);</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           <span class="keyword">throw</span> e;</div><div class="line">       &#125; <span class="keyword">finally</span> &#123;</div><div class="line">           <span class="keyword">if</span> (table != <span class="keyword">null</span>) &#123;</div><div class="line">               <span class="keyword">try</span> &#123;</div><div class="line">                   table.close();</div><div class="line">               &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                   <span class="keyword">throw</span> e;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">batchPut</span><span class="params">(String tableName, List&lt;CustomHbaseModel&gt; customHbaseModelList)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">       Table table = <span class="keyword">null</span>;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           List&lt;Put&gt; puts = <span class="keyword">new</span> ArrayList&lt;Put&gt;();</div><div class="line">           <span class="keyword">for</span> (CustomHbaseModel customHbaseModel : customHbaseModelList) &#123;</div><div class="line">               Put put = <span class="keyword">new</span> Put(customHbaseModel.getRowKey());</div><div class="line">               <span class="keyword">long</span> version = customHbaseModel.getVersion();</div><div class="line">               <span class="keyword">if</span> (version &gt; <span class="number">0</span>) &#123;</div><div class="line">                   put.addColumn(customHbaseModel.getFamily(), customHbaseModel.getQualifier(), version,</div><div class="line">                           customHbaseModel.getValue());</div><div class="line">               &#125; <span class="keyword">else</span> &#123;</div><div class="line">                   put.addColumn(customHbaseModel.getFamily(), customHbaseModel.getQualifier(),</div><div class="line">                           customHbaseModel.getValue());</div><div class="line">               &#125;</div><div class="line">               puts.add(put);</div><div class="line">           &#125;</div><div class="line">           table = connection.getTable(TableName.valueOf(tableName));</div><div class="line">           table.put(puts);</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           <span class="keyword">throw</span> e;</div><div class="line">       &#125; <span class="keyword">finally</span> &#123;</div><div class="line">           <span class="keyword">if</span> (table != <span class="keyword">null</span>) &#123;</div><div class="line">               <span class="keyword">try</span> &#123;</div><div class="line">                   table.close();</div><div class="line">               &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                   <span class="keyword">throw</span> e;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h5 id="3-3-删"><a href="#3-3-删" class="headerlink" title="3.3 删"></a>3.3 删</h5><p>删： tableName, rowKey, family, qualifer, version(可选)<br>注意删只事做标记，只有在major compact才会真正执行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(String tableName, <span class="keyword">byte</span>[] rowKey, <span class="keyword">byte</span>[] family, <span class="keyword">byte</span>[] qualifier)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        Table table = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            table = connection.getTable(TableName.valueOf(tableName));</div><div class="line">            Delete delete = <span class="keyword">new</span> Delete(rowKey);</div><div class="line">            delete.addColumn(family, qualifier);</div><div class="line">            table.delete(delete);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">throw</span> e;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (table != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    table.close();</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    <span class="keyword">throw</span> e;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/19/jvm学习之-jstat/" rel="next" title="jvm学习之-jstat">
+                <i class="fa fa-chevron-left"></i> jvm学习之-jstat
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/28/Hbase学习1.2-伪分布式安装/" rel="prev" title="Hbase学习1.2-伪分布式安装">
+                Hbase学习1.2-伪分布式安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/28/Hbase学习3-java客户端/"
+           data-title="Hbase学习3-java客户端基本使用" data-url="http://yoursite.com/2016/11/28/Hbase学习3-java客户端/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。"><span class="nav-number">1.</span> <span class="nav-text">注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关代码：https-github-com-carlosfu-hbase-train"><span class="nav-number">2.</span> <span class="nav-text">相关代码：https://github.com/carlosfu/hbase-train</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、pom依赖"><span class="nav-number">2.1.</span> <span class="nav-text">一、pom依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、连接初始化"><span class="nav-number">2.2.</span> <span class="nav-text">二、连接初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、增删改查"><span class="nav-number">2.3.</span> <span class="nav-text">三、增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-查"><span class="nav-number">2.3.1.</span> <span class="nav-text">3.1 查</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-增"><span class="nav-number">2.3.2.</span> <span class="nav-text">3.2 增</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-删"><span class="nav-number">2.3.3.</span> <span class="nav-text">3.3 删</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
