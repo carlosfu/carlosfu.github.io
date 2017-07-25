@@ -236,6 +236,444 @@
             
               
                 
+                <a class="post-title-link" href="/2017/02/16/Redis内存优化/" itemprop="url">
+                  Redis的内存优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-16T17:20:00+08:00" content="2017-02-16">
+              2017-02-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/16/Redis内存优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/16/Redis内存优化/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/16/Redis内存优化/" class="leancloud_visitors" data-flag-title="Redis的内存优化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。"><a href="#声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。" class="headerlink" title="声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。"></a>声明：本文内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书第八章，如转载请声明。</h3><p>Redis所有的数据都在内存中，而内存又是非常宝贵的资源。对于如何优化内存使用一直是Redis用户非常关注的问题。本文让我们深入到Redis细节中，学习内存优化的技巧。分为如下几个部分：</p>
+<p>一. <a href="#chapter1">redisObject对象</a><br>二. <a href="#chapter2">缩减键值对象</a><br>三. <a href="#chapter3">共享对象池</a><br>四. <a href="#chapter4">字符串优化</a><br>五. <a href="#chapter5">编码优化</a><br>六. <a href="#chapter6">控制key的数量</a></p>
+<p><a name="chapter1"></a></p>
+<h2 id="一-redisObject对象"><a href="#一-redisObject对象" class="headerlink" title="一. redisObject对象"></a>一. redisObject对象</h2><p>Redis存储的所有值对象在内部定义为redisObject结构体，内部结构如下图所示。</p>
+<p><img src="http://i1.itc.cn/20170216/3084_2c3a0c00_6cbc_c4d9_01fe_8852cc497653_1.png" alt=""></p>
+<p>Redis存储的数据都使用redisObject来封装，包括string,hash,list,set,zset在内的所有数据类型。理解redisObject对内存优化非常有帮助，下面针对每个字段做详细说明：</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/16/Redis内存优化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/16/Redis的Linux系统优化/" itemprop="url">
+                  Redis的Linux系统优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-16T16:20:00+08:00" content="2017-02-16">
+              2017-02-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/16/Redis的Linux系统优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/16/Redis的Linux系统优化/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/16/Redis的Linux系统优化/" class="leancloud_visitors" data-flag-title="Redis的Linux系统优化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"><a href="#声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。" class="headerlink" title="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"></a>声明：本文内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书第12章，如转载请声明。</h3><p>通常来看，Redis开发和运维人员更加关注的是Redis本身的一些配置优化，例如AOF和RDB的配置优化、数据结构的配置优化等，但是对于操作系统是否需要针对Redis做一些配置优化不甚了解或者不太关心，然而事实证明一个良好的系统操作配置能够为Redis服务良好运行保驾护航。</p>
+<p>众所周知Redis的作者对于Windows操作系统并不感冒，目前大部分公司都会将Web服务器、数据库服务器等部署在Linux操作系统上，Redis也不例外。所以接下来介绍Linux操作系统如何优化Redis，包含如下七个方面。</p>
+<p>一. <a href="#chapter1">内存分配控制</a><br>二. <a href="#chapter2">swappiness</a><br>三. <a href="#chapter3">Transparent Huge Pages</a><br>四. <a href="#chapter4">OOM killer</a><br>五. <a href="#chapter5">使用NTP</a><br>六. <a href="#chapter6">ulimit</a><br>七. <a href="#chapter7">TCP backlog</a></p>
+<p><a name="chapter1"></a></p>
+<h2 id="一-内存分配控制"><a href="#一-内存分配控制" class="headerlink" title="一. 内存分配控制"></a>一. 内存分配控制</h2><h3 id="1-vm-overcommit-memory"><a href="#1-vm-overcommit-memory" class="headerlink" title="1. vm.overcommit_memory"></a>1. vm.overcommit_memory</h3><p>Redis在启动时可能会出现这样的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &apos;vm.overcommit_memory = 1&apos; to /etc/sysctl.conf and then reboot or run the </div><div class="line">command &apos;sysctl vm.overcommit_memory=1&apos; for this to take effect.</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/16/Redis的Linux系统优化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/28/Hbase学习1.2-伪分布式安装/" itemprop="url">
+                  Hbase学习1.2-伪分布式安装
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-28T11:20:00+08:00" content="2016-11-28">
+              2016-11-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hbase/" itemprop="url" rel="index">
+                    <span itemprop="name">hbase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/28/Hbase学习1.2-伪分布式安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/Hbase学习1.2-伪分布式安装/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/28/Hbase学习1.2-伪分布式安装/" class="leancloud_visitors" data-flag-title="Hbase学习1.2-伪分布式安装">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装</div></pre></td></tr></table></figure>
+<h3 id="一-机器"><a href="#一-机器" class="headerlink" title="一. 机器"></a>一. 机器</h3><ul>
+<li>10.16.14.182</li>
+<li>10.16.14.153</li>
+<li>10.10.53.159</li>
+</ul>
+<h3 id="二-资源分布"><a href="#二-资源分布" class="headerlink" title="二. 资源分布"></a>二. 资源分布</h3><ul>
+<li>10.16.14.182: hmaster、regionserver、zookeeper</li>
+<li>10.16.14.153: regionserver</li>
+<li>10.10.53.159: regionserver</li>
+</ul>
+<p>hadoop:不安装，直接走本地文件系统</p>
+<h3 id="三-host"><a href="#三-host" class="headerlink" title="三. host"></a>三. host</h3><p>10.16.14.182 bx-14-182<br>10.16.14.153 bx-14-153<br>10.10.53.159 zw-53-159</p>
+<h3 id="四-环境变量"><a href="#四-环境变量" class="headerlink" title="四. 环境变量"></a>四. 环境变量</h3><p>JAVA_HOME=/usr/local/jdk<br>HBASE_HOME=/opt/hbase<br>export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib<br>export PATH=$PATH:$JAVA_HOME/bin:$HBASE_HOME/bin</p>
+<h3 id="五-安装、配置"><a href="#五-安装、配置" class="headerlink" title="五. 安装、配置"></a>五. 安装、配置</h3><h4 id="1-相关目录"><a href="#1-相关目录" class="headerlink" title="1. 相关目录"></a>1. 相关目录</h4><ul>
+<li>根目录 /opt/hbase</li>
+<li>hbase日志文件 /opt/hbase/log</li>
+<li>hbase临时文件 /opt/hbase/tmp</li>
+<li>hbase数据目录 /opt/hbase/data</li>
+<li>hbase进程文件 /opt/hbase/pid</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase</div><div class="line">mkdir -p /opt/hbase/log</div><div class="line">mkdir -p /opt/hbase/tmp</div><div class="line">mkdir -p /opt/hbase/data</div><div class="line">mkdir -p /opt/hbase/pid</div></pre></td></tr></table></figure>
+<h4 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase</div><div class="line">wget http://mirror.bit.edu.cn/apache/hbase/1.2.4/hbase-1.2.4-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.4-bin.tar.gz</div><div class="line">ln -s hbase-1.2.4 hbase</div></pre></td></tr></table></figure>
+<h4 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h4><h5 id="1-regionservers"><a href="#1-regionservers" class="headerlink" title="(1) regionservers"></a>(1) regionservers</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /opt/hbase/hbase/conf/regionservers</div><div class="line">bx-14-182</div><div class="line">bx-14-153</div><div class="line">zw-53-159</div></pre></td></tr></table></figure>
+<h5 id="2-hbase-site-xml"><a href="#2-hbase-site-xml" class="headerlink" title="(2).hbase-site.xml"></a>(2).hbase-site.xml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">vim /opt/hbase/hbase/conf/hbase-site.xml</div><div class="line">&lt;configuration&gt; </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.rootdir&lt;/name&gt;  </div><div class="line">    &lt;value&gt;file:///opt/hbase/data&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  </div><div class="line">    &lt;value&gt;true&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;  </div><div class="line">    &lt;value&gt;10.16.14.182&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;zookeeper.znode.parent&lt;/name&gt;  </div><div class="line">    &lt;value&gt;/hbase&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;  </div><div class="line">    &lt;value&gt;2181&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.regionserver.port&lt;/name&gt;  </div><div class="line">    &lt;value&gt;16020&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.regionserver.info.port&lt;/name&gt;  </div><div class="line">    &lt;value&gt;16030&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>zookeeper、regionserver、hmaster分开部署，hbase.cluster.distributed必须为true</li>
+<li>zookeeper本次找了一个单点在bx-14-182安装</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase</div><div class="line">wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz</div><div class="line">tar -xvf zookeeper-3.4.6.tar.gz</div><div class="line">ln -s zookeeper-3.4.6 zookeeper</div><div class="line">cd zookeeper/conf</div><div class="line">cp zoo_sample.cfg zoo.cfg</div><div class="line">(修改zoo.cfg的数据目录为/opt/hbase/zookeeper-data)</div><div class="line">mkdir /opt/hbase/zookeeper-data</div><div class="line">sh zkServer.sh start</div></pre></td></tr></table></figure>
+<h5 id="3-hbase-env-sh"><a href="#3-hbase-env-sh" class="headerlink" title="(3).hbase-env.sh"></a>(3).hbase-env.sh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">export JAVA_HOME=/usr/local/jdk</div><div class="line">export HBASE_OPTS=&quot;-XX:+UseConcMarkSweepGC&quot;</div><div class="line">export HBASE_MASTER_OPTS=&quot;$HBASE_MASTER_OPTS&quot;</div><div class="line">export HBASE_REGIONSERVER_OPTS=&quot;$HBASE_REGIONSERVER_OPTS&quot;</div><div class="line">export HBASE_LOG_DIR=/opt/hbase/log</div><div class="line">export HBASE_PID_DIR=/opt/hbase/pid</div><div class="line">export HBASE_MANAGES_ZK=false</div></pre></td></tr></table></figure>
+<p>因为是测试，所以没有对jvm参数进行优化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">将当前hbase目录打包，发送到其他另外两台机器解压缩即可</div></pre></td></tr></table></figure>
+<h3 id="六、启动"><a href="#六、启动" class="headerlink" title="六、启动"></a>六、启动</h3><h4 id="1-启动hbase-master"><a href="#1-启动hbase-master" class="headerlink" title="1 启动hbase-master"></a>1 启动hbase-master</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start master</div></pre></td></tr></table></figure>
+<p>访问hbase-master: <a href="http://10.16.14.182:16010/master-status" target="_blank" rel="external">http://10.16.14.182:16010/master-status</a> 验证</p>
+<h4 id="2-启动三个regionserver"><a href="#2-启动三个regionserver" class="headerlink" title="2 启动三个regionserver"></a>2 启动三个regionserver</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div></pre></td></tr></table></figure>
+<p>在hbase-master-status检查regionserver的启动情况。</p>
+<p><img src="http://i1.itc.cn/20161127/3084_aa4a0cce_bd4c_ea03_1c83_42b9dfba0269_1.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/28/Hbase学习3-java客户端/" itemprop="url">
                   Hbase学习3-java客户端基本使用
                 </a>
@@ -317,6 +755,414 @@
           <h3 id="注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。"><a href="#注意：有些优化参数，例如WAL-cache-autoCommit等等没有涉及，后面继续学习。" class="headerlink" title="注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。"></a>注意：有些优化参数，例如WAL,cache,autoCommit等等没有涉及，后面继续学习。</h3><h3 id="相关代码：https-github-com-carlosfu-hbase-train"><a href="#相关代码：https-github-com-carlosfu-hbase-train" class="headerlink" title="相关代码：https://github.com/carlosfu/hbase-train"></a>相关代码：<a href="https://github.com/carlosfu/hbase-train" target="_blank" rel="external">https://github.com/carlosfu/hbase-train</a></h3><h4 id="一、pom依赖"><a href="#一、pom依赖" class="headerlink" title="一、pom依赖"></a>一、pom依赖</h4>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/11/28/Hbase学习3-java客户端/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/24/全量复制问题/" itemprop="url">
+                  Redis无限全量复制问题分析与优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-24T17:20:00+08:00" content="2016-11-24">
+              2016-11-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/24/全量复制问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/24/全量复制问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/24/全量复制问题/" class="leancloud_visitors" data-flag-title="Redis无限全量复制问题分析与优化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="本文部分内容来自《Redis开发与运维》一书，转载请声明。"><a href="#本文部分内容来自《Redis开发与运维》一书，转载请声明。" class="headerlink" title="本文部分内容来自《Redis开发与运维》一书，转载请声明。"></a>本文部分内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书，转载请声明。</h3><h3 id="一、现象和危害"><a href="#一、现象和危害" class="headerlink" title="一、现象和危害"></a>一、现象和危害</h3><p>线上有台机器内存接近了90%，总内存为24G，整个部署如下图：</p>
+<p><img src="http://i3.itc.cn/20161124/3084_942324f9_f1fe_07d1_9604_bb279ba0c095_1.jpg" alt=""></p>
+<p>现要将Redis-2迁移走，由于特殊原因此节点没有slave节点，需要添加一个slave节点，然后做failover操作。</p>
+<p><img src="http://i3.itc.cn/20161124/3084_60720f13_6f4e_61a5_44bb_02101ea3019a_1.jpg" alt=""></p>
+<p>通过对日志的观察，发现主从不停地做全量复制。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/24/全量复制问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/17/Redis客户端常见异常分析/" itemprop="url">
+                  Redis客户端常见异常分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-17T09:20:00+08:00" content="2016-11-17">
+              2016-11-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/17/Redis客户端常见异常分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/17/Redis客户端常见异常分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/17/Redis客户端常见异常分析/" class="leancloud_visitors" data-flag-title="Redis客户端常见异常分析">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="本文部分内容来自《Redis开发与运维》一书，转载请声明。"><a href="#本文部分内容来自《Redis开发与运维》一书，转载请声明。" class="headerlink" title="本文部分内容来自《Redis开发与运维》一书，转载请声明。"></a>本文部分内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书，转载请声明。</h3><p>在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况：</p>
+<h3 id="一-无法从连接池获取到连接"><a href="#一-无法从连接池获取到连接" class="headerlink" title="一.无法从连接池获取到连接"></a>一.无法从连接池获取到连接</h3><p>JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisPool中借用Jedis，就需要进行等待(例如设置了maxWaitMillis&gt;0)，如果在maxWaitMillis时间内仍然无法获取到Jedis对象就会抛出如下异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Timeout waiting for idle object</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:449)</div></pre></td></tr></table></figure>
+<p>还有一种情况，就是设置了blockWhenExhausted=false，那么调用者发现池子中没有资源时，会立即抛出异常不进行等待，下面的异常就是blockWhenExhausted=false时的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Pool exhausted</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:464)</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/17/Redis客户端常见异常分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/03/Redis Cluster多机房高可用实现/" itemprop="url">
+                  Redis Cluster多机房高可用实现--基于客户端
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-03T11:20:00+08:00" content="2016-11-03">
+              2016-11-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/03/Redis Cluster多机房高可用实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/Redis Cluster多机房高可用实现/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/03/Redis Cluster多机房高可用实现/" class="leancloud_visitors" data-flag-title="Redis Cluster多机房高可用实现--基于客户端">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本文以Redis-Cluster为例子，实际使用中Redis-Sentinel和Redis Standalone也是一样的。</div></pre></td></tr></table></figure>
+<h3 id="一、现有问题"><a href="#一、现有问题" class="headerlink" title="一、现有问题"></a>一、现有问题</h3><p>由于Redis本身的一些特性(例如复制)以及使用场景，造成Redis不太适合部署在不同的机房，所以通常来看Redis集群都是在同一个机房部署的。虽然Redis集群自身已经具备了高可用的特性，即使几个Redis节点异常或者挂掉，Redis Cluster也会实现故障自动转移，对应用方来说也可以在很短时间内恢复故障。但是如果发生了机房故障(断电、断网等极端情况)，如果应用方降级或者容错机制做的不好甚至业务本身不能降级，或者会丢失重要数据，或者可能瞬间会跑满应用的线程池造成服务不可用，对于一些重要的服务来说是非常致命的。      </p>
+<p>为了应对像机房故障这类情况，保证应用方在这种极端情况下，仍然可以正常服务(系统正常运行、数据正常)，所以需要给出一个Redis跨机房的方案。</p>
+<h3 id="二、实现思路和目标："><a href="#二、实现思路和目标：" class="headerlink" title="二、实现思路和目标："></a>二、实现思路和目标：</h3><h4 id="1-思路"><a href="#1-思路" class="headerlink" title="1.思路"></a>1.思路</h4><ul>
+<li>使用CacheCloud开通两个位于两个不同机房的Redis-Cluster集群(例如：兆维、北显)：一个叫major，作为主Redis服务，一个叫minor，作为备用Redis服务。</li>
+<li>开发定制版的客户端，利用netflix的hystrix组件能够解除依赖隔离的特性，在major出现故障时，将故障隔离，并将请求自动转发到minor，并且对于应用的主线程池没有影响。（有关hystrix的请求流程流程见下图，有关hystrix使用请参考：<a href="http://hot66hot.iteye.com/blog/2155036" target="_blank" rel="external">http://hot66hot.iteye.com/blog/2155036</a></li>
+</ul>
+<p><img src="http://i2.itc.cn/20161103/3084_2bebda41_d500_20d1_b7aa_fd027c8587fd_1.png" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/03/Redis Cluster多机房高可用实现/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -788,812 +1634,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/06/Spring Cloud相关图/" itemprop="url">
-                  Spring Cloud相关图
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/06/Spring Cloud相关图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/Spring Cloud相关图/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/06/Spring Cloud相关图/" class="leancloud_visitors" data-flag-title="Spring Cloud相关图">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="1-整体架构"><a href="#1-整体架构" class="headerlink" title="1.整体架构"></a>1.整体架构</h3><p><img src="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/06/Spring Cloud相关图/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/01/Netty学习1-BIO的阻塞分析/" itemprop="url">
-                  Netty学习1-BIO的阻塞分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T17:27:54+08:00" content="2016-06-01">
-              2016-06-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习1-BIO的阻塞分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习1-BIO的阻塞分析/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/01/Netty学习1-BIO的阻塞分析/" class="leancloud_visitors" data-flag-title="Netty学习1-BIO的阻塞分析">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p>最早学Java的时候，肯定学过ServerSocket、Socket这些类，然后完成所谓客户端与服务端的建立连接，客户端发送消息、服务端接受消息并返回给客户端消息，客户端接受来自服务端的消息。有点绕嘴，因为很多时候在开发中对于Socket使用不太多，对于这些的了解也仅限于此了。</p>
-<h3 id="二-无线程池实现"><a href="#二-无线程池实现" class="headerlink" title="二. 无线程池实现"></a>二. 无线程池实现</h3><h4 id="1-代码"><a href="#1-代码" class="headerlink" title="1.代码"></a>1.代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.sohu.tv.tradition.bio;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.io.InputStream;</div><div class="line"><span class="keyword">import</span> java.net.ServerSocket;</div><div class="line"><span class="keyword">import</span> java.net.Socket;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * bio服务器测试一：无线程池</div><div class="line"> * </div><div class="line"> * <span class="doctag">@author</span> leifu</div><div class="line"> * <span class="doctag">@Date</span> 2016-5-30</div><div class="line"> * <span class="doctag">@Time</span> 下午9:46:27</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BioTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> PORT = <span class="number">10010</span>;</div><div class="line"></div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"resource"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(PORT);</div><div class="line">        System.out.println(<span class="string">"server start"</span>);</div><div class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">            <span class="comment">// 获取一个套接字(阻塞)</span></div><div class="line">            Socket socket = serverSocket.accept();</div><div class="line">            System.out.println(<span class="string">"新来了一个客户端: "</span> + socket.getInetAddress().getHostName());</div><div class="line">            <span class="comment">// 业务处理</span></div><div class="line">            handler(socket);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 读取数据</div><div class="line">     * </div><div class="line">     * <span class="doctag">@param</span> socket</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">handler</span><span class="params">(Socket socket)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">            InputStream inputStream = socket.getInputStream();</div><div class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                <span class="comment">// 读取数据(阻塞)</span></div><div class="line">                <span class="keyword">int</span> read = inputStream.read(bytes);</div><div class="line">                <span class="keyword">if</span> (read != -<span class="number">1</span>) &#123;</div><div class="line">                    System.out.println(<span class="keyword">new</span> String(bytes, <span class="number">0</span>, read));</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                System.out.println(<span class="string">"socket关闭"</span>);</div><div class="line">                socket.close();</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="2-测试"><a href="#2-测试" class="headerlink" title="2. 测试"></a>2. 测试</h4><h4 id="3-阻塞点分析"><a href="#3-阻塞点分析" class="headerlink" title="3. 阻塞点分析"></a>3. 阻塞点分析</h4><h3 id="三-含线程池实现"><a href="#三-含线程池实现" class="headerlink" title="三. 含线程池实现"></a>三. 含线程池实现</h3><h4 id="1-代码-1"><a href="#1-代码-1" class="headerlink" title="1.代码"></a>1.代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"resource"</span>)</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">       ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">100</span>);</div><div class="line">       </div><div class="line">       ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(PORT);</div><div class="line">       System.out.println(<span class="string">"server start"</span>);</div><div class="line">       <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">           <span class="comment">// 获取一个套接字(阻塞)</span></div><div class="line">           <span class="keyword">final</span> Socket socket = serverSocket.accept();</div><div class="line">           System.out.println(<span class="string">"新来了一个客户端: "</span> + socket.getInetAddress().getHostName());</div><div class="line">           <span class="comment">// 业务处理</span></div><div class="line">           executorService.execute(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                   handler(socket);</div><div class="line">               &#125;</div><div class="line">           &#125;);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<h4 id="2-测试-1"><a href="#2-测试-1" class="headerlink" title="2.测试"></a>2.测试</h4><h4 id="3-阻塞点分析-1"><a href="#3-阻塞点分析-1" class="headerlink" title="3.阻塞点分析"></a>3.阻塞点分析</h4><h3 id="四、BIO模型分析"><a href="#四、BIO模型分析" class="headerlink" title="四、BIO模型分析"></a>四、BIO模型分析</h3><h4 id="1-visual-show："><a href="#1-visual-show：" class="headerlink" title="1.visual show："></a>1.visual show：</h4><p><img src="http://i3.itc.cn/20160601/3084_cdf87c26_32b6_d100_39c5_c158a9f6746c_1.png" alt="BIO模型"></p>
-<p><img src="http://i2.itc.cn/20160601/3084_a98ad890_532e_4f41_d21d_8c212d615be2_1.png" alt="NIO模型"></p>
-<h4 id="2-直白的语言分析和理解："><a href="#2-直白的语言分析和理解：" class="headerlink" title="2.直白的语言分析和理解："></a>2.直白的语言分析和理解：</h4>
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="url">
-                  Netty学习4-Netty客户端基本结构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T14:45:25+08:00" content="2016-06-01">
-              2016-06-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习4-Netty客户端基本结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/01/Netty学习4-Netty客户端基本结构/" class="leancloud_visitors" data-flag-title="Netty学习4-Netty客户端基本结构">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h3><p>上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习4-Netty客户端基本结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/01/Netty学习3-Netty服务端基本结构/" itemprop="url">
-                  Netty学习3-Netty服务端基本结构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T13:47:09+08:00" content="2016-06-01">
-              2016-06-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习3-Netty服务端基本结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习3-Netty服务端基本结构/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/01/Netty学习3-Netty服务端基本结构/" class="leancloud_visitors" data-flag-title="Netty学习3-Netty服务端基本结构">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h3><h4 id="1-版本介绍"><a href="#1-版本介绍" class="headerlink" title="1. 版本介绍"></a>1. 版本介绍</h4><p>netty的版本大致分为netty3.x和netty4.x、netty5.x</p>
-<h4 id="2-netty可以运用在那些领域？"><a href="#2-netty可以运用在那些领域？" class="headerlink" title="2. netty可以运用在那些领域？"></a>2. netty可以运用在那些领域？</h4><ul>
-<li><ol>
-<li>分布式进程通信<br>例如: hadoop、dubbo、akka等具有分布式功能的框架，底层RPC通信都是基于netty实现的，这些框架使用的版本通常都还在用netty3.x</li>
-</ol>
-</li>
-<li><ol>
-<li>游戏服务器开发<br>最新的游戏服务器有部分公司可能已经开始采用netty4.x 或 netty5.x</li>
-</ol>
-</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习3-Netty服务端基本结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/2017-06问题汇总/" itemprop="url">
-                  HBase故障记录：由jstack引起的RegionServer宕机。
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-27T13:19:50+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/HBase/" itemprop="url" rel="index">
-                    <span itemprop="name">HBase</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/2017-06问题汇总/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/2017-06问题汇总/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/27/2017-06问题汇总/" class="leancloud_visitors" data-flag-title="HBase故障记录：由jstack引起的RegionServer宕机。">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3>
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="url">
-                  分布式服务框架学习1-一个最简单的RPC服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-27T13:19:50+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/rpc/" itemprop="url" rel="index">
-                    <span itemprop="name">rpc</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/分布式服务学习1-一个最简最简单/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/27/分布式服务学习1-一个最简最简单/" class="leancloud_visitors" data-flag-title="分布式服务框架学习1-一个最简单的RPC服务">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、实现思路"><a href="#一、实现思路" class="headerlink" title="一、实现思路"></a>一、实现思路</h3><ul>
-<li>SocketServer作为服务端，Socket作为客户端。</li>
-<li>定义公共接口，例如XXXService。</li>
-<li>在服务端，定义XXXService的实现类，例如XXXService。</li>
-<li>客户端将要调用XXXService、方法名、参数，通过Socket的中的OutPutStream传到服务端，服务端利用反射拿到要调用的实现类、方法、参数类型、参数进行本地调用，然后通过Socket返回给客户端。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">整个过程，基本上述所描述，基本的RPC思路已经出来了(先不讨论分布式服务框架的层面)，单单作为RPC已经足够，那么SocketServer和Socket对于要传的参数的含义、顺序等应该打成一致，其实也就是所谓的协议，后面在介绍dubbo源码的时候再进行分析。</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/分布式服务学习1-一个最简最简单/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1634,7 +1679,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1642,7 +1687,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

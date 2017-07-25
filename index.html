@@ -1441,8 +1441,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/11/28/Hbase学习1.2-伪分布式安装/" itemprop="url">
-                  Hbase学习1.2-伪分布式安装
+                <a class="post-title-link" href="/2017/02/20/Redis热点key寻找与优化/" itemprop="url">
+                  Redis热点key寻找与优化
                 </a>
               
             
@@ -1455,8 +1455,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-28T11:20:00+08:00" content="2016-11-28">
-              2016-11-28
+            <time itemprop="dateCreated" datetime="2017-02-20T07:20:00+08:00" content="2017-02-20">
+              2017-02-20
             </time>
           </span>
 
@@ -1469,8 +1469,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hbase/" itemprop="url" rel="index">
-                    <span itemprop="name">hbase</span>
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
                   </a>
                 </span>
 
@@ -1485,8 +1485,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/28/Hbase学习1.2-伪分布式安装/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/Hbase学习1.2-伪分布式安装/" itemprop="commentsCount"></span>
+                <a href="/2017/02/20/Redis热点key寻找与优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/20/Redis热点key寻找与优化/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1496,7 +1496,7 @@
 
           
           
-             <span id="/2016/11/28/Hbase学习1.2-伪分布式安装/" class="leancloud_visitors" data-flag-title="Hbase学习1.2-伪分布式安装">
+             <span id="/2017/02/20/Redis热点key寻找与优化/" class="leancloud_visitors" data-flag-title="Redis热点key寻找与优化">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1519,47 +1519,14 @@
 
       
         
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装</div></pre></td></tr></table></figure>
-<h3 id="一-机器"><a href="#一-机器" class="headerlink" title="一. 机器"></a>一. 机器</h3><ul>
-<li>10.16.14.182</li>
-<li>10.16.14.153</li>
-<li>10.10.53.159</li>
-</ul>
-<h3 id="二-资源分布"><a href="#二-资源分布" class="headerlink" title="二. 资源分布"></a>二. 资源分布</h3><ul>
-<li>10.16.14.182: hmaster、regionserver、zookeeper</li>
-<li>10.16.14.153: regionserver</li>
-<li>10.10.53.159: regionserver</li>
-</ul>
-<p>hadoop:不安装，直接走本地文件系统</p>
-<h3 id="三-host"><a href="#三-host" class="headerlink" title="三. host"></a>三. host</h3><p>10.16.14.182 bx-14-182<br>10.16.14.153 bx-14-153<br>10.10.53.159 zw-53-159</p>
-<h3 id="四-环境变量"><a href="#四-环境变量" class="headerlink" title="四. 环境变量"></a>四. 环境变量</h3><p>JAVA_HOME=/usr/local/jdk<br>HBASE_HOME=/opt/hbase<br>export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib<br>export PATH=$PATH:$JAVA_HOME/bin:$HBASE_HOME/bin</p>
-<h3 id="五-安装、配置"><a href="#五-安装、配置" class="headerlink" title="五. 安装、配置"></a>五. 安装、配置</h3><h4 id="1-相关目录"><a href="#1-相关目录" class="headerlink" title="1. 相关目录"></a>1. 相关目录</h4><ul>
-<li>根目录 /opt/hbase</li>
-<li>hbase日志文件 /opt/hbase/log</li>
-<li>hbase临时文件 /opt/hbase/tmp</li>
-<li>hbase数据目录 /opt/hbase/data</li>
-<li>hbase进程文件 /opt/hbase/pid</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase</div><div class="line">mkdir -p /opt/hbase/log</div><div class="line">mkdir -p /opt/hbase/tmp</div><div class="line">mkdir -p /opt/hbase/data</div><div class="line">mkdir -p /opt/hbase/pid</div></pre></td></tr></table></figure>
-<h4 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase</div><div class="line">wget http://mirror.bit.edu.cn/apache/hbase/1.2.4/hbase-1.2.4-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.4-bin.tar.gz</div><div class="line">ln -s hbase-1.2.4 hbase</div></pre></td></tr></table></figure>
-<h4 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h4><h5 id="1-regionservers"><a href="#1-regionservers" class="headerlink" title="(1) regionservers"></a>(1) regionservers</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /opt/hbase/hbase/conf/regionservers</div><div class="line">bx-14-182</div><div class="line">bx-14-153</div><div class="line">zw-53-159</div></pre></td></tr></table></figure>
-<h5 id="2-hbase-site-xml"><a href="#2-hbase-site-xml" class="headerlink" title="(2).hbase-site.xml"></a>(2).hbase-site.xml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">vim /opt/hbase/hbase/conf/hbase-site.xml</div><div class="line">&lt;configuration&gt; </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.rootdir&lt;/name&gt;  </div><div class="line">    &lt;value&gt;file:///opt/hbase/data&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  </div><div class="line">    &lt;value&gt;true&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;  </div><div class="line">    &lt;value&gt;10.16.14.182&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;zookeeper.znode.parent&lt;/name&gt;  </div><div class="line">    &lt;value&gt;/hbase&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;  </div><div class="line">    &lt;value&gt;2181&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.regionserver.port&lt;/name&gt;  </div><div class="line">    &lt;value&gt;16020&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.regionserver.info.port&lt;/name&gt;  </div><div class="line">    &lt;value&gt;16030&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
-<ul>
-<li>zookeeper、regionserver、hmaster分开部署，hbase.cluster.distributed必须为true</li>
-<li>zookeeper本次找了一个单点在bx-14-182安装</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase</div><div class="line">wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz</div><div class="line">tar -xvf zookeeper-3.4.6.tar.gz</div><div class="line">ln -s zookeeper-3.4.6 zookeeper</div><div class="line">cd zookeeper/conf</div><div class="line">cp zoo_sample.cfg zoo.cfg</div><div class="line">(修改zoo.cfg的数据目录为/opt/hbase/zookeeper-data)</div><div class="line">mkdir /opt/hbase/zookeeper-data</div><div class="line">sh zkServer.sh start</div></pre></td></tr></table></figure>
-<h5 id="3-hbase-env-sh"><a href="#3-hbase-env-sh" class="headerlink" title="(3).hbase-env.sh"></a>(3).hbase-env.sh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">export JAVA_HOME=/usr/local/jdk</div><div class="line">export HBASE_OPTS=&quot;-XX:+UseConcMarkSweepGC&quot;</div><div class="line">export HBASE_MASTER_OPTS=&quot;$HBASE_MASTER_OPTS&quot;</div><div class="line">export HBASE_REGIONSERVER_OPTS=&quot;$HBASE_REGIONSERVER_OPTS&quot;</div><div class="line">export HBASE_LOG_DIR=/opt/hbase/log</div><div class="line">export HBASE_PID_DIR=/opt/hbase/pid</div><div class="line">export HBASE_MANAGES_ZK=false</div></pre></td></tr></table></figure>
-<p>因为是测试，所以没有对jvm参数进行优化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">将当前hbase目录打包，发送到其他另外两台机器解压缩即可</div></pre></td></tr></table></figure>
-<h3 id="六、启动"><a href="#六、启动" class="headerlink" title="六、启动"></a>六、启动</h3><h4 id="1-启动hbase-master"><a href="#1-启动hbase-master" class="headerlink" title="1 启动hbase-master"></a>1 启动hbase-master</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start master</div></pre></td></tr></table></figure>
-<p>访问hbase-master: <a href="http://10.16.14.182:16010/master-status" target="_blank" rel="external">http://10.16.14.182:16010/master-status</a> 验证</p>
-<h4 id="2-启动三个regionserver"><a href="#2-启动三个regionserver" class="headerlink" title="2 启动三个regionserver"></a>2 启动三个regionserver</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div></pre></td></tr></table></figure>
-<p>在hbase-master-status检查regionserver的启动情况。</p>
-<p><img src="http://i1.itc.cn/20161127/3084_aa4a0cce_bd4c_ea03_1c83_42b9dfba0269_1.png" alt=""></p>
-
-          
+          <h3 id="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"><a href="#声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。" class="headerlink" title="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"></a>声明：本文内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书第12章，如转载请声明。</h3><p>热门新闻事件或商品通常会给系统带来巨大的流量，但对存储这类信息的Redis来说是一个巨大的挑战。以Redis Cluster为例，它会造成整体流量的不均衡，个别节点出现OPS过大的情况，极端情况下热点key甚至会超过Redis本身能够承受的OPS，因此寻找热点key对于开发和运维人员非常重要。</p>
+<h3 id="1-客户端"><a href="#1-客户端" class="headerlink" title="1.客户端"></a>1.客户端</h3><p>客户端其实是距离key”最近”的地方，因为Redis命令就是从客户端发出的，例如在客户端设置全局字典(key和调用次数)，每次调用Redis命令时，使用这个字典进行记录，如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public static final AtomicLongMap&lt;String&gt; ATOMIC_LONG_MAP = AtomicLongMap.create(); </div><div class="line">String get(String key) &#123;</div><div class="line">    counterKey(key);</div><div class="line">    //ignore</div><div class="line">&#125;</div><div class="line">String set(String key, String value) &#123;</div><div class="line">    counterKey(key);</div><div class="line">    //ignore</div><div class="line">&#125;</div><div class="line">void counterKey(String key) &#123;</div><div class="line">    ATOMIC_LONG_MAP.incrementAndGet(key);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/20/Redis热点key寻找与优化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1590,7 +1557,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1631,7 +1598,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1639,7 +1606,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
