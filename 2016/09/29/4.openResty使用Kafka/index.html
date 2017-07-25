@@ -87,7 +87,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/09/29/4.openResty使用Kafka/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="openresty官方模块 1https://github.com/openresty/lua-nginx-module#readme 其中没有kafka的模块，可以在google上搜索可以查到lua-resty-kafka 1https://github.com/doujiang24/lua-resty-kafka 1.安装lua-resty-kafka123456wget https://gi">
-<meta property="og:updated_time" content="2017-07-25T08:41:33.000Z">
+<meta property="og:updated_time" content="2017-07-25T08:55:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenResty-4.OpenResty使用Kafka">
 <meta name="twitter:description" content="openresty官方模块 1https://github.com/openresty/lua-nginx-module#readme 其中没有kafka的模块，可以在google上搜索可以查到lua-resty-kafka 1https://github.com/doujiang24/lua-resty-kafka 1.安装lua-resty-kafka123456wget https://gi">
@@ -328,6 +328,7 @@
 <p>其中没有kafka的模块，可以在google上搜索可以查到lua-resty-kafka</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/doujiang24/lua-resty-kafka</div></pre></td></tr></table></figure>
 <h4 id="1-安装lua-resty-kafka"><a href="#1-安装lua-resty-kafka" class="headerlink" title="1.安装lua-resty-kafka"></a>1.安装lua-resty-kafka</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/doujiang24/lua-resty-kafka/archive/master.zip  </div><div class="line">unzip lua-resty-kafka-master.zip -d /opt/nginx/  </div><div class="line">    </div><div class="line">#拷贝lua-resty-kafka到openresty  </div><div class="line">mkdir /opt/openresty/lualib/kafka  </div><div class="line">cp -rf /opt/nginx/lua-resty-kafka-master/lib/resty /opt/openresty/lualib/kafka/</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h4 id="2-安装单机kafka"><a href="#2-安装单机kafka" class="headerlink" title="2.安装单机kafka"></a>2.安装单机kafka</h4><p>(1) 下载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd /opt/soft </div><div class="line">wget http://mirror.bit.edu.cn/apache/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz </div><div class="line">tar -xvf kafka_2.11-0.9.0.1.tgz</div></pre></td></tr></table></figure>
 <p>(2) 开启单机zookeeper</p>

@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="1没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装 一. 机器 10.16.14.182 10.16.14.153 10.10.53.159  二. 资源分布 10.16.14.182: hmaster、regionserver、zookeeper 10.16.14.153: regionserver 10.10.53.159: regionserver  hadoop:不">
 <meta property="og:image" content="http://i1.itc.cn/20161127/3084_aa4a0cce_bd4c_ea03_1c83_42b9dfba0269_1.png">
-<meta property="og:updated_time" content="2017-07-25T06:03:45.000Z">
+<meta property="og:updated_time" content="2017-07-25T08:54:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hbase学习1.2-伪分布式安装">
 <meta name="twitter:description" content="1没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装 一. 机器 10.16.14.182 10.16.14.153 10.10.53.159  二. 资源分布 10.16.14.182: hmaster、regionserver、zookeeper 10.16.14.153: regionserver 10.10.53.159: regionserver  hadoop:不">
@@ -337,6 +337,7 @@
 <li>10.10.53.159: regionserver</li>
 </ul>
 <p>hadoop:不安装，直接走本地文件系统</p>
+<a id="more"></a>
 <h3 id="三-host"><a href="#三-host" class="headerlink" title="三. host"></a>三. host</h3><p>10.16.14.182 bx-14-182<br>10.16.14.153 bx-14-153<br>10.10.53.159 zw-53-159</p>
 <h3 id="四-环境变量"><a href="#四-环境变量" class="headerlink" title="四. 环境变量"></a>四. 环境变量</h3><p>JAVA_HOME=/usr/local/jdk<br>HBASE_HOME=/opt/hbase<br>export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib<br>export PATH=$PATH:$JAVA_HOME/bin:$HBASE_HOME/bin</p>
 <h3 id="五-安装、配置"><a href="#五-安装、配置" class="headerlink" title="五. 安装、配置"></a>五. 安装、配置</h3><h4 id="1-相关目录"><a href="#1-相关目录" class="headerlink" title="1. 相关目录"></a>1. 相关目录</h4><ul>

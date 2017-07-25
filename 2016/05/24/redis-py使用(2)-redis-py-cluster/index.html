@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="一.获取redis-py-clusterredis-py并没有支持Redis Cluster。社区中有人开发了redis-py-cluster(非同一个作者)。两种方法获取。 第一：使用pip进行安装(推荐) 1pip install redis-py-cluster 第三：使用源码安装(以1.3.4版本为例子，可以在release列表选取需要) 1234wget https://github.c">
 <meta property="og:image" content="http://i0.itc.cn/20170725/3084_34958641_53fc_6067_fca4_893408cd3049_1.png">
-<meta property="og:updated_time" content="2017-07-25T06:22:35.000Z">
+<meta property="og:updated_time" content="2017-07-25T08:57:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-py使用(2)-redis-py-cluster">
 <meta name="twitter:description" content="一.获取redis-py-clusterredis-py并没有支持Redis Cluster。社区中有人开发了redis-py-cluster(非同一个作者)。两种方法获取。 第一：使用pip进行安装(推荐) 1pip install redis-py-cluster 第三：使用源码安装(以1.3.4版本为例子，可以在release列表选取需要) 1234wget https://github.c">
@@ -330,6 +330,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install redis-py-cluster</div></pre></td></tr></table></figure>
 <p>第三：使用源码安装(以1.3.4版本为例子，可以在<a href="https://github.com/Grokzen/redis-py-cluster/releases" target="_blank" rel="external">release列表</a>选取需要)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/Grokzen/redis-py-cluster/releases/download/1.3.4/redis-py-cluster-1.3.4.tar.gz</div><div class="line">unzip redis-py-cluster-1.3.4.tar.gz</div><div class="line">cd redis-py-cluster-1.3.4</div><div class="line">python setup.py install</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="二-redis-py-cluster的基本使用"><a href="#二-redis-py-cluster的基本使用" class="headerlink" title="二.redis-py-cluster的基本使用"></a>二.redis-py-cluster的基本使用</h3><p>redis-py-cluster的使用方法也比较简单，我们逐步骤介绍：</p>
 <h4 id="1-导入依赖库"><a href="#1-导入依赖库" class="headerlink" title="1.导入依赖库"></a>1.导入依赖库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import rediscluster</div></pre></td></tr></table></figure>
 <h4 id="2-生成客户端连接："><a href="#2-生成客户端连接：" class="headerlink" title="2.生成客户端连接："></a>2.生成客户端连接：</h4><p>需要传入Redis Cluster的全部节点（其实一个节点也行，内部会通过一个节点自动获取），例如：</p>

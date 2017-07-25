@@ -460,8 +460,7 @@
 
       
         
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装</div></pre></td></tr></table></figure>
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装</div></pre></td></tr></table></figure>
 <h3 id="一-机器"><a href="#一-机器" class="headerlink" title="一. 机器"></a>一. 机器</h3><ul>
 <li>10.16.14.182</li>
 <li>10.16.14.153</li>
@@ -473,34 +472,11 @@
 <li>10.10.53.159: regionserver</li>
 </ul>
 <p>hadoop:不安装，直接走本地文件系统</p>
-<h3 id="三-host"><a href="#三-host" class="headerlink" title="三. host"></a>三. host</h3><p>10.16.14.182 bx-14-182<br>10.16.14.153 bx-14-153<br>10.10.53.159 zw-53-159</p>
-<h3 id="四-环境变量"><a href="#四-环境变量" class="headerlink" title="四. 环境变量"></a>四. 环境变量</h3><p>JAVA_HOME=/usr/local/jdk<br>HBASE_HOME=/opt/hbase<br>export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib<br>export PATH=$PATH:$JAVA_HOME/bin:$HBASE_HOME/bin</p>
-<h3 id="五-安装、配置"><a href="#五-安装、配置" class="headerlink" title="五. 安装、配置"></a>五. 安装、配置</h3><h4 id="1-相关目录"><a href="#1-相关目录" class="headerlink" title="1. 相关目录"></a>1. 相关目录</h4><ul>
-<li>根目录 /opt/hbase</li>
-<li>hbase日志文件 /opt/hbase/log</li>
-<li>hbase临时文件 /opt/hbase/tmp</li>
-<li>hbase数据目录 /opt/hbase/data</li>
-<li>hbase进程文件 /opt/hbase/pid</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /opt/hbase</div><div class="line">mkdir -p /opt/hbase/log</div><div class="line">mkdir -p /opt/hbase/tmp</div><div class="line">mkdir -p /opt/hbase/data</div><div class="line">mkdir -p /opt/hbase/pid</div></pre></td></tr></table></figure>
-<h4 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase</div><div class="line">wget http://mirror.bit.edu.cn/apache/hbase/1.2.4/hbase-1.2.4-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.4-bin.tar.gz</div><div class="line">ln -s hbase-1.2.4 hbase</div></pre></td></tr></table></figure>
-<h4 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h4><h5 id="1-regionservers"><a href="#1-regionservers" class="headerlink" title="(1) regionservers"></a>(1) regionservers</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /opt/hbase/hbase/conf/regionservers</div><div class="line">bx-14-182</div><div class="line">bx-14-153</div><div class="line">zw-53-159</div></pre></td></tr></table></figure>
-<h5 id="2-hbase-site-xml"><a href="#2-hbase-site-xml" class="headerlink" title="(2).hbase-site.xml"></a>(2).hbase-site.xml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">vim /opt/hbase/hbase/conf/hbase-site.xml</div><div class="line">&lt;configuration&gt; </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.rootdir&lt;/name&gt;  </div><div class="line">    &lt;value&gt;file:///opt/hbase/data&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  </div><div class="line">    &lt;value&gt;true&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;  </div><div class="line">    &lt;value&gt;10.16.14.182&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;zookeeper.znode.parent&lt;/name&gt;  </div><div class="line">    &lt;value&gt;/hbase&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;  </div><div class="line">    &lt;value&gt;2181&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.regionserver.port&lt;/name&gt;  </div><div class="line">    &lt;value&gt;16020&lt;/value&gt; </div><div class="line">  &lt;/property&gt;  </div><div class="line">  &lt;property&gt; </div><div class="line">    &lt;name&gt;hbase.regionserver.info.port&lt;/name&gt;  </div><div class="line">    &lt;value&gt;16030&lt;/value&gt; </div><div class="line">  &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
-<ul>
-<li>zookeeper、regionserver、hmaster分开部署，hbase.cluster.distributed必须为true</li>
-<li>zookeeper本次找了一个单点在bx-14-182安装</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase</div><div class="line">wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz</div><div class="line">tar -xvf zookeeper-3.4.6.tar.gz</div><div class="line">ln -s zookeeper-3.4.6 zookeeper</div><div class="line">cd zookeeper/conf</div><div class="line">cp zoo_sample.cfg zoo.cfg</div><div class="line">(修改zoo.cfg的数据目录为/opt/hbase/zookeeper-data)</div><div class="line">mkdir /opt/hbase/zookeeper-data</div><div class="line">sh zkServer.sh start</div></pre></td></tr></table></figure>
-<h5 id="3-hbase-env-sh"><a href="#3-hbase-env-sh" class="headerlink" title="(3).hbase-env.sh"></a>(3).hbase-env.sh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">export JAVA_HOME=/usr/local/jdk</div><div class="line">export HBASE_OPTS=&quot;-XX:+UseConcMarkSweepGC&quot;</div><div class="line">export HBASE_MASTER_OPTS=&quot;$HBASE_MASTER_OPTS&quot;</div><div class="line">export HBASE_REGIONSERVER_OPTS=&quot;$HBASE_REGIONSERVER_OPTS&quot;</div><div class="line">export HBASE_LOG_DIR=/opt/hbase/log</div><div class="line">export HBASE_PID_DIR=/opt/hbase/pid</div><div class="line">export HBASE_MANAGES_ZK=false</div></pre></td></tr></table></figure>
-<p>因为是测试，所以没有对jvm参数进行优化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">将当前hbase目录打包，发送到其他另外两台机器解压缩即可</div></pre></td></tr></table></figure>
-<h3 id="六、启动"><a href="#六、启动" class="headerlink" title="六、启动"></a>六、启动</h3><h4 id="1-启动hbase-master"><a href="#1-启动hbase-master" class="headerlink" title="1 启动hbase-master"></a>1 启动hbase-master</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start master</div></pre></td></tr></table></figure>
-<p>访问hbase-master: <a href="http://10.16.14.182:16010/master-status" target="_blank" rel="external">http://10.16.14.182:16010/master-status</a> 验证</p>
-<h4 id="2-启动三个regionserver"><a href="#2-启动三个regionserver" class="headerlink" title="2 启动三个regionserver"></a>2 启动三个regionserver</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div><div class="line">/opt/hbase/hbase/bin/hbase-daemon.sh start regionserver</div></pre></td></tr></table></figure>
-<p>在hbase-master-status检查regionserver的启动情况。</p>
-<p><img src="http://i1.itc.cn/20161127/3084_aa4a0cce_bd4c_ea03_1c83_42b9dfba0269_1.png" alt=""></p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/28/Hbase学习1.2-伪分布式安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1165,26 +1141,16 @@
 
       
         
-          
-            <p>openresty官方模块</p>
+          <p>openresty官方模块</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/openresty/lua-nginx-module#readme</div></pre></td></tr></table></figure>
 <p>其中没有kafka的模块，可以在google上搜索可以查到lua-resty-kafka</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/doujiang24/lua-resty-kafka</div></pre></td></tr></table></figure>
 <h4 id="1-安装lua-resty-kafka"><a href="#1-安装lua-resty-kafka" class="headerlink" title="1.安装lua-resty-kafka"></a>1.安装lua-resty-kafka</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/doujiang24/lua-resty-kafka/archive/master.zip  </div><div class="line">unzip lua-resty-kafka-master.zip -d /opt/nginx/  </div><div class="line">    </div><div class="line">#拷贝lua-resty-kafka到openresty  </div><div class="line">mkdir /opt/openresty/lualib/kafka  </div><div class="line">cp -rf /opt/nginx/lua-resty-kafka-master/lib/resty /opt/openresty/lualib/kafka/</div></pre></td></tr></table></figure>
-<h4 id="2-安装单机kafka"><a href="#2-安装单机kafka" class="headerlink" title="2.安装单机kafka"></a>2.安装单机kafka</h4><p>(1) 下载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd /opt/soft </div><div class="line">wget http://mirror.bit.edu.cn/apache/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz </div><div class="line">tar -xvf kafka_2.11-0.9.0.1.tgz</div></pre></td></tr></table></figure>
-<p>(2) 开启单机zookeeper</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup sh bin/zookeeper-server-start.sh config/zookeeper.properties &gt; ./zk.log 2&gt;&amp;1 &amp;</div></pre></td></tr></table></figure>
-<p>(3) 启动kafka服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#在config/servier.properties下修改host.name  </div><div class="line">#host.name=&#123;your_server_ip&#125;    </div><div class="line">nohup sh bin/kafka-server-start.sh config/server.properties &gt; ./server.log 2&gt;&amp;1 &amp;</div></pre></td></tr></table></figure>
-<p>(4) 创建测试topic<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic test1 --partitions 1 --replication-factor 1</div></pre></td></tr></table></figure></p>
-<h4 id="3-配置lua脚本"><a href="#3-配置lua脚本" class="headerlink" title="3.配置lua脚本"></a>3.配置lua脚本</h4><p>(1) 配置依赖</p>
-<p>在server上面配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lua_package_path &quot;/opt/openresty/lualib/kafka/?.lua;;&quot;;</div></pre></td></tr></table></figure></p>
-<p>(2) log_by_lua_file配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">-- 引入lua所有api</div><div class="line">local cjson = require &quot;cjson&quot;</div><div class="line">local producer = require &quot;resty.kafka.producer&quot;</div><div class="line">-- 定义kafka broker地址，ip需要和kafka的host.name配置一致</div><div class="line">local broker_list = &#123;&#123; host = &quot;10.10.34.51&quot;, port = 9092 &#125;,&#125;</div><div class="line">-- 定义json便于日志数据整理收集</div><div class="line">local log_json = &#123;&#125;</div><div class="line">log_json[&quot;uri&quot;]=ngx.var.uri</div><div class="line">log_json[&quot;args&quot;]=ngx.var.args</div><div class="line">-- 转换json为字符串</div><div class="line">local message = cjson.encode(log_json);</div><div class="line">--定义kafka异步生产者</div><div class="line">local bp = producer:new(broker_list, &#123; producer_type = &quot;async&quot; &#125;)</div><div class="line">--发送日志消息,send第二个参数key,用于kafka路由控制:</div><div class="line">--key为nill(空)时，一段时间向同一partition写入数据</div><div class="line">--指定key，按照key的hash写入到对应的partition</div><div class="line">local ok, err = bp:send(&quot;openresty_test&quot;, nil, message)</div><div class="line">if not ok then</div><div class="line">    ngx.log(ngx.ERR, &quot;kafka send err:&quot;, err)</div><div class="line">    return</div><div class="line">end</div></pre></td></tr></table></figure>
-<p>(3) </p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/29/4.openResty使用Kafka/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1310,17 +1276,17 @@
 
       
         
-          
-            <p>openresty模块</p>
+          <p>openresty模块</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/openresty/lua-nginx-module#readme</div></pre></td></tr></table></figure>
 <p>其中redis模块叫做lua-resty-redis,可以在上述页面进行搜索</p>
 <h4 id="1-一个完整的demo"><a href="#1-一个完整的demo" class="headerlink" title="1.一个完整的demo"></a>1.一个完整的demo</h4><p>使用起来不困难，也不必深究：redis的API、luajit的基本语法。</p>
 <p>需要注意的是在openresty中已经有了类库，也就是下面require “resty.redis”</p>
 <p><img src="http://i1.itc.cn/20170419/3084_60974274_5a35_6dcc_833e_3b88c84cc724_1.png" alt=""></p>
-<p>也就是我们如果加入新的模块，例如引进kafka模块，需要进行相应拷贝，例如下面是一次添加kafka模块：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">local redis = require &quot;resty.redis&quot;</div><div class="line">local red = redis:new()</div><div class="line"></div><div class="line">red:set_timeout(1000) -- 1 sec</div><div class="line"></div><div class="line">local ok, err = red:connect(&quot;127.0.0.1&quot;, 6379)</div><div class="line">if not ok then</div><div class="line">    ngx.say(&quot;failed to connect: &quot;, err)</div><div class="line">    return</div><div class="line">end</div><div class="line"></div><div class="line">ok, err = red:set(&quot;dog&quot;, &quot;an animal&quot;)</div><div class="line">if not ok then</div><div class="line">    ngx.say(&quot;failed to set dog: &quot;, err)</div><div class="line">    return</div><div class="line">end</div><div class="line"></div><div class="line">ngx.say(&quot;set result: &quot;, ok)</div><div class="line"></div><div class="line">local res, err = red:get(&quot;dog&quot;)</div><div class="line">if not res then</div><div class="line">    ngx.say(&quot;failed to get dog: &quot;, err)</div><div class="line">    return</div><div class="line">end</div><div class="line"></div><div class="line">if res == ngx.null then</div><div class="line">    ngx.say(&quot;dog not found.&quot;)</div><div class="line">    return</div><div class="line">end</div></pre></td></tr></table></figure>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/26/3.openResty使用Redis/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1446,20 +1412,14 @@
 
       
         
-          
-            <p>提示，有关ngx_lua的语法可以到如下网站搜索</p>
+          <p>提示，有关ngx_lua的语法可以到如下网站搜索</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://www.nginx.com/resources/wiki/modules/lua/?highlight=luas</div></pre></td></tr></table></figure>
 <h4 id="1-一个完整的程序"><a href="#1-一个完整的程序" class="headerlink" title="1.一个完整的程序"></a>1.一个完整的程序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">local args = ngx.req.get_uri_args()</div><div class="line">local salt = args.salt</div><div class="line">if not salt then</div><div class="line">    ngx.exit(ngx.HTTP_BAD_REQUEST)</div><div class="line">end</div><div class="line">local str = ngx.md5(ngx.time() .. salt)</div><div class="line">ngx.say(str)</div></pre></td></tr></table></figure>
-<p>好在之前写redis书时候熟悉了下lua语法。</p>
-<p>1.获取uri全部请求参数。<br>2.获取salt参数。<br>3.不存在返回400(ngx.HTTP_BAD_REQUEST是常量)<br>4.把当期时间和salt连接，然后计算md5，然后ngx.say。</p>
-<h4 id="2-测试"><a href="#2-测试" class="headerlink" title="2.测试"></a>2.测试</h4><p>(1) 没参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 script]# curl 127.0.0.1/first</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;body bgcolor=&quot;white&quot;&gt;</div><div class="line">&lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;</div><div class="line">&lt;hr&gt;&lt;center&gt;openresty/1.9.15.1&lt;/center&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>(2) salt参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 script]# curl 127.0.0.1/first?salt=helloResty</div><div class="line">35b3d103c31169508b764ea0a2f7bf4f</div><div class="line">[@bx-14-182 script]# curl 127.0.0.1/first?salt=helloResty</div><div class="line">58d82acd07ad68117dfe9813ea342605</div></pre></td></tr></table></figure>
-<p>尽可能使用ngx_lua的api 异步非阻塞</p>
-<p>少用lua的api</p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/24/2.一个独立的ngx_lua程序/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
