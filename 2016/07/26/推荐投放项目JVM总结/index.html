@@ -1,0 +1,850 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Jvm," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="做推荐投放三年了，从来没有发生过GC相关的问题(🐂,ps:访问量和数据量还是挺大的)，所以有必要总结一下相关JVM参数。 一. jvm参数截图">
+<meta name="keywords" content="Jvm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐投放项目JVM总结">
+<meta property="og:url" content="http://yoursite.com/2016/07/26/推荐投放项目JVM总结/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="做推荐投放三年了，从来没有发生过GC相关的问题(🐂,ps:访问量和数据量还是挺大的)，所以有必要总结一下相关JVM参数。 一. jvm参数截图">
+<meta property="og:image" content="http://i2.itc.cn/20170719/3084_517d8bb5_1f1e_c18b_e71c_223cfffc7f61_1.png">
+<meta property="og:updated_time" content="2017-07-26T02:58:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="推荐投放项目JVM总结">
+<meta name="twitter:description" content="做推荐投放三年了，从来没有发生过GC相关的问题(🐂,ps:访问量和数据量还是挺大的)，所以有必要总结一下相关JVM参数。 一. jvm参数截图">
+<meta name="twitter:image" content="http://i2.itc.cn/20170719/3084_517d8bb5_1f1e_c18b_e71c_223cfffc7f61_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 推荐投放项目JVM总结 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                推荐投放项目JVM总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-26T09:40:00+08:00" content="2016-07-26">
+              2016-07-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Jvm/" itemprop="url" rel="index">
+                    <span itemprop="name">Jvm</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/26/推荐投放项目JVM总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/推荐投放项目JVM总结/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/26/推荐投放项目JVM总结/" class="leancloud_visitors" data-flag-title="推荐投放项目JVM总结">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>做推荐投放三年了，从来没有发生过GC相关的问题(🐂,ps:访问量和数据量还是挺大的)，所以有必要总结一下相关JVM参数。</p>
+<h3 id="一-jvm参数截图"><a href="#一-jvm参数截图" class="headerlink" title="一. jvm参数截图"></a>一. jvm参数截图</h3><p><img src="http://i2.itc.cn/20170719/3084_517d8bb5_1f1e_c18b_e71c_223cfffc7f61_1.png" alt=""></p>
+<a id="more"></a>
+<h3 id="二-jvm参数说明"><a href="#二-jvm参数说明" class="headerlink" title="二. jvm参数说明"></a>二. jvm参数说明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dlocal.ip=10.10.34.11 -Dcom.tc.productkey.path=/opt/mobil/terracotta-license.key -Djava.util.Arrays.useLegacyMergeSort=true -Dfile.encoding=UTF-8 -server -Xmx9g -Xms9g -XX:PermSize=96m -XX:MaxPermSize=96m -Xss256k -XX:MaxDirectMemorySize=17G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:G1ReservePercent=25 -XX:InitiatingHeapOccupancyPercent=40 -XX:ConcGCThreads=10 -XX:+PrintGCDateStamps -Xloggc:../logs/gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=50M -XX:HeapDumpPath=../logs/java.hprof -XX:+DisableExplicitGC -XX:-OmitStackTraceInFastThrow -XX:+PrintCommandLineFlags -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:+HeapDumpOnOutOfMemoryError -Djava.rmi.server.hostname=10.10.34.11 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099</div></pre></td></tr></table></figure>
+<h4 id="1-server"><a href="#1-server" class="headerlink" title="1.-server"></a>1.-server</h4><p>JVM以服务器模式来启动。</p>
+<h4 id="2-G1相关："><a href="#2-G1相关：" class="headerlink" title="2.G1相关："></a>2.G1相关：</h4><ul>
+<li>-XX:+UseG1GC: 使用G1垃圾回收器</li>
+<li>-XX:MaxGCPauseMillis: gc最长暂停时间，需要根据堆的大小来设置。</li>
+<li>-XX:G1ReservePercent: 设置作为空闲空间的预留内存百分比，以降低目标空间溢出的风险。默认值是 10%。增加或减少百分比时,需要评估Java堆的量。</li>
+<li>-XX:InitiatingHeapOccupancyPercent:设置触发标记周期的Java堆占用率阈值(默认是45%)</li>
+<li>-XX:ConcGCThreads：并发标记阶段的线程数。</li>
+</ul>
+<h4 id="3-持久代相关"><a href="#3-持久代相关" class="headerlink" title="3.持久代相关"></a>3.持久代相关</h4><ul>
+<li>PermSize: 持久代的内存</li>
+<li>MaxPermSize: 持久代的最大内存</li>
+</ul>
+<p>两者通常设置为一致即可。</p>
+<h4 id="4-堆相关"><a href="#4-堆相关" class="headerlink" title="4.堆相关"></a>4.堆相关</h4><ul>
+<li>Xmx: 堆最大内存</li>
+<li>Xms: 堆初始化内存</li>
+</ul>
+<p>为了减少内存分配的开销，两个参数通常是一样的。</p>
+<h4 id="5-堆外内存"><a href="#5-堆外内存" class="headerlink" title="5.堆外内存"></a>5.堆外内存</h4><ul>
+<li>MaxDirectMemorySize: 堆外内存大小</li>
+</ul>
+<p>如果不设置，“几乎”默认等于Xmx，也可以根据需要的数量进行设置。</p>
+<h4 id="6-OmitStackTraceInFastThrow"><a href="#6-OmitStackTraceInFastThrow" class="headerlink" title="6. OmitStackTraceInFastThrow"></a>6. OmitStackTraceInFastThrow</h4><p>OmitStackTraceInFastThrow的意思是当大量throw异常时是否在日志中忽略部分日志（可能太长了），通常不使用这个特性(便于问题分析)。</p>
+<h4 id="7-自定义配置"><a href="#7-自定义配置" class="headerlink" title="7.自定义配置"></a>7.自定义配置</h4><p>-Dlocal.ip和-Dcom.tc.productkey.path便于程序内部通过System.getProperty(“xxx”)来获取，有时候程序内部需要知道本机IP地址，可以使用这种形式：local.ip。com.tc.productkey.path就是bigmemory需要的。</p>
+<h4 id="8-gc文件相关："><a href="#8-gc文件相关：" class="headerlink" title="8.gc文件相关："></a>8.gc文件相关：</h4><ul>
+<li>-Xloggc：gc-log的位置</li>
+<li>-XX:+UseGCLogFileRotation: gc-log是否自动卷</li>
+<li>-XX:NumberOfGCLogFiles: gc-log文件个数</li>
+<li>-XX:GCLogFileSize: 每个gc-log的大小</li>
+<li>-XX:+PrintGCDateStamps: 在gc日志添加时间戳</li>
+</ul>
+<h4 id="9-XX-HeapDumpOnOutOfMemoryError和-XX-HeapDumpPath"><a href="#9-XX-HeapDumpOnOutOfMemoryError和-XX-HeapDumpPath" class="headerlink" title="9.-XX:+HeapDumpOnOutOfMemoryError和 -XX:HeapDumpPath"></a>9.-XX:+HeapDumpOnOutOfMemoryError和 -XX:HeapDumpPath</h4><p>OOM发生后会将内存镜像Dump到磁盘，有利于后期使用MAT这样的工具进行问题定位。 -XX:HeapDumpPath是dump文件的全路径。</p>
+<h4 id="10-XX-UnlockCommercialFeatures和-XX-FlightRecorder"><a href="#10-XX-UnlockCommercialFeatures和-XX-FlightRecorder" class="headerlink" title="10. -XX:+UnlockCommercialFeatures和-XX:+FlightRecorder"></a>10. -XX:+UnlockCommercialFeatures和-XX:+FlightRecorder</h4><p>使用飞行记录器(商业功能)(-XX:+FlightRecorder)必须解锁商业特性：-XX:+UnlockCommercialFeatures</p>
+<h4 id="11-jmx相关："><a href="#11-jmx相关：" class="headerlink" title="11. jmx相关："></a>11. jmx相关：</h4><p>很多Java程序会将一些系统状态(例如JVM使用等)放在JMX，应用开发者也会这么做，如果要JMX对外开放可以添加如下配置：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>参数</th>
+<th>说明 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>-Djava.rmi.server.hostname</td>
+<td>对外使用rmi进行通信</td>
+</tr>
+<tr>
+<td>2</td>
+<td>-Dcom.sun.management.jmxremote</td>
+<td>启动jmx   </td>
+</tr>
+<tr>
+<td>3</td>
+<td>-Dcom.sun.management.jmxremote.port</td>
+<td>jmx的port </td>
+</tr>
+<tr>
+<td>4</td>
+<td>-Dcom.sun.management.jmxremote.ssl</td>
+<td>jmx是否使用ssl</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-Dcom.sun.management.jmxremote.authenticate</td>
+<td>jmx是否使用密码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="12-其他："><a href="#12-其他：" class="headerlink" title="12.其他："></a>12.其他：</h4><ul>
+<li>-Djava.awt.headless: 忽略显示设备和键鼠，通常为后端服务器时候</li>
+<li>-Djava.net.preferIPv4Stack: 优先使用IPV4(因为目前很多服务器已经配置了IPV6)</li>
+<li>-XX:+DisableExplicitGC: 禁止显式的执行System.gc()</li>
+<li>-XX:+PrintCommandLineFlags: 将当前JVM中与默认配置不同的参数打印出来(这个很有用)</li>
+<li>-Dfile.encoding: 默认字符集, 它是在java虚拟机启动时决定的，依赖于java虚拟机所在的操作系统的区域以及字符集，通过这个配置可以强制为某个字符集(避免修改操作系统)</li>
+<li>-Djava.util.Arrays.useLegacyMergeSort：在Java 6中Arrays.sort()和Collections.sort()使用的是MergeSort，而在Java 7中，内部实现换成了TimSort，其对对象间比较的实现要求更加严格，为了在JDK7中中解决，可以使用如下两种方法：</li>
+</ul>
+<p>(1) 更改内部实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public int compare(ComparatorTest o1, ComparatorTest o2) &#123;</div><div class="line">    return o1.getValue() == o2.getValue() ? 0 : </div><div class="line">                (o1.getValue() &gt; o2.getValue() ? 1 : -1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>(2) Java 7预留了一个接口以便于用户继续使用Java 6的排序算法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Djava.util.Arrays.useLegacyMergeSort=true</div></pre></td></tr></table></figure>
+<h3 id="三、其他重要参数"><a href="#三、其他重要参数" class="headerlink" title="三、其他重要参数"></a>三、其他重要参数</h3><h4 id="1-XX-OnOutOfMemoryError"><a href="#1-XX-OnOutOfMemoryError" class="headerlink" title="1. -XX:OnOutOfMemoryError"></a>1. -XX:OnOutOfMemoryError</h4><p>当发生OOM时，通过上面这个配置可以出发一个自定义脚本(例如短信微信报警等)，对于快速发现OOM问题很有帮助，甚至有些分布式节点(例如HBase的RegionServer)可以配置kill -9，例如如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-XX:OnOutOfMemoryError =&quot;sh /xx/xx/alert.sh&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-XX:OnOutOfMemoryError=&quot;kill -9 %p&quot;</div></pre></td></tr></table></figure>
+<h4 id="2-XX-TraceClassLoading（排查NoSuchMethodException和ClassNotFoundException等问题的利器）"><a href="#2-XX-TraceClassLoading（排查NoSuchMethodException和ClassNotFoundException等问题的利器）" class="headerlink" title="2.-XX:+TraceClassLoading（排查NoSuchMethodException和ClassNotFoundException等问题的利器）"></a>2.-XX:+TraceClassLoading（排查NoSuchMethodException和ClassNotFoundException等问题的利器）</h4><p>上述配置可以在JVM启动时，打印出所有类是从哪个jar包加载进来的，对于解决包冲突很有帮助。有些特殊情况，maven已经解决了冲突，但是还会出现，例如某些容器有些自己的包(曾经碰到resin的hessian包)</p>
+<h3 id="四-参考资料"><a href="#四-参考资料" class="headerlink" title="四. 参考资料"></a>四. 参考资料</h3><p>1.<a href="http://ifeve.com/useful-jvm-flags/" target="_blank" rel="external">JVM实用参数系列</a></p>
+<p>2.<a href="https://www.youtube.com/watch?v=SfjLOeOp1lE" target="_blank" rel="external">Java常见问题排查方法视频</a> 毕玄的稿件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">百度网盘：链接:http://pan.baidu.com/s/1dFy7zHn  密码:r8y6</div></pre></td></tr></table></figure>
+<p>3.<a href="https://wenku.baidu.com/view/010e4639ad02de80d4d840a8.html" target="_blank" rel="external">Java长线问题排查方法文稿</a></p>
+<p>4.<a href="http://hot66hot.iteye.com/blog/2075819" target="_blank" rel="external">JVM日志和参数的理解</a> 益军写的</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jvm/" rel="tag">#Jvm</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/19/jvm学习之-jstat/" rel="next" title="jvm学习之-jstat">
+                <i class="fa fa-chevron-left"></i> jvm学习之-jstat
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/23/1.openresty快速安装和使用/" rel="prev" title="OpenResty-1.快速安装和使用">
+                OpenResty-1.快速安装和使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/26/推荐投放项目JVM总结/"
+           data-title="推荐投放项目JVM总结" data-url="http://yoursite.com/2016/07/26/推荐投放项目JVM总结/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-jvm参数截图"><span class="nav-number">1.</span> <span class="nav-text">一. jvm参数截图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-jvm参数说明"><span class="nav-number">2.</span> <span class="nav-text">二. jvm参数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-server"><span class="nav-number">2.1.</span> <span class="nav-text">1.-server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-G1相关："><span class="nav-number">2.2.</span> <span class="nav-text">2.G1相关：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-持久代相关"><span class="nav-number">2.3.</span> <span class="nav-text">3.持久代相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-堆相关"><span class="nav-number">2.4.</span> <span class="nav-text">4.堆相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-堆外内存"><span class="nav-number">2.5.</span> <span class="nav-text">5.堆外内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-OmitStackTraceInFastThrow"><span class="nav-number">2.6.</span> <span class="nav-text">6. OmitStackTraceInFastThrow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-自定义配置"><span class="nav-number">2.7.</span> <span class="nav-text">7.自定义配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-gc文件相关："><span class="nav-number">2.8.</span> <span class="nav-text">8.gc文件相关：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-XX-HeapDumpOnOutOfMemoryError和-XX-HeapDumpPath"><span class="nav-number">2.9.</span> <span class="nav-text">9.-XX:+HeapDumpOnOutOfMemoryError和 -XX:HeapDumpPath</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-XX-UnlockCommercialFeatures和-XX-FlightRecorder"><span class="nav-number">2.10.</span> <span class="nav-text">10. -XX:+UnlockCommercialFeatures和-XX:+FlightRecorder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-jmx相关："><span class="nav-number">2.11.</span> <span class="nav-text">11. jmx相关：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-其他："><span class="nav-number">2.12.</span> <span class="nav-text">12.其他：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、其他重要参数"><span class="nav-number">3.</span> <span class="nav-text">三、其他重要参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-XX-OnOutOfMemoryError"><span class="nav-number">3.1.</span> <span class="nav-text">1. -XX:OnOutOfMemoryError</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-XX-TraceClassLoading（排查NoSuchMethodException和ClassNotFoundException等问题的利器）"><span class="nav-number">3.2.</span> <span class="nav-text">2.-XX:+TraceClassLoading（排查NoSuchMethodException和ClassNotFoundException等问题的利器）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-参考资料"><span class="nav-number">4.</span> <span class="nav-text">四. 参考资料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
