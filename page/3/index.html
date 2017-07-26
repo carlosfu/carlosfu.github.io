@@ -246,8 +246,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/26/推荐投放项目JVM总结/" itemprop="url">
-                  推荐投放项目JVM总结
+                <a class="post-title-link" href="/2016/09/23/1.openresty快速安装和使用/" itemprop="url">
+                  OpenResty-1.快速安装和使用
                 </a>
               
             
@@ -260,8 +260,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T09:40:00+08:00" content="2016-07-26">
-              2016-07-26
+            <time itemprop="dateCreated" datetime="2016-09-23T21:40:00+08:00" content="2016-09-23">
+              2016-09-23
             </time>
           </span>
 
@@ -274,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">Jvm</span>
+                  <a href="/categories/OpenResty/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenResty</span>
                   </a>
                 </span>
 
@@ -290,8 +290,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/26/推荐投放项目JVM总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/推荐投放项目JVM总结/" itemprop="commentsCount"></span>
+                <a href="/2016/09/23/1.openresty快速安装和使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/23/1.openresty快速安装和使用/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -301,7 +301,7 @@
 
           
           
-             <span id="/2016/07/26/推荐投放项目JVM总结/" class="leancloud_visitors" data-flag-title="推荐投放项目JVM总结">
+             <span id="/2016/09/23/1.openresty快速安装和使用/" class="leancloud_visitors" data-flag-title="OpenResty-1.快速安装和使用">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -324,13 +324,40 @@
 
       
         
-          <p>做推荐投放三年了，从来没有发生过GC相关的问题(🐂,ps:访问量和数据量还是挺大的)，所以有必要总结一下相关JVM参数。</p>
-<h3 id="一-jvm参数截图"><a href="#一-jvm参数截图" class="headerlink" title="一. jvm参数截图"></a>一. jvm参数截图</h3><p><img src="http://i2.itc.cn/20170719/3084_517d8bb5_1f1e_c18b_e71c_223cfffc7f61_1.png" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/26/推荐投放项目JVM总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <h3 id="一、相关资源"><a href="#一、相关资源" class="headerlink" title="一、相关资源"></a>一、相关资源</h3><p>1.<a href="https://openresty.org/cn" target="_blank" rel="external">openresty官网</a></p>
+<p>2.<a href="http://www.stuq.org/course/1015/study" target="_blank" rel="external">openresty视频教程</a></p>
+<p>3.<a href="https://www.nginx.com/resources/wiki/modules/lua/?highlight=luas" target="_blank" rel="external">ngx_lua文档</a></p>
+<p>4.<a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/index.html" target="_blank" rel="external">openresty最佳实践</a></p>
+<p>5.<a href="https://github.com/openresty/lua-nginx-module#readme" target="_blank" rel="external">相关类库说明</a></p>
+<p>6.<a href="https://www.oschina.net/question/28_60461" target="_blank" rel="external">【开源访谈】OpenResty 作者章亦春访谈实录</a></p>
+<p>附图一张：<br><img src="http://i1.itc.cn/20170418/3084_6d9e21e6_2660_ebcb_04bc_02529db723bc_1.jpg" alt=""></p>
+<h3 id="二、快速安装"><a href="#二、快速安装" class="headerlink" title="二、快速安装"></a>二、快速安装</h3><h4 id="1-下载"><a href="#1-下载" class="headerlink" title="1. 下载"></a>1. 下载</h4><p>从<a href="https://openresty.org/cn/download.html下载最新的版本，例如·" target="_blank" rel="external">https://openresty.org/cn/download.html下载最新的版本，例如·</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/soft/</div><div class="line">wget https://openresty.org/download/openresty-1.9.15.1.tar.gz &apos;--no-check-certificate&apos;</div><div class="line">tar -xvf openresty-1.9.15.1.tar.gz</div><div class="line">ln -s openresty-1.9.15.1 openresty</div></pre></td></tr></table></figure>
+<h4 id="2-准备"><a href="#2-准备" class="headerlink" title="2. 准备"></a>2. 准备</h4><p>(1) yum相关的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install readline-devel pcre-devel openssl-devel gcc</div></pre></td></tr></table></figure>
+<p>(2) 编译安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">cd /opt/soft/openresty</div><div class="line">./configure \</div><div class="line">   --prefix=/opt/openresty</div><div class="line">   --without-http_redis2_module \</div><div class="line">   --with-cc-opt=&quot;-I/usr/local/opt/openssl/include/ -I/usr/local/opt/pcre/include/&quot; \</div><div class="line">   --with-ld-opt=&quot;-L/usr/local/opt/openssl/lib/ -L/usr/local/opt/pcre/lib/&quot; \</div><div class="line">   -j8</div><div class="line">   --with-luajit</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<h4 id="3-启动"><a href="#3-启动" class="headerlink" title="3.启动"></a>3.启动</h4><p>启动方法和nginx是一样的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/opt/soft/openresty/nginx/sbin/nginx -c /opt/soft/openresty/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
+<h4 id="4-验证"><a href="#4-验证" class="headerlink" title="4.验证"></a>4.验证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl 127.0.0.1</div></pre></td></tr></table></figure>
+<p>结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</div><div class="line">&lt;style&gt;</div><div class="line">    body &#123;</div><div class="line">        width: 35em;</div><div class="line">        margin: 0 auto;</div><div class="line">        font-family: Tahoma, Verdana, Arial, sans-serif;</div><div class="line">    &#125;</div><div class="line">&lt;/style&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</div><div class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</div><div class="line">working. Further configuration is required.&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p&gt;For online documentation and support please refer to</div><div class="line">&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</div><div class="line">Commercial support is available at</div><div class="line">&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<h3 id="三、快速使用"><a href="#三、快速使用" class="headerlink" title="三、快速使用"></a>三、快速使用</h3><h4 id="1-在nginx-conf中添加ngx-lua代码"><a href="#1-在nginx-conf中添加ngx-lua代码" class="headerlink" title="1.在nginx.conf中添加ngx_lua代码"></a>1.在nginx.conf中添加ngx_lua代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">location /hello &#123;</div><div class="line">    content_by_lua &apos;</div><div class="line">        ngx.say(&quot;&lt;p&gt;hello openresty!!&lt;/p&gt;&quot;)</div><div class="line">    &apos;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-验证并重启nginx"><a href="#2-验证并重启nginx" class="headerlink" title="2.验证并重启nginx"></a>2.验证并重启nginx</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/opt/soft/openresty/nginx/sbin/nginx -t /opt/soft/openresty/nginx/conf/nginx.conf</div><div class="line">/opt/soft/openresty/nginx/sbin/nginx -s reload</div></pre></td></tr></table></figure>
+<h4 id="3-访问验证"><a href="#3-访问验证" class="headerlink" title="3.访问验证"></a>3.访问验证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 conf]# curl 127.0.0.1/hello</div><div class="line">&lt;p&gt;hello openresty!!&lt;/p&gt;</div></pre></td></tr></table></figure>
+<p>提示，有关ngx_lua的语法可以到如下网站搜索</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://www.nginx.com/resources/wiki/modules/lua/?highlight=luas</div></pre></td></tr></table></figure>
+<h4 id="4-lua脚本独立"><a href="#4-lua脚本独立" class="headerlink" title="4.lua脚本独立"></a>4.lua脚本独立</h4><p>(1) lua独立<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location /hello &#123;</div><div class="line">    content_by_lua_file /usr/local/openresty/script/hello.lua;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其中content_by_lua_file是通过上面的网站查到的，这个网址应该经常用到。</p>
+<p>(2) 脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 script]# cat /usr/local/openresty/script/hello.lua</div><div class="line">ngx.say(&quot;&lt;p&gt;hello openresty content_by_lua_file.&lt;/p&gt;&quot;)</div></pre></td></tr></table></figure>
+<p>(3) 缓存：<br>先修改脚本内容发现，返回内容不变，需要添加缓存选项(如果是生产可能会影响性能)<br>默认开启, 有多个使用范围</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">syntax: lua_code_cache on | off</div><div class="line">default: lua_code_cache on</div><div class="line">context: http, server, location, location if</div></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 script]# ../nginx/sbin/nginx -t</div><div class="line">nginx: [alert] lua_code_cache is off; this will hurt performance in /usr/local/openresty/nginx/conf/nginx.conf:48</div></pre></td></tr></table></figure>
+
+          
         
       
     </div>
