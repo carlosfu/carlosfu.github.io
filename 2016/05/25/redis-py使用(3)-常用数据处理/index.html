@@ -83,13 +83,13 @@
 <meta name="description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  1234567891011def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.StrictRedi">
 <meta name="keywords" content="Redis,redis-py,常用数据处理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redis-py使用入门(3)-常用数据处理">
+<meta property="og:title" content="Redis常用数据处理">
 <meta property="og:url" content="http://yoursite.com/2016/05/25/redis-py使用(3)-常用数据处理/index.html">
 <meta property="og:site_name" content="carlosfu">
 <meta property="og:description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  1234567891011def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.StrictRedi">
-<meta property="og:updated_time" content="2017-07-27T04:38:11.000Z">
+<meta property="og:updated_time" content="2017-08-10T02:41:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="redis-py使用入门(3)-常用数据处理">
+<meta name="twitter:title" content="Redis常用数据处理">
 <meta name="twitter:description" content="主要引入如下模块12import redisimport rediscluster 一.删除指定模式的key1.单个节点使用scan + pipeline + del(每次扫描100个)  1234567891011def delInstancePatternKeys(host, port, pattern, password=None):    client = redis.StrictRedi">
 
 
@@ -108,7 +108,7 @@
   };
 </script>
 
-  <title> redis-py使用入门(3)-常用数据处理 | carlosfu </title>
+  <title> Redis常用数据处理 | carlosfu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -248,7 +248,7 @@
             
             
               
-                redis-py使用入门(3)-常用数据处理
+                Redis常用数据处理
               
             
           </h1>
@@ -301,7 +301,7 @@
 
           
           
-             <span id="/2016/05/25/redis-py使用(3)-常用数据处理/" class="leancloud_visitors" data-flag-title="redis-py使用入门(3)-常用数据处理">
+             <span id="/2016/05/25/redis-py使用(3)-常用数据处理/" class="leancloud_visitors" data-flag-title="Redis常用数据处理">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -335,6 +335,93 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">startupNodes = [&#123;&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:7000&#125;]</div><div class="line">delClusterPatternKey(startupNodes, &quot;video*&quot;)</div></pre></td></tr></table></figure>
 <h3 id="二-寻找bigkey"><a href="#二-寻找bigkey" class="headerlink" title="二.寻找bigkey"></a>二.寻找bigkey</h3><h4 id="1-单个节点-1"><a href="#1-单个节点-1" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + strlen(字符串) | debug object(非字符串)找到字节数在startBytes与endBytes之间的key</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def findInstanceBigKey(host, port, startBytes, endBytes, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=None, count=100)</div><div class="line">        for key in keys:</div><div class="line">            try:</div><div class="line">                keyType = client.type(key)</div><div class="line">                if &quot;string&quot; == keyType.lower():</div><div class="line">                    strlen = client.strlen(key)</div><div class="line">                    if (strlen &gt; startBytes and strlen &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; strlen is &#123;strlen&#125; byte&quot;.format(key=key, strlen=strlen)</div><div class="line">                else:</div><div class="line">                    keyObjectDict = client.debug_object(key)</div><div class="line">                    serializedlength = keyObjectDict[&quot;serializedlength&quot;]</div><div class="line">                    if (serializedlength &gt; startBytes and serializedlength &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; serializedlength is &#123;serializedlength&#125; byte&quot;.format(key=key,</div><div class="line">                                                                                         serializedlength=serializedlength)</div><div class="line">            except Exception, ex:</div><div class="line">                print ex</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
+<p>因为debug object中的s是键值序列化后的长度，而且对于非字符串类型debug object命令是有成本的，如下：(每个item都在1~10个字节)</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>长度</th>
+<th>每个item长度</th>
+<th>耗时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hash</td>
+<td>100000</td>
+<td>4字节</td>
+<td>27毫秒</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>500000</td>
+<td>4字节</td>
+<td>137毫秒</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>1000000</td>
+<td>4字节</td>
+<td>255毫秒</td>
+</tr>
+<tr>
+<td>list</td>
+<td>100000</td>
+<td>4字节</td>
+<td>4毫秒</td>
+</tr>
+<tr>
+<td>list</td>
+<td>500000</td>
+<td>4字节</td>
+<td>8毫秒</td>
+</tr>
+<tr>
+<td>list</td>
+<td>1000000</td>
+<td>4字节</td>
+<td>12毫秒</td>
+</tr>
+<tr>
+<td>set</td>
+<td>100000</td>
+<td>4字节</td>
+<td>16毫秒</td>
+</tr>
+<tr>
+<td>set</td>
+<td>500000</td>
+<td>4字节</td>
+<td>85毫秒</td>
+</tr>
+<tr>
+<td>set</td>
+<td>1000000</td>
+<td>4字节</td>
+<td>181毫秒</td>
+</tr>
+<tr>
+<td>zset</td>
+<td>100000</td>
+<td>4字节</td>
+<td>78毫秒</td>
+</tr>
+<tr>
+<td>zset</td>
+<td>500000</td>
+<td>4字节</td>
+<td>355毫秒</td>
+</tr>
+<tr>
+<td>zset</td>
+<td>1000000</td>
+<td>4字节</td>
+<td>733毫秒</td>
+</tr>
+</tbody>
+</table>
+<p>而且实际上非字符串类型，所谓的bigkey其实我们更关系的是它的长度，所以上述代码稍作改进：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">def findInstanceBigKeyV2(host, port, startBytes, endBytes, maxLength, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    while True:</div><div class="line">        cursor, keys = client.scan(cursor=0, match=None, count=100)</div><div class="line">        for key in keys:</div><div class="line">            try:</div><div class="line">                keyType = client.type(key)</div><div class="line">                if &quot;string&quot; == keyType.lower():</div><div class="line">                    strlen = client.strlen(key)</div><div class="line">                    if (strlen &gt; startBytes and strlen &lt; endBytes):</div><div class="line">                        print &quot;&#123;key&#125; strlen is &#123;strlen&#125; byte&quot;.format(key=key, strlen=strlen)</div><div class="line">                else:</div><div class="line">                    length = 0</div><div class="line">                    if &quot;hash&quot; == keyType.lower():</div><div class="line">                        length = client.hlen(key)</div><div class="line">                    elif &quot;list&quot; == keyType.lower():</div><div class="line">                        length = client.llen(key)</div><div class="line">                    elif &quot;set&quot; == keyType.lower():</div><div class="line">                        length = client.scard(key)</div><div class="line">                    elif &quot;zset&quot; == keyType.lower():</div><div class="line">                        length = client.zcard(key)</div><div class="line">                    if length &gt; maxLength:</div><div class="line">                        print &quot;&#123;keyType&#125; key &#123;key&#125; length is &#123;length&#125; &quot;.format(keyType=keyType, key=key, length=length)</div><div class="line">            except Exception, ex:</div><div class="line">                print ex</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
 <p>例如寻找127.0.0.1:6380中10KB~20KB(大约)的key，可以执行如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findInstanceBigKey(&quot;127.0.0.1&quot;,6380,10000,20000)</div></pre></td></tr></table></figure>
 <h4 id="2-集群-1"><a href="#2-集群-1" class="headerlink" title="2.集群"></a>2.集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def findClusterBigKey(startupNodes, startBytes, endBytes):</div><div class="line">    clusterClient = rediscluster.StrictRedisCluster(startup_nodes=startupNodes, decode_responses=True)</div><div class="line">    clusterInfos = clusterClient.cluster_nodes()</div><div class="line">    for clusternode in clusterInfos:</div><div class="line">        slots = clusternode[&quot;slots&quot;]</div><div class="line">        # only check master</div><div class="line">        if len(slots) &gt; 0:</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; start to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                    tempPort=clusternode[&quot;port&quot;])</div><div class="line">            findInstanceBigKey(clusternode[&quot;host&quot;], clusternode[&quot;port&quot;], startBytes, endBytes)</div><div class="line">            print &quot;&#123;tempHost&#125;:&#123;tempPort&#125; end to scan bigkeys&quot;.format(tempHost=clusternode[&quot;host&quot;],</div><div class="line">                                                                    tempPort=clusternode[&quot;port&quot;])</div></pre></td></tr></table></figure>
@@ -358,6 +445,15 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">def delBigZsetKey(host, port, delKey, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    keyType = client.type(delKey)</div><div class="line">    if &quot;zset&quot; != keyType:</div><div class="line">        print &quot;&#123;0&#125; is not zset type&quot;.format(delKey)</div><div class="line">    else:</div><div class="line">        while True:</div><div class="line">            cursor,items = client.zscan(name=delKey,cursor=0,match=None,count=100)</div><div class="line">            for item in items:</div><div class="line">                pipeline.zrem(delKey, item)</div><div class="line">            pipeline.execute()</div><div class="line">            if cursor == 0:</div><div class="line">                break</div><div class="line">        client.delete(delKey)</div></pre></td></tr></table></figure>
 <h4 id="4-list类型"><a href="#4-list类型" class="headerlink" title="4.list类型"></a>4.list类型</h4><p>llen + ltrim + del</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def delBigListKey(host, port, delKey, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    keyType = client.type(delKey)</div><div class="line">    if &quot;list&quot; != keyType:</div><div class="line">        print &quot;&#123;0&#125; is not list type&quot;.format(delKey)</div><div class="line">    else:</div><div class="line">        while client.llen(delKey) &gt; 0:</div><div class="line">            client.ltrim(delKey, 100, -1)</div><div class="line">        client.delete(delKey)</div></pre></td></tr></table></figure>
+<h3 id="六、寻找可疑的客户端"><a href="#六、寻找可疑的客户端" class="headerlink" title="六、寻找可疑的客户端"></a>六、寻找可疑的客户端</h3><p>client list中的重要属性</p>
+<h4 id="1-空闲超过idleSeconds秒的连接"><a href="#1-空闲超过idleSeconds秒的连接" class="headerlink" title="1.空闲超过idleSeconds秒的连接"></a>1.空闲超过idleSeconds秒的连接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def findIdleClientList(host, port, idleSeconds, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    for client in client.client_list():</div><div class="line">        if client[&quot;idle&quot;] &gt; idleSeconds:</div><div class="line">            print client</div></pre></td></tr></table></figure>
+<p>每个client中若干属性，例如下面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">id=9 addr=127.0.0.1:57839 fd=6 name= age=3574 idle=3574 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=0 obl=0 oll=0 omem=0 events=r cmd=NULL</div></pre></td></tr></table></figure></p>
+<p>也可以通过awk快速找到idle大的连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">redis-cli -h 127.0.0.1 -p 6379 client list | awk &apos;&#123;if(int(substr($6,6))&gt;10) print $0&#125;&apos;</div><div class="line">id=34 addr=127.0.0.1:64300 fd=6 name= age=77 idle=77 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=0 obl=0 oll=0 omem=0 events=r cmd=NULL</div></pre></td></tr></table></figure>
+<h4 id="2-输出缓冲区过大的连接"><a href="#2-输出缓冲区过大的连接" class="headerlink" title="2.输出缓冲区过大的连接"></a>2.输出缓冲区过大的连接</h4><p>重点关注：obl、oll、omem</p>
+<h4 id="3-输入缓冲区过大的连接"><a href="#3-输入缓冲区过大的连接" class="headerlink" title="3.输入缓冲区过大的连接"></a>3.输入缓冲区过大的连接</h4><p>重点关注: quf、qbuf-free</p>
+<h4 id="4-重点命令"><a href="#4-重点命令" class="headerlink" title="4.重点命令"></a>4.重点命令</h4><p>例如：monitor、flush等</p>
+<h5 id="也综合考虑age、idle、qbuf、qbuf-free、obl、oll、omem、cmd等检查集群中不合理的客户端连接"><a href="#也综合考虑age、idle、qbuf、qbuf-free、obl、oll、omem、cmd等检查集群中不合理的客户端连接" class="headerlink" title="也综合考虑age、idle、qbuf、qbuf-free、obl、oll、omem、cmd等检查集群中不合理的客户端连接"></a>也综合考虑age、idle、qbuf、qbuf-free、obl、oll、omem、cmd等检查集群中不合理的客户端连接</h5><h3 id="七、短时间热点key的寻找"><a href="#七、短时间热点key的寻找" class="headerlink" title="七、短时间热点key的寻找"></a>七、短时间热点key的寻找</h3><p>可以使用redis-faina.py短时间利用monitor找到热点key，具体可以参考<a href="http://carlosfu.github.io/2017/02/20/Redis%E7%83%AD%E7%82%B9key%E5%AF%BB%E6%89%BE%E4%B8%8E%E4%BC%98%E5%8C%96/" target="_blank" rel="external">Redis热点key寻找与优化</a></p>
 
       
     </div>
@@ -428,7 +524,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/05/25/redis-py使用(3)-常用数据处理/"
-           data-title="redis-py使用入门(3)-常用数据处理" data-url="http://yoursite.com/2016/05/25/redis-py使用(3)-常用数据处理/">
+           data-title="Redis常用数据处理" data-url="http://yoursite.com/2016/05/25/redis-py使用(3)-常用数据处理/">
       </div>
     
   </div>
@@ -548,7 +644,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-删除指定模式的key"><span class="nav-number">1.</span> <span class="nav-text">一.删除指定模式的key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点"><span class="nav-number">1.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群"><span class="nav-number">1.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-寻找bigkey"><span class="nav-number">2.</span> <span class="nav-text">二.寻找bigkey</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点-1"><span class="nav-number">2.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群-1"><span class="nav-number">2.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-空闲key"><span class="nav-number">3.</span> <span class="nav-text">三.空闲key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点-2"><span class="nav-number">3.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群-2"><span class="nav-number">3.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-死键"><span class="nav-number">4.</span> <span class="nav-text">四.死键</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点-3"><span class="nav-number">4.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群-3"><span class="nav-number">4.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、删除bigkey"><span class="nav-number">5.</span> <span class="nav-text">五、删除bigkey</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-hash类型"><span class="nav-number">5.1.</span> <span class="nav-text">1.hash类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-set类型"><span class="nav-number">5.2.</span> <span class="nav-text">2.set类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-zset类型"><span class="nav-number">5.3.</span> <span class="nav-text">3.zset类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-list类型"><span class="nav-number">5.4.</span> <span class="nav-text">4.list类型</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-删除指定模式的key"><span class="nav-number">1.</span> <span class="nav-text">一.删除指定模式的key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点"><span class="nav-number">1.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群"><span class="nav-number">1.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-寻找bigkey"><span class="nav-number">2.</span> <span class="nav-text">二.寻找bigkey</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点-1"><span class="nav-number">2.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群-1"><span class="nav-number">2.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-空闲key"><span class="nav-number">3.</span> <span class="nav-text">三.空闲key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点-2"><span class="nav-number">3.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群-2"><span class="nav-number">3.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四-死键"><span class="nav-number">4.</span> <span class="nav-text">四.死键</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-单个节点-3"><span class="nav-number">4.1.</span> <span class="nav-text">1.单个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-集群-3"><span class="nav-number">4.2.</span> <span class="nav-text">2.集群</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、删除bigkey"><span class="nav-number">5.</span> <span class="nav-text">五、删除bigkey</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-hash类型"><span class="nav-number">5.1.</span> <span class="nav-text">1.hash类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-set类型"><span class="nav-number">5.2.</span> <span class="nav-text">2.set类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-zset类型"><span class="nav-number">5.3.</span> <span class="nav-text">3.zset类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-list类型"><span class="nav-number">5.4.</span> <span class="nav-text">4.list类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、寻找可疑的客户端"><span class="nav-number">6.</span> <span class="nav-text">六、寻找可疑的客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-空闲超过idleSeconds秒的连接"><span class="nav-number">6.1.</span> <span class="nav-text">1.空闲超过idleSeconds秒的连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-输出缓冲区过大的连接"><span class="nav-number">6.2.</span> <span class="nav-text">2.输出缓冲区过大的连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-输入缓冲区过大的连接"><span class="nav-number">6.3.</span> <span class="nav-text">3.输入缓冲区过大的连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-重点命令"><span class="nav-number">6.4.</span> <span class="nav-text">4.重点命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#也综合考虑age、idle、qbuf、qbuf-free、obl、oll、omem、cmd等检查集群中不合理的客户端连接"><span class="nav-number">6.4.1.</span> <span class="nav-text">也综合考虑age、idle、qbuf、qbuf-free、obl、oll、omem、cmd等检查集群中不合理的客户端连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、短时间热点key的寻找"><span class="nav-number">7.</span> <span class="nav-text">七、短时间热点key的寻找</span></a></li></ol></div>
             
           </div>
         </section>
