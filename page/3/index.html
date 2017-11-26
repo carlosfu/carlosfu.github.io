@@ -246,6 +246,144 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/03/Redis Cluster多机房高可用实现/" itemprop="url">
+                  Redis Cluster多机房高可用实现--基于客户端
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-03T11:20:00+08:00" content="2016-11-03">
+              2016-11-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/03/Redis Cluster多机房高可用实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/Redis Cluster多机房高可用实现/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/03/Redis Cluster多机房高可用实现/" class="leancloud_visitors" data-flag-title="Redis Cluster多机房高可用实现--基于客户端">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本文以Redis-Cluster为例子，实际使用中Redis-Sentinel和Redis Standalone也是一样的。</div></pre></td></tr></table></figure>
+<h3 id="一、现有问题"><a href="#一、现有问题" class="headerlink" title="一、现有问题"></a>一、现有问题</h3><p>由于Redis本身的一些特性(例如复制)以及使用场景，造成Redis不太适合部署在不同的机房，所以通常来看Redis集群都是在同一个机房部署的。虽然Redis集群自身已经具备了高可用的特性，即使几个Redis节点异常或者挂掉，Redis Cluster也会实现故障自动转移，对应用方来说也可以在很短时间内恢复故障。但是如果发生了机房故障(断电、断网等极端情况)，如果应用方降级或者容错机制做的不好甚至业务本身不能降级，或者会丢失重要数据，或者可能瞬间会跑满应用的线程池造成服务不可用，对于一些重要的服务来说是非常致命的。      </p>
+<p>为了应对像机房故障这类情况，保证应用方在这种极端情况下，仍然可以正常服务(系统正常运行、数据正常)，所以需要给出一个Redis跨机房的方案。</p>
+<h3 id="二、实现思路和目标："><a href="#二、实现思路和目标：" class="headerlink" title="二、实现思路和目标："></a>二、实现思路和目标：</h3><h4 id="1-思路"><a href="#1-思路" class="headerlink" title="1.思路"></a>1.思路</h4><ul>
+<li>使用CacheCloud开通两个位于两个不同机房的Redis-Cluster集群(例如：兆维、北显)：一个叫major，作为主Redis服务，一个叫minor，作为备用Redis服务。</li>
+<li>开发定制版的客户端，利用netflix的hystrix组件能够解除依赖隔离的特性，在major出现故障时，将故障隔离，并将请求自动转发到minor，并且对于应用的主线程池没有影响。（有关hystrix的请求流程流程见下图，有关hystrix使用请参考：<a href="http://hot66hot.iteye.com/blog/2155036" target="_blank" rel="external">http://hot66hot.iteye.com/blog/2155036</a></li>
+</ul>
+<p><img src="http://i2.itc.cn/20161103/3084_2bebda41_d500_20d1_b7aa_fd027c8587fd_1.png" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/03/Redis Cluster多机房高可用实现/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/29/4.openResty使用Kafka/" itemprop="url">
                   OpenResty-4.OpenResty使用Kafka
                 </a>
@@ -1492,137 +1630,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="url">
-                  Netty学习4-Netty客户端基本结构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T14:45:25+08:00" content="2016-06-01">
-              2016-06-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/RPC/" itemprop="url" rel="index">
-                    <span itemprop="name">RPC</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习4-Netty客户端基本结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/01/Netty学习4-Netty客户端基本结构/" class="leancloud_visitors" data-flag-title="Netty学习4-Netty客户端基本结构">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h3><p>上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习4-Netty客户端基本结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1668,7 +1675,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1676,7 +1683,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
