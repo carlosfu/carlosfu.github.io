@@ -246,6 +246,125 @@
             
               
                 
+                <a class="post-title-link" href="/2018/01/01/quartz入门使用/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-01T15:13:10+08:00" content="2018-01-01">
+              2018-01-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/01/01/quartz入门使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/01/quartz入门使用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2018/01/01/quartz入门使用/" class="leancloud_visitors" data-flag-title="">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="pic/quartz架构.png" alt=""></p>
+<h3 id="1-quartz相关依赖"><a href="#1-quartz相关依赖" class="headerlink" title="1.quartz相关依赖"></a>1.quartz相关依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;dependencies&gt;</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;junit&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;junit&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;4.11&lt;/version&gt;</div><div class="line">		&lt;scope&gt;test&lt;/scope&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line"></div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;quartz&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;2.2.1&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line"></div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;logback-classic&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;1.1.11&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">&lt;/dependencies&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-定义Job"><a href="#2-定义Job" class="headerlink" title="2.定义Job"></a>2.定义Job</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.carlosfu.job;</div><div class="line"></div><div class="line">import org.quartz.Job;</div><div class="line">import org.quartz.JobExecutionContext;</div><div class="line">import org.quartz.JobExecutionException;</div><div class="line">import org.slf4j.Logger;</div><div class="line">import org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @author fulei.fl 2017年12月29日 下午3:39:32</div><div class="line"> */</div><div class="line">public class HelloJob implements Job &#123;</div><div class="line"></div><div class="line">	private Logger logger = LoggerFactory.getLogger(HelloJob.class);</div><div class="line"></div><div class="line">	public void execute(JobExecutionContext context) throws JobExecutionException &#123;</div><div class="line">		logger.info(&quot;hello quartz!&quot;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-定义JobDetail"><a href="#3-定义JobDetail" class="headerlink" title="3.定义JobDetail"></a>3.定义JobDetail</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JobDetail jobDetail = JobBuilder.newJob(HelloJob.class).withIdentity(&quot;helloJob&quot;, &quot;group1&quot;).build();</div></pre></td></tr></table></figure>
+<h3 id="4-定义Trigger"><a href="#4-定义Trigger" class="headerlink" title="4.定义Trigger"></a>4.定义Trigger</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Trigger trigger = TriggerBuilder.newTrigger()</div><div class="line">				.withIdentity(&quot;helloTrigger&quot;, &quot;group1&quot;).startNow()</div><div class="line">				.withSchedule(SimpleScheduleBuilder.simpleSchedule()</div><div class="line">						.withIntervalInSeconds(2).repeatForever())</div><div class="line">				.build();</div></pre></td></tr></table></figure>
+<h3 id="5-定义Scheduler"><a href="#5-定义Scheduler" class="headerlink" title="5.定义Scheduler"></a>5.定义Scheduler</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SchedulerFactory schedulerFactory = new StdSchedulerFactory();</div><div class="line">Scheduler scheduler = schedulerFactory.getScheduler();</div></pre></td></tr></table></figure>
+<p>启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scheduler.start();</div></pre></td></tr></table></figure>
+<p>调度任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scheduler.scheduleJob(jobDetail, trigger);</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/08/16/Mac使用-Confluence数据还原/" itemprop="url">
                   Mac使用-Confluence数据还原
                 </a>
@@ -908,137 +1027,6 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" itemprop="url">
-                  常用脚本-1.计算java进程cpu消耗topN
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-12T13:20:00+08:00" content="2017-07-12">
-              2017-07-12
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/脚本/" itemprop="url" rel="index">
-                    <span itemprop="name">脚本</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" class="leancloud_visitors" data-flag-title="常用脚本-1.计算java进程cpu消耗topN">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、作用"><a href="#一、作用" class="headerlink" title="一、作用"></a>一、作用</h3><p>由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2017/07/12/redis backlog/" itemprop="url">
                   redis backlog
                 </a>
@@ -1122,6 +1110,137 @@
 <h3 id="二、客户端"><a href="#二、客户端" class="headerlink" title="二、客户端"></a>二、客户端</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/07/12/redis backlog/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" itemprop="url">
+                  常用脚本-1.计算java进程cpu消耗topN
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-12T13:20:00+08:00" content="2017-07-12">
+              2017-07-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/脚本/" itemprop="url" rel="index">
+                    <span itemprop="name">脚本</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/" class="leancloud_visitors" data-flag-title="常用脚本-1.计算java进程cpu消耗topN">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、作用"><a href="#一、作用" class="headerlink" title="一、作用"></a>一、作用</h3><p>由于某些原因(死锁、死循环、锁等待)，Java进程有时候会出现CPU过高的情况，如果能了解当前Java进程中的每个线程消耗的CPU量以及对应的线程栈，对于问题的定位十分有帮助。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/12/常用脚本-1.计算java进程cpu消耗topN/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1416,150 +1535,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" itemprop="url">
-                  看图理解HBase-1.HBase组件角色和交互
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-23T22:20:00+08:00" content="2017-05-23">
-              2017-05-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/HBase/" itemprop="url" rel="index">
-                    <span itemprop="name">HBase</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/看图理解HBase-1.HBase组件职责和交互/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBase-1.HBase组件角色和交互">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png" alt=""></p>
-<h3 id="一-Client"><a href="#一-Client" class="headerlink" title="一.Client"></a>一.Client</h3><h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1.角色"></a>1.角色</h4><ul>
-<li>普通API(get、put、delete等)</li>
-<li>Admin API(create、alter、compact等)</li>
-</ul>
-<h4 id="2-交互"><a href="#2-交互" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
-<li>与Zookeeper<ul>
-<li>第一次读写数据，需要从Zookeeper获取Meta表所在的RegionServer。</li>
-<li>Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart client)</li>
-</ul>
-</li>
-<li>与Master：这里没有画，但在使用Admin API(例如建表)时，实际上是对Master进行操作。</li>
-<li>与RegionServer：读写数据。</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1605,7 +1580,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1688,7 +1663,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

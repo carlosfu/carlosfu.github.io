@@ -246,6 +246,150 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" itemprop="url">
+                  看图理解HBase-1.HBase组件角色和交互
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T22:20:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/看图理解HBase-1.HBase组件职责和交互/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBase-1.HBase组件角色和交互">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png" alt=""></p>
+<h3 id="一-Client"><a href="#一-Client" class="headerlink" title="一.Client"></a>一.Client</h3><h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1.角色"></a>1.角色</h4><ul>
+<li>普通API(get、put、delete等)</li>
+<li>Admin API(create、alter、compact等)</li>
+</ul>
+<h4 id="2-交互"><a href="#2-交互" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
+<li>与Zookeeper<ul>
+<li>第一次读写数据，需要从Zookeeper获取Meta表所在的RegionServer。</li>
+<li>Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart client)</li>
+</ul>
+</li>
+<li>与Master：这里没有画，但在使用Admin API(例如建表)时，实际上是对Master进行操作。</li>
+<li>与RegionServer：读写数据。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/23/Hbase学习2-shell操作/" itemprop="url">
                   HBase学习2-shell客户端基本使用
                 </a>
@@ -1449,141 +1593,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/17/Redis客户端常见异常分析/" itemprop="url">
-                  Redis客户端常见异常分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-17T09:20:00+08:00" content="2016-11-17">
-              2016-11-17
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis开发与运维</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/17/Redis客户端常见异常分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/17/Redis客户端常见异常分析/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/11/17/Redis客户端常见异常分析/" class="leancloud_visitors" data-flag-title="Redis客户端常见异常分析">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="本文部分内容来自《Redis开发与运维》一书，转载请声明。"><a href="#本文部分内容来自《Redis开发与运维》一书，转载请声明。" class="headerlink" title="本文部分内容来自《Redis开发与运维》一书，转载请声明。"></a>本文部分内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书，转载请声明。</h3><p>在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况：</p>
-<h3 id="一-无法从连接池获取到连接"><a href="#一-无法从连接池获取到连接" class="headerlink" title="一.无法从连接池获取到连接"></a>一.无法从连接池获取到连接</h3><p>JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisPool中借用Jedis，就需要进行等待(例如设置了maxWaitMillis&gt;0)，如果在maxWaitMillis时间内仍然无法获取到Jedis对象就会抛出如下异常。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Timeout waiting for idle object</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:449)</div></pre></td></tr></table></figure>
-<p>还有一种情况，就是设置了blockWhenExhausted=false，那么调用者发现池子中没有资源时，会立即抛出异常不进行等待，下面的异常就是blockWhenExhausted=false时的效果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Pool exhausted</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:464)</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/17/Redis客户端常见异常分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1629,7 +1638,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1712,7 +1721,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
