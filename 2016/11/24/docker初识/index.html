@@ -1,0 +1,858 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、docker的三点好处 统一环境和配置：想想平时怎么迁移服务。 高效伸缩性：想想平时怎么扩容 资源隔离(使用lxc)：想想单机多部署。  二、docker在linux上安装方法为了简单(非生产环境)，使用yum进行安装。 所有安装的前提是内核版本要在大于等于3.10 12[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# uname -r3.10.0-693.2.2.el7.x">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker初识">
+<meta property="og:url" content="http://yoursite.com/2016/11/24/docker初识/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="一、docker的三点好处 统一环境和配置：想想平时怎么迁移服务。 高效伸缩性：想想平时怎么扩容 资源隔离(使用lxc)：想想单机多部署。  二、docker在linux上安装方法为了简单(非生产环境)，使用yum进行安装。 所有安装的前提是内核版本要在大于等于3.10 12[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# uname -r3.10.0-693.2.2.el7.x">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1493878-45c81674f6e3c9da.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1493878-a08d671c9949c203.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1493878-c400bf63c9d312ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-01T08:09:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker初识">
+<meta name="twitter:description" content="一、docker的三点好处 统一环境和配置：想想平时怎么迁移服务。 高效伸缩性：想想平时怎么扩容 资源隔离(使用lxc)：想想单机多部署。  二、docker在linux上安装方法为了简单(非生产环境)，使用yum进行安装。 所有安装的前提是内核版本要在大于等于3.10 12[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# uname -r3.10.0-693.2.2.el7.x">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1493878-45c81674f6e3c9da.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> docker初识 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                docker初识
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-24T17:20:00+08:00" content="2016-11-24">
+              2016-11-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/24/docker初识/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/24/docker初识/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/24/docker初识/" class="leancloud_visitors" data-flag-title="docker初识">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、docker的三点好处"><a href="#一、docker的三点好处" class="headerlink" title="一、docker的三点好处"></a>一、docker的三点好处</h3><ul>
+<li>统一环境和配置：想想平时怎么迁移服务。</li>
+<li>高效伸缩性：想想平时怎么扩容</li>
+<li>资源隔离(使用lxc)：想想单机多部署。</li>
+</ul>
+<h3 id="二、docker在linux上安装方法"><a href="#二、docker在linux上安装方法" class="headerlink" title="二、docker在linux上安装方法"></a>二、docker在linux上安装方法</h3><p>为了简单(非生产环境)，使用yum进行安装。</p>
+<p>所有安装的前提是内核版本要在大于等于3.10</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# uname -r</div><div class="line">3.10.0-693.2.2.el7.x86_64</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="1-更新yum"><a href="#1-更新yum" class="headerlink" title="1.更新yum"></a>1.更新yum</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure>
+<h4 id="2-添加yum仓库"><a href="#2-添加yum仓库" class="headerlink" title="2.添加yum仓库"></a>2.添加yum仓库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ tee /etc/yum.repos.d/docker.repo &lt;&lt;-&apos;EOF&apos;</div><div class="line">[dockerrepo] </div><div class="line">name=Docker Repository</div><div class="line">baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=https://yum.dockerproject.org/gpg </div><div class="line">EOF</div></pre></td></tr></table></figure>
+<h4 id="3-安装docker"><a href="#3-安装docker" class="headerlink" title="3.安装docker"></a>3.安装docker</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y docker-engine</div></pre></td></tr></table></figure>
+<p>但实际生产过程中，不一定要安装最新版本，可以通过如下方式获取现有的版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# yum list docker-engine.x86_64 --showduplicates | sort -r</div><div class="line">已加载插件：fastestmirror</div><div class="line">已安装的软件包</div><div class="line">可安装的软件包</div><div class="line">Loading mirror speeds from cached hostfile</div><div class="line">docker-engine.x86_64             1.9.1-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.9.0-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.8.3-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.8.2-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.8.1-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.8.0-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.7.1-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             17.05.0.ce-1.el7.centos             dockerrepo</div><div class="line">docker-engine.x86_64             17.05.0.ce-1.el7.centos             @dockerrepo</div><div class="line">docker-engine.x86_64             17.04.0.ce-1.el7.centos             dockerrepo</div><div class="line">docker-engine.x86_64             17.03.1.ce-1.el7.centos             dockerrepo</div><div class="line">docker-engine.x86_64             17.03.0.ce-1.el7.centos             dockerrepo</div><div class="line">docker-engine.x86_64             1.7.0-1.el7.centos                  dockerrepo</div><div class="line">docker-engine.x86_64             1.13.1-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.13.0-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.6-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.5-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.4-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.3-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.2-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.1-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.12.0-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.11.2-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.11.1-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.11.0-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.10.3-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.10.2-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.10.1-1.el7.centos                 dockerrepo</div><div class="line">docker-engine.x86_64             1.10.0-1.el7.centos                 dockerrepo</div></pre></td></tr></table></figure>
+<p>然后在去安装，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y docker-engine-1.8.3</div></pre></td></tr></table></figure>
+<h4 id="4-启动docker"><a href="#4-启动docker" class="headerlink" title="4.启动docker"></a>4.启动docker</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl start docker.service</div></pre></td></tr></table></figure>
+<h4 id="5-验证安装成功-客户端和服务端"><a href="#5-验证安装成功-客户端和服务端" class="headerlink" title="5.验证安装成功(客户端和服务端)"></a>5.验证安装成功(客户端和服务端)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker version</div><div class="line">Client:</div><div class="line"> Version:      17.05.0-ce</div><div class="line"> API version:  1.29</div><div class="line"> Go version:   go1.7.5</div><div class="line"> Git commit:   89658be</div><div class="line"> Built:        Thu May  4 22:06:25 2017</div><div class="line"> OS/Arch:      linux/amd64</div><div class="line"></div><div class="line">Server:</div><div class="line"> Version:      17.05.0-ce</div><div class="line"> API version:  1.29 (minimum version 1.12)</div><div class="line"> Go version:   go1.7.5</div><div class="line"> Git commit:   89658be</div><div class="line"> Built:        Thu May  4 22:06:25 2017</div><div class="line"> OS/Arch:      linux/amd64</div><div class="line"> Experimental: false</div></pre></td></tr></table></figure>
+<h4 id="6-卸载docker"><a href="#6-卸载docker" class="headerlink" title="6.卸载docker"></a>6.卸载docker</h4><ul>
+<li>卸载docker软件包</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y remove docker-engine</div></pre></td></tr></table></figure>
+<ul>
+<li>删除镜像、容器、卷以及自定义配置：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -rf /var/lidb/docker</div></pre></td></tr></table></figure>
+<h3 id="三、docker的三个重要概念"><a href="#三、docker的三个重要概念" class="headerlink" title="三、docker的三个重要概念"></a>三、docker的三个重要概念</h3><p><img src="http://upload-images.jianshu.io/upload_images/1493878-45c81674f6e3c9da.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li>Build: 构建，例如java项目，将tomcat + war包 + jdk(tomcat的docker会包含jdk)通过dockerfile构建在一起成为镜像</li>
+<li>Ship: 集装箱，用于存储镜像，仓库有中央的(例如官方的nginx,redis,memcached, tomcat等等)，私有仓库(例如公司的项目)</li>
+<li>Container: 容器，可以认为是运行镜像的地方，容器实际是一个进程，进程之间彼此使用lxc进行隔离。</li>
+</ul>
+<h3 id="四、快速使用"><a href="#四、快速使用" class="headerlink" title="四、快速使用"></a>四、快速使用</h3><h4 id="1-从仓库下载镜像"><a href="#1-从仓库下载镜像" class="headerlink" title="1.从仓库下载镜像"></a>1.从仓库下载镜像</h4><p>仓库有国内外的，例如官网、阿里云、网易等</p>
+<ul>
+<li>官网：<a href="https://hub.docker.com/" target="_blank" rel="external">https://hub.docker.com/</a>，点击explore就可以找到对应的镜像</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/1493878-a08d671c9949c203.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li>阿里云： <a href="https://dev.aliyun.com/search.html" target="_blank" rel="external">https://dev.aliyun.com/search.html</a></li>
+<li>网易：<a href="https://c.163.com/" target="_blank" rel="external">https://c.163.com/</a></li>
+</ul>
+<p>例如下载redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull redis</div></pre></td></tr></table></figure>
+<p>会下载最新版本的redis，如果需要下载指定版本的redis，可以用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull redis:3.0.7</div></pre></td></tr></table></figure>
+<p>使用docker images可以查看当前机器拥有的镜像，例如当前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">redis               latest              c3eb149853f0        24 hours ago        107MB</div></pre></td></tr></table></figure>
+<ul>
+<li>REPOSITORY是镜像名</li>
+<li>TAG是版本</li>
+<li>IMAGE ID是镜像id</li>
+</ul>
+<h4 id="2-启动容器"><a href="#2-启动容器" class="headerlink" title="2.启动容器"></a>2.启动容器</h4><p>例如启动redis，-d代表守护进程方式启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker run -d redis</div><div class="line">7cce96da80a64c2575c28e0aeccc686f4b7b195790a76726e0343b882902b66e</div></pre></td></tr></table></figure>
+<p>docker ps可以看到所有的docker进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker ps</div><div class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</div><div class="line">7cce96da80a6        redis               &quot;docker-entrypoint...&quot;   31 seconds ago      Up 31 seconds       6379/tcp            elastic_brahmagupta</div></pre></td></tr></table></figure>
+<p>但是在进程外通过redis-cli是无法连接到redis的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# redis-cli</div><div class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused</div><div class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused</div></pre></td></tr></table></figure>
+<p>而且netstat也看到6379端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# netstat -ant | grep 6379</div></pre></td></tr></table></figure>
+<p>这是因为宿主机和容器的端口是隔离的，容器的端口是虚拟的，宿主机需要做端口映射，要执行命令可以用两种方法</p>
+<p>(1) 使用docker exec进入容器内部执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker exec -it 7cce96da80a6 redis-cli</div><div class="line">127.0.0.1:6379&gt; set hello world</div><div class="line">OK</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker exec --help</div><div class="line"></div><div class="line">Usage:	docker exec [OPTIONS] CONTAINER COMMAND [ARG...]</div><div class="line"></div><div class="line">Run a command in a running container</div><div class="line"></div><div class="line">Options:</div><div class="line">  -d, --detach               Detached mode: run command in the background</div><div class="line">      --detach-keys string   Override the key sequence for detaching a container</div><div class="line">  -e, --env list             Set environment variables</div><div class="line">      --help                 Print usage</div><div class="line">  -i, --interactive          Keep STDIN open even if not attached</div><div class="line">      --privileged           Give extended privileges to the command</div><div class="line">  -t, --tty                  Allocate a pseudo-TTY</div><div class="line">  -u, --user string          Username or UID (format: &lt;name|uid&gt;[:&lt;group|gid&gt;])</div></pre></td></tr></table></figure>
+<p>(2) 启动的时候做好端口映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker run -d -p 6380:6379 redis:3.0.7</div><div class="line">606fd0bf0e2f72264025ebcf4909a1598a06060c2cf54939e3baec3a9a4d7726</div></pre></td></tr></table></figure>
+<p>-p 宿主机端口:容器端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# redis-cli -p 6380</div><div class="line">127.0.0.1:6380&gt; get hello</div><div class="line">&quot;world&quot;</div></pre></td></tr></table></figure>
+<h4 id="3-停止容器"><a href="#3-停止容器" class="headerlink" title="3.停止容器"></a>3.停止容器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker stop $&#123;containId&#125;</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker kill $&#123;containId&#125;</div></pre></td></tr></table></figure>
+<h3 id="五、构建自己的镜像"><a href="#五、构建自己的镜像" class="headerlink" title="五、构建自己的镜像"></a>五、构建自己的镜像</h3><p>构建一个spring boot的docker</p>
+<p>1.准备jdk镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull java:8u111-jdk</div></pre></td></tr></table></figure>
+<p>2.准备一个spring-boot带controller的jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean compile install</div></pre></td></tr></table></figure>
+<p>生成</p>
+<p>3.编写dockerfile </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">FROM java</div><div class="line">ADD spring-boot-docker-0.0.1-SNAPSHOT.jar app.jar</div><div class="line">ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</div></pre></td></tr></table></figure>
+<p>4.构建</p>
+<p>将spring-boot-docker-0.0.1-SNAPSHOT.jar和Dockerfile放在一个目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker build -t spring-boot-docker-hello:1.0 .</div><div class="line">Sending build context to Docker daemon  14.54MB</div><div class="line">Step 1/3 : FROM java</div><div class="line"> ---&gt; d23bdf5b1b1b</div><div class="line">Step 2/3 : ADD spring-boot-docker-0.0.1-SNAPSHOT.jar app.jar</div><div class="line"> ---&gt; Using cache</div><div class="line"> ---&gt; f9789f56d0fb</div><div class="line">Step 3/3 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /app.jar</div><div class="line"> ---&gt; Using cache</div><div class="line"> ---&gt; 8f553e152298</div><div class="line">Successfully built 8f553e152298</div><div class="line">Successfully tagged spring-boot-docker-hello:1.0</div></pre></td></tr></table></figure>
+<p>5.运行和测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker run -d -p 8888:8080 spring-boot-docker-hello:1.0</div><div class="line">46b1cba713ed40015cadb7122a0fd55b3cc53507777e2f3f1d3eb66765366021</div></pre></td></tr></table></figure>
+<p>宿主机测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# curl &quot;http://localhost:8888/hello&quot;</div><div class="line">hello docker and spring-boot</div></pre></td></tr></table></figure>
+<p>容器测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# docker exec -it 46b1cba713ed curl &quot;http://localhost:8080/hello&quot;</div><div class="line">hello docker and spring-boot</div></pre></td></tr></table></figure>
+<h3 id="五、docker工作流"><a href="#五、docker工作流" class="headerlink" title="五、docker工作流"></a>五、docker工作流</h3><p><img src="http://upload-images.jianshu.io/upload_images/1493878-c400bf63c9d312ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="1-宿主机："><a href="#1-宿主机：" class="headerlink" title="1. 宿主机："></a>1. 宿主机：</h4><ul>
+<li>Docker deamon: 运行在宿主机的后台进程。<ul>
+<li>用于接收客户端命令</li>
+<li>从仓库拉去镜像    </li>
+</ul>
+</li>
+<li>Container: 运行镜像</li>
+<li>images: 本地镜像</li>
+</ul>
+<h4 id="2-客户端："><a href="#2-客户端：" class="headerlink" title="2. 客户端："></a>2. 客户端：</h4><p>发送各种docker命令给Docker deamon。</p>
+<h4 id="3-仓库："><a href="#3-仓库：" class="headerlink" title="3. 仓库："></a>3. 仓库：</h4><p>存放镜像，概念和maven很类似，也可以划分本地仓库和中央仓库。</p>
+<h3 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h3><p>本文只是简单了解了docker的部署和使用，实际生产过程中还有很多复杂的用法、配置等。但是docker确实解决第一节提到的三个问题，还是很值得学习的。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag">#docker</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/17/Redis客户端常见异常分析/" rel="next" title="Redis客户端常见异常分析">
+                <i class="fa fa-chevron-left"></i> Redis客户端常见异常分析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/24/全量复制问题/" rel="prev" title="Redis无限全量复制问题分析与优化">
+                Redis无限全量复制问题分析与优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/24/docker初识/"
+           data-title="docker初识" data-url="http://yoursite.com/2016/11/24/docker初识/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、docker的三点好处"><span class="nav-number">1.</span> <span class="nav-text">一、docker的三点好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、docker在linux上安装方法"><span class="nav-number">2.</span> <span class="nav-text">二、docker在linux上安装方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-更新yum"><span class="nav-number">2.1.</span> <span class="nav-text">1.更新yum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-添加yum仓库"><span class="nav-number">2.2.</span> <span class="nav-text">2.添加yum仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安装docker"><span class="nav-number">2.3.</span> <span class="nav-text">3.安装docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-启动docker"><span class="nav-number">2.4.</span> <span class="nav-text">4.启动docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-验证安装成功-客户端和服务端"><span class="nav-number">2.5.</span> <span class="nav-text">5.验证安装成功(客户端和服务端)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-卸载docker"><span class="nav-number">2.6.</span> <span class="nav-text">6.卸载docker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、docker的三个重要概念"><span class="nav-number">3.</span> <span class="nav-text">三、docker的三个重要概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、快速使用"><span class="nav-number">4.</span> <span class="nav-text">四、快速使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-从仓库下载镜像"><span class="nav-number">4.1.</span> <span class="nav-text">1.从仓库下载镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-启动容器"><span class="nav-number">4.2.</span> <span class="nav-text">2.启动容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-停止容器"><span class="nav-number">4.3.</span> <span class="nav-text">3.停止容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、构建自己的镜像"><span class="nav-number">5.</span> <span class="nav-text">五、构建自己的镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、docker工作流"><span class="nav-number">6.</span> <span class="nav-text">五、docker工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-宿主机："><span class="nav-number">6.1.</span> <span class="nav-text">1. 宿主机：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-客户端："><span class="nav-number">6.2.</span> <span class="nav-text">2. 客户端：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-仓库："><span class="nav-number">6.3.</span> <span class="nav-text">3. 仓库：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、总结"><span class="nav-number">7.</span> <span class="nav-text">六、总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

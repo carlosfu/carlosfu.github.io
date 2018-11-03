@@ -1,0 +1,814 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C语言," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、Makefile例如项目有很多源文件，彼此关联。例如下面main.c用到了myutil.c。 1. myuti.h12int maxNum(int a, int b);int minNum(int a, int b); 2. myutil.c123456789#include &amp;quot;myutil.h&amp;quot;int max(int a, int b) &amp;#123;    return">
+<meta name="keywords" content="C语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言语法回顾">
+<meta property="og:url" content="http://yoursite.com/2015/07/18/c语言学习笔记/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="一、Makefile例如项目有很多源文件，彼此关联。例如下面main.c用到了myutil.c。 1. myuti.h12int maxNum(int a, int b);int minNum(int a, int b); 2. myutil.c123456789#include &amp;quot;myutil.h&amp;quot;int max(int a, int b) &amp;#123;    return">
+<meta property="og:updated_time" content="2018-04-04T03:42:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言语法回顾">
+<meta name="twitter:description" content="一、Makefile例如项目有很多源文件，彼此关联。例如下面main.c用到了myutil.c。 1. myuti.h12int maxNum(int a, int b);int minNum(int a, int b); 2. myutil.c123456789#include &amp;quot;myutil.h&amp;quot;int max(int a, int b) &amp;#123;    return">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> C语言语法回顾 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C语言语法回顾
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-18T14:20:00+08:00" content="2015-07-18">
+              2015-07-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c-language</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/18/c语言学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/18/c语言学习笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/07/18/c语言学习笔记/" class="leancloud_visitors" data-flag-title="C语言语法回顾">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、Makefile"><a href="#一、Makefile" class="headerlink" title="一、Makefile"></a>一、Makefile</h3><p>例如项目有很多源文件，彼此关联。例如下面main.c用到了myutil.c。</p>
+<h4 id="1-myuti-h"><a href="#1-myuti-h" class="headerlink" title="1. myuti.h"></a>1. myuti.h</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">int maxNum(int a, int b);</div><div class="line">int minNum(int a, int b);</div></pre></td></tr></table></figure>
+<h4 id="2-myutil-c"><a href="#2-myutil-c" class="headerlink" title="2. myutil.c"></a>2. myutil.c</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#include &quot;myutil.h&quot;</div><div class="line"></div><div class="line">int max(int a, int b) &#123;</div><div class="line">    return a &gt; b ? a : b;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int min(int a, int b) &#123;</div><div class="line">    return a &lt; b ? a : b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="3-main-c"><a href="#3-main-c" class="headerlink" title="3. main.c"></a>3. main.c</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &quot;myutil.h&quot;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    int a = 3;</div><div class="line">    int b = 55;</div><div class="line">    int max = maxNum(a, b);</div><div class="line">    printf(&quot;max is %d\n&quot;, max);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="4-Makefile"><a href="#4-Makefile" class="headerlink" title="4.Makefile"></a>4.Makefile</h4><p>Makefile可以完成多文件的编译。</p>
+<p>注意Makefile文件名的大小写，下面的缩进行必须是tab，否则在make的时候会报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">main.out:myutil.o main.c</div><div class="line">	gcc myutil.o main.c -o main.out</div><div class="line">myutil.o:myutil.c</div><div class="line">	gcc -c myutil.c</div></pre></td></tr></table></figure>
+<p>main.out需要myutil.o和main.c，生成的方法就是下面的gcc myutil.o main.c -o main.out，注意下行是tab<br>myutil.o需要myutil.c,生成方法gcc -c myutil.c</p>
+<h3 id="二、重定向"><a href="#二、重定向" class="headerlink" title="二、重定向"></a>二、重定向</h3><h4 id="main-c"><a href="#main-c" class="headerlink" title="main.c"></a>main.c</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    int i,j;</div><div class="line">    printf(&quot;please input i: \n&quot;);</div><div class="line">    scanf(&quot;%d&quot;,&amp;i);</div><div class="line">    printf(&quot;please input j: \n&quot;);</div><div class="line">    scanf(&quot;%d&quot;,&amp;j);</div><div class="line">    if (0 == j) &#123;</div><div class="line">        fprintf(stderr, &quot;j must be greater than 0\n&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125; else &#123;</div><div class="line">        int div = i / j;</div><div class="line">        printf(&quot;%d / %d = %d\n&quot;, i, j ,div);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="1-正常运行"><a href="#1-正常运行" class="headerlink" title="1. 正常运行"></a>1. 正常运行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cc stdtest.c -o stdtest.o &amp;&amp; ./stdtest.o</div><div class="line">please input i: 12</div><div class="line">please input j: 3</div><div class="line">12 / 3 = 4</div></pre></td></tr></table></figure>
+<h4 id="2-使用文件作为标准输入"><a href="#2-使用文件作为标准输入" class="headerlink" title="2.使用文件作为标准输入"></a>2.使用文件作为标准输入</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cat input.txt </div><div class="line">120</div><div class="line">3</div></pre></td></tr></table></figure>
+<p>标准的输入是键盘，这里用文件替换了标准输入。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜  cc stdtest.c -o stdtest.o &amp;&amp; ./stdtest.o &lt; input.txt</div><div class="line">please input i: </div><div class="line">please input j: </div><div class="line">120 / 3 = 40</div></pre></td></tr></table></figure></p>
+<h4 id="3-标准输出"><a href="#3-标准输出" class="headerlink" title="3.标准输出"></a>3.标准输出</h4><p>改为0，触发错误输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cat input.txt </div><div class="line">120</div><div class="line">0</div></pre></td></tr></table></figure></p>
+<p>1是标准输出，2是错误输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">./stdtest.o 1&gt;&gt; stdout.log 2&gt;&gt;stderr.log &lt; input.txt</div><div class="line"></div><div class="line"># cat stdout.log</div><div class="line">please input i:</div><div class="line">please input j:</div><div class="line"></div><div class="line"># cat stderr.log</div><div class="line">j must be greater than 0</div></pre></td></tr></table></figure>
+<h3 id="三、main函数参数"><a href="#三、main函数参数" class="headerlink" title="三、main函数参数"></a>三、main函数参数</h3><p>argv是参数个数，argc是参数字符串数组，第一个参数就是命令本身。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main(int argv, char *argc[]) &#123;</div><div class="line">    printf(&quot;argv is %d\n&quot;, argv);</div><div class="line">    for (int i = 0; i &lt; argv; i++) &#123;</div><div class="line">        printf(&quot;%s\n&quot;, argc[i]);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">./main.out a b c d e</div><div class="line">argv is 6</div><div class="line">./main.out</div><div class="line">a</div><div class="line">b</div><div class="line">c</div><div class="line">d</div><div class="line">e</div></pre></td></tr></table></figure></p>
+<h3 id="四、main返回值"><a href="#四、main返回值" class="headerlink" title="四、main返回值"></a>四、main返回值</h3><p>在linux中每执行一条命令都会有返回结果，如果返回0代表成功，其他代表有异常。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># date</div><div class="line">2018年 2月23日 星期五 17时21分28秒 CST</div><div class="line">#echo $?</div><div class="line">0</div><div class="line"></div><div class="line"># jlaifej</div><div class="line">zsh: command not found: jlaifej</div><div class="line">echo $?</div><div class="line">127</div></pre></td></tr></table></figure>
+<p>例如我们执行两条命令可以用&amp;&amp;连接，如果第一条成功了，才可以执行下一条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># date &amp;&amp; ls ./</div><div class="line">2018年 2月23日 星期五 17时23分04秒 CST</div><div class="line">CMakeLists.txt    MakeFile          a.out             cmake-build-debug main.c            main.out          myutil.c          myutil.h</div></pre></td></tr></table></figure>
+<p>所以在main函数中正确的返回是0</p>
+<h3 id="五、宏"><a href="#五、宏" class="headerlink" title="五、宏"></a>五、宏</h3><h4 id="1-函数宏"><a href="#1-函数宏" class="headerlink" title="1.函数宏"></a>1.函数宏</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">#define sum(x, y) x + y</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    printf(&quot;Hello, World!\n&quot;);</div><div class="line">    int x = 3;</div><div class="line">    int y = 2;</div><div class="line">    printf(&quot;sum is %d\n&quot;, sum(x, y));</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意没有{}，也没有return</p>
+<h5 id="2-系统宏"><a href="#2-系统宏" class="headerlink" title="2.系统宏"></a>2.系统宏</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    printf(&quot;This is line %d\n&quot;, __LINE__);</div><div class="line">    printf(&quot;File name is %s\n&quot;, __FILE__);</div><div class="line">    printf(&quot;Function name is %s\n&quot;, __func__);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">This is line 4</div><div class="line">File name is /Users/carlosfu/CLionProjects/untitled4/main.c</div><div class="line">Function name is main</div></pre></td></tr></table></figure>
+<p>有些开发需要判断当前的操作系统，例如redis中的overcommit，系统要判断当前操作系统。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line"></div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    printf(&quot;helloworld&quot;);</div><div class="line">#ifdef __APPLE__</div><div class="line">    printf(&quot;aaa&quot;);</div><div class="line">#endif</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是linux，可以用这个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">__linux__</div></pre></td></tr></table></figure>
+<h3 id="六、ifdef、ifndef、endif"><a href="#六、ifdef、ifndef、endif" class="headerlink" title="六、ifdef、ifndef、endif"></a>六、ifdef、ifndef、endif</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    printf(&quot;start\n&quot;);</div><div class="line">    #ifdef HELLO</div><div class="line">        printf(&quot;hello hello&quot;);</div><div class="line">    #endif</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start</div></pre></td></tr></table></figure>
+<p>如果换为ifndef，则输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">start</div><div class="line">hello hello</div></pre></td></tr></table></figure>
+<p>如果定义了HELLO, 且为ifdef</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">#define HELLO</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    printf(&quot;start\n&quot;);</div><div class="line">    #ifdef HELLO</div><div class="line">        printf(&quot;hello hello&quot;);</div><div class="line">    #endif</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>则输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">start</div><div class="line">hello hello</div></pre></td></tr></table></figure>
+<h3 id="七、malloc-free"><a href="#七、malloc-free" class="headerlink" title="七、malloc free"></a>七、malloc free</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    char *ptr = (char *)malloc(24);</div><div class="line">    if (ptr == NULL) &#123;</div><div class="line">        printf(&quot;malloc 24 bytes error&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    strcpy(ptr, &quot;hello world&quot;);</div><div class="line"></div><div class="line">    printf(&quot;ptr is %s\n&quot;, ptr);</div><div class="line"></div><div class="line">    free(ptr);</div><div class="line"></div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ptr is hello world</div></pre></td></tr></table></figure>
+<h3 id="八、结构体"><a href="#八、结构体" class="headerlink" title="八、结构体"></a>八、结构体</h3><p>结构体有很多种使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">typedef struct Point&#123;</div><div class="line">	int x;</div><div class="line">	int y;</div><div class="line">&#125; point;</div></pre></td></tr></table></figure>
+<p>typedef给struct Point定义了一个别名point，这样理解就容易多了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">int main()&#123;</div><div class="line">	//第一种方法</div><div class="line">	point p1;</div><div class="line">	p1.x = 11;</div><div class="line">	p1.y = 22;</div><div class="line">	printf(&quot;x is %d, y is %d\n&quot;, p1.x, p1.y);</div><div class="line"></div><div class="line">	//第二种方法</div><div class="line"></div><div class="line">	point p2 = &#123;33, 44&#125;;</div><div class="line">    printf(&quot;x is %d, y is %d\n&quot;, p2.x, p2.y);</div><div class="line">	</div><div class="line">	</div><div class="line">	//第三种方法</div><div class="line">    point *p3 = (point *)malloc(sizeof(point));</div><div class="line">	p3-&gt;x = 55;</div><div class="line">	p3-&gt;y = 66;</div><div class="line">    printf(&quot;x is %d, y is %d\n&quot;, p3-&gt;x, p3-&gt;y);     </div><div class="line"></div><div class="line"></div><div class="line">	//第四种方法(struct Point等价于point，因为使用typedef)</div><div class="line">	struct Point *p4 = (struct Point *)malloc(sizeof(struct Point));</div><div class="line">    p4-&gt;x = 77;</div><div class="line">	p4-&gt;y = 88;</div><div class="line">    printf(&quot;x is %d, y is %d\n&quot;, p4-&gt;x, p4-&gt;y);</div><div class="line"></div><div class="line"></div><div class="line">	//输出结构体的第三种方法</div><div class="line">    point *p = p4;</div><div class="line">	printf(&quot;x is %d, y is %d\n&quot;, (*p).x, (*p).y);</div><div class="line"></div><div class="line">	printf(&quot;hello world\n&quot;);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有几点需要注意：</p>
+<p>point p相当于已经生成对象(Java： new Point())。<br>point <em>p只是定义了空指针(Java： Point p)。<br>因为使用了typedef，所以struct Point p 等价于 point p; (point可以看做是struct Point的别名)<br>point </em>p如果赋值，需要使用malloc开辟空间。<br>point <em>p，则(</em>p).x等价于p-&gt;x，同时等价于point p中的p.x。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line"></div><div class="line">typedef struct listNode &#123;</div><div class="line">	void *value;</div><div class="line">&#125; node;</div><div class="line"></div><div class="line">node *nodeCreate(int value) &#123;</div><div class="line">	node *n;</div><div class="line">	n = malloc(sizeof(node));</div><div class="line">	n-&gt;value = value;</div><div class="line">	return n;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">	node *n = nodeCreate(333);</div><div class="line">	printf(&quot;node value is %d&quot;, n-&gt;value);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="九、函数指针和指针函数"><a href="#九、函数指针和指针函数" class="headerlink" title="九、函数指针和指针函数"></a>九、函数指针和指针函数</h3><p>简而言之：</p>
+<p>函数指针：实际是一个指针，只不过指向了函数地址：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int xxfunc(int a, int b) &#123;</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int (* funPointer)(int, int) = &amp;xxfunc;</div></pre></td></tr></table></figure>
+<p> 指针函数：实际是一个函数，只不过返回结果是指针</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">int xxfunc(int a, int b) &#123;</div><div class="line">	int result = xx;</div><div class="line">	return &amp;result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 下面是测试：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"> #include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int add(int a, int b) &#123;</div><div class="line">    return a + b;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//函数指针：其实就是一个函数，只不过返回结果是个指针</div><div class="line">int *addPointer(int a, int b) &#123;</div><div class="line">    int sum = a + b;</div><div class="line">    return &amp;sum;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    int a = 3;</div><div class="line">    int b = 4;</div><div class="line">    int sum = add(3, 4);</div><div class="line">    printf(&quot;sum is %d\n&quot;, sum);</div><div class="line"></div><div class="line">    //函数指针，其实就是个指针，只不过是指向了函数的地址</div><div class="line">    int (* myAdd)(int, int) = &amp;add;</div><div class="line">    printf(&quot;myAdd address is %p\n&quot;, myAdd);</div><div class="line"></div><div class="line">    sum = myAdd(a, b);</div><div class="line">    printf(&quot;myadd sum is %d\n&quot;, sum);</div><div class="line"></div><div class="line">    //指针函数</div><div class="line">    printf(&quot;pointer is %p\n&quot;, addPointer(a,b));</div><div class="line"></div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sum is 7</div><div class="line">myAdd address is 0x1067ffe60</div><div class="line">myadd sum is 7</div><div class="line">pointer is 0x7fff59400844</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C语言/" rel="tag">#C语言</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/20/markdown常见问题/" rel="next" title="markdown常见问题">
+                <i class="fa fa-chevron-left"></i> markdown常见问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/23/redis-py使用(1)-入门/" rel="prev" title="redis-py使用入门(1)">
+                redis-py使用入门(1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/18/c语言学习笔记/"
+           data-title="C语言语法回顾" data-url="http://yoursite.com/2015/07/18/c语言学习笔记/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Makefile"><span class="nav-number">1.</span> <span class="nav-text">一、Makefile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-myuti-h"><span class="nav-number">1.1.</span> <span class="nav-text">1. myuti.h</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-myutil-c"><span class="nav-number">1.2.</span> <span class="nav-text">2. myutil.c</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-main-c"><span class="nav-number">1.3.</span> <span class="nav-text">3. main.c</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Makefile"><span class="nav-number">1.4.</span> <span class="nav-text">4.Makefile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、重定向"><span class="nav-number">2.</span> <span class="nav-text">二、重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#main-c"><span class="nav-number">2.1.</span> <span class="nav-text">main.c</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-正常运行"><span class="nav-number">2.2.</span> <span class="nav-text">1. 正常运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-使用文件作为标准输入"><span class="nav-number">2.3.</span> <span class="nav-text">2.使用文件作为标准输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-标准输出"><span class="nav-number">2.4.</span> <span class="nav-text">3.标准输出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、main函数参数"><span class="nav-number">3.</span> <span class="nav-text">三、main函数参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、main返回值"><span class="nav-number">4.</span> <span class="nav-text">四、main返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、宏"><span class="nav-number">5.</span> <span class="nav-text">五、宏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-函数宏"><span class="nav-number">5.1.</span> <span class="nav-text">1.函数宏</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-系统宏"><span class="nav-number">5.1.1.</span> <span class="nav-text">2.系统宏</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、ifdef、ifndef、endif"><span class="nav-number">6.</span> <span class="nav-text">六、ifdef、ifndef、endif</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、malloc-free"><span class="nav-number">7.</span> <span class="nav-text">七、malloc free</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、结构体"><span class="nav-number">8.</span> <span class="nav-text">八、结构体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、函数指针和指针函数"><span class="nav-number">9.</span> <span class="nav-text">九、函数指针和指针函数</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

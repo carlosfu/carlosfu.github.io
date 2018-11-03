@@ -246,8 +246,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/11/17/Redis客户端常见异常分析/" itemprop="url">
-                  Redis客户端常见异常分析
+                <a class="post-title-link" href="/2017/07/12/redis backlog/" itemprop="url">
+                  redis backlog
                 </a>
               
             
@@ -260,8 +260,1089 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-17T09:20:00+08:00" content="2016-11-17">
-              2016-11-17
+            <time itemprop="dateCreated" datetime="2017-07-12T13:20:00+08:00" content="2017-07-12">
+              2017-07-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/12/redis backlog/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/12/redis backlog/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/12/redis backlog/" class="leancloud_visitors" data-flag-title="redis backlog">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、Redis配置"><a href="#一、Redis配置" class="headerlink" title="一、Redis配置"></a>一、Redis配置</h3><p>设置backlog=10</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">daemonize yes</div><div class="line">pidfile /var/run/redis-6379.pid</div><div class="line">port 6379</div><div class="line">tcp-backlog 10</div><div class="line">logfile &quot;6379.log&quot;</div><div class="line">dbfilename dump-6379.rdb</div><div class="line">dir /opt/soft/redis/data/</div></pre></td></tr></table></figure>
+<h3 id="二、客户端"><a href="#二、客户端" class="headerlink" title="二、客户端"></a>二、客户端</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/12/redis backlog/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/10/Metrics统计造成某台Region Server的CPU过高/" itemprop="url">
+                  Metrics统计造成某台Region Server的CPU过高
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-10T09:20:00+08:00" content="2017-07-10">
+              2017-07-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/10/Metrics统计造成某台Region Server的CPU过高/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/10/Metrics统计造成某台Region Server的CPU过高/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/10/Metrics统计造成某台Region Server的CPU过高/" class="leancloud_visitors" data-flag-title="Metrics统计造成某台Region Server的CPU过高">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、现象"><a href="#一、现象" class="headerlink" title="一、现象"></a>一、现象</h3><p>该机器的RegionServer的CPU几乎吃满，造成负载过高。</p>
+<p><img src="http://i2.itc.cn/20170710/3084_15c1cfcd_0237_e418_113d_d836e60563ca_1.png" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/10/Metrics统计造成某台Region Server的CPU过高/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/" itemprop="url">
+                  Direct Memory OOM造成Region Server挂掉
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-06T12:20:00+08:00" content="2017-07-06">
+              2017-07-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/06/Direct Memory OOM造成Region Server挂掉/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/07/06/Direct Memory OOM造成Region Server挂掉/" class="leancloud_visitors" data-flag-title="Direct Memory OOM造成Region Server挂掉">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>故障时间：2017-06-04 09:15</p>
+<h3 id="一、现象"><a href="#一、现象" class="headerlink" title="一、现象"></a>一、现象</h3><p>RegionServer自行挂掉：zk + shutdown hook</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">2017-06-04 09:14:06,194 INFO  [regionserver/102zw68.tvindex.sohuno.com/10.10.102.68:16020] zookeeper.ZooKeeper: Session: 0x25a38b51be18b65 closed</div><div class="line">2017-06-04 09:14:06,194 INFO  [main-EventThread] zookeeper.ClientCnxn: EventThread shut down</div><div class="line">2017-06-04 09:14:06,216 ERROR [main] regionserver.HRegionServerCommandLine: Region server exiting</div><div class="line">java.lang.RuntimeException: HRegionServer Aborted</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.start(HRegionServerCommandLine.java:68)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServerCommandLine.run(HRegionServerCommandLine.java:87)</div><div class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)</div><div class="line">	at org.apache.hadoop.hbase.util.ServerCommandLine.doMain(ServerCommandLine.java:126)</div><div class="line">	at org.apache.hadoop.hbase.regionserver.HRegionServer.main(HRegionServer.java:2665)</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook starting; hbase.shutdown.hook=true; fsShutdownHook=org.apache.hadoop.fs.FileSystem$Cache$ClientFinalizer@318603db</div><div class="line">2017-06-04 09:14:06,238 INFO  [Thread-9] regionserver.ShutdownHook: Starting fs shutdown hook thread.</div><div class="line">2017-06-04 09:14:06,239 INFO  [Thread-9] regionserver.ShutdownHook: Shutdown hook finished.</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/06/Direct Memory OOM造成Region Server挂掉/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/17/2017-06问题汇总/" itemprop="url">
+                  HBase故障记录：由jstack引起的RegionServer宕机。
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-17T10:28:59+08:00" content="2017-06-17">
+              2017-06-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/17/2017-06问题汇总/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/17/2017-06问题汇总/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/06/17/2017-06问题汇总/" class="leancloud_visitors" data-flag-title="HBase故障记录：由jstack引起的RegionServer宕机。">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3>
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" itemprop="url">
+                  看图理解HBase-1.HBase组件角色和交互
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T22:20:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/看图理解HBase-1.HBase组件职责和交互/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/" class="leancloud_visitors" data-flag-title="看图理解HBase-1.HBase组件角色和交互">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://i0.itc.cn/20170522/3084_35752cf6_205d_3d21_dab2_bce91734031e_1.png" alt=""></p>
+<h3 id="一-Client"><a href="#一-Client" class="headerlink" title="一.Client"></a>一.Client</h3><h4 id="1-角色"><a href="#1-角色" class="headerlink" title="1.角色"></a>1.角色</h4><ul>
+<li>普通API(get、put、delete等)</li>
+<li>Admin API(create、alter、compact等)</li>
+</ul>
+<h4 id="2-交互"><a href="#2-交互" class="headerlink" title="2.交互"></a>2.交互</h4><ul>
+<li>与Zookeeper<ul>
+<li>第一次读写数据，需要从Zookeeper获取Meta表所在的RegionServer。</li>
+<li>Zookeeper会将(RegionServer、Master)的状态变化通知给客户端(HBase client is smart client)</li>
+</ul>
+</li>
+<li>与Master：这里没有画，但在使用Admin API(例如建表)时，实际上是对Master进行操作。</li>
+<li>与RegionServer：读写数据。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/23/看图理解HBase-1.HBase组件职责和交互/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/23/Hbase学习2-shell操作/" itemprop="url">
+                  HBase学习2-shell客户端基本使用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T21:40:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/Hbase学习2-shell操作/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/Hbase学习2-shell操作/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/Hbase学习2-shell操作/" class="leancloud_visitors" data-flag-title="HBase学习2-shell客户端基本使用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">help命令很有用，不会命令可以用help，例如help create</div></pre></td></tr></table></figure>
+<h3 id="一、Admin-API"><a href="#一、Admin-API" class="headerlink" title="一、Admin API"></a>一、Admin API</h3><h4 id="1-建表-最简-：必须指定好列族"><a href="#1-建表-最简-：必须指定好列族" class="headerlink" title="1.建表(最简)：必须指定好列族"></a>1.建表(最简)：必须指定好列族</h4><p>create ‘table_name’,’family_name’</p>
+<p>例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">一个列簇</div><div class="line">hbase(main):003:0&gt; create <span class="string">'user_test'</span>,<span class="string">'score'</span></div><div class="line">0 row(s) <span class="keyword">in</span> 0.1120 seconds</div><div class="line">=&gt; Hbase::Table - user_test</div><div class="line"></div><div class="line">多个列簇</div><div class="line">hbase(main):004:0&gt; create <span class="string">'user_test2'</span>,<span class="string">'score'</span>,<span class="string">'info'</span></div><div class="line">0 row(s) <span class="keyword">in</span> 0.1380 seconds</div><div class="line">=&gt; Hbase::Table - user_test2</div></pre></td></tr></table></figure>
+<p>非默认配置，例如多个版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create &apos;message_box_test&apos;,&#123;NAME =&gt; &apos;f&apos;, VERSIONS =&gt; 20&#125;</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/23/Hbase学习2-shell操作/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/23/Hbase学习-1.单机版安装/" itemprop="url">
+                  HBase学习-1.单机版安装
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-23T21:20:00+08:00" content="2017-05-23">
+              2017-05-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/23/Hbase学习-1.单机版安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/Hbase学习-1.单机版安装/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/23/Hbase学习-1.单机版安装/" class="leancloud_visitors" data-flag-title="HBase学习-1.单机版安装">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><pre><code>1. 需要oracle jdk 7+。
+2. 单机版HBase: Master,Zookeeper,Region Server都在一起，使用本地磁盘代替HDFS存储。
+3. 本示例使用的是1.2.5版本。
+4. 生产环境不建议使用root启动。
+</code></pre><h4 id="一、安装、配置、启动"><a href="#一、安装、配置、启动" class="headerlink" title="一、安装、配置、启动"></a>一、安装、配置、启动</h4><h5 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h5><p>HBase镜像：<a href="http://mirror.bit.edu.cn/apache/hbase/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/hbase/</div><div class="line">wget http://archive.apache.org/dist/hbase/1.2.5/hbase-1.2.5-bin.tar.gz</div><div class="line">tar -xvf hbase-1.2.5-bin.tar.gz</div><div class="line">ln -s /opt/hbase/hbase-1.2.5 hbase</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/23/Hbase学习-1.单机版安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/21/基于Redis Cluster的分布式布隆过滤器/" itemprop="url">
+                  基于Redis Cluster的分布式布隆过滤器
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-21T21:40:00+08:00" content="2017-04-21">
+              2017-04-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/04/21/基于Redis Cluster的分布式布隆过滤器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/21/基于Redis Cluster的分布式布隆过滤器/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/04/21/基于Redis Cluster的分布式布隆过滤器/" class="leancloud_visitors" data-flag-title="基于Redis Cluster的分布式布隆过滤器">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、设计目标"><a href="#一、设计目标" class="headerlink" title="一、设计目标"></a>一、设计目标</h3><ol>
+<li>Redis分布式布隆过滤器。</li>
+<li>用户使用透明。(无需关心内部路由、存储细节)</li>
+<li>简单易用(如同使用本地布隆过滤器)。</li>
+<li>支持多种API和批量操作。</li>
+<li>支持多种hash函数。</li>
+<li>高性能、低错误率。</li>
+</ol>
+<h3 id="二、基本架构"><a href="#二、基本架构" class="headerlink" title="二、基本架构"></a>二、基本架构</h3><p><img src="http://i3.itc.cn/20170809/3084_fcac42af_b741_befa_cba3_00fd3f9c8770_1.png" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/04/21/基于Redis Cluster的分布式布隆过滤器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/20/Redis热点key寻找与优化/" itemprop="url">
+                  Redis热点key寻找与优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-20T07:20:00+08:00" content="2017-02-20">
+              2017-02-20
             </time>
           </span>
 
@@ -290,8 +1371,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/17/Redis客户端常见异常分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/17/Redis客户端常见异常分析/" itemprop="commentsCount"></span>
+                <a href="/2017/02/20/Redis热点key寻找与优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/20/Redis热点key寻找与优化/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -301,7 +1382,7 @@
 
           
           
-             <span id="/2016/11/17/Redis客户端常见异常分析/" class="leancloud_visitors" data-flag-title="Redis客户端常见异常分析">
+             <span id="/2017/02/20/Redis热点key寻找与优化/" class="leancloud_visitors" data-flag-title="Redis热点key寻找与优化">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -324,13 +1405,11 @@
 
       
         
-          <h3 id="本文部分内容来自《Redis开发与运维》一书，转载请声明。"><a href="#本文部分内容来自《Redis开发与运维》一书，转载请声明。" class="headerlink" title="本文部分内容来自《Redis开发与运维》一书，转载请声明。"></a>本文部分内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书，转载请声明。</h3><p>在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况：</p>
-<h3 id="一-无法从连接池获取到连接"><a href="#一-无法从连接池获取到连接" class="headerlink" title="一.无法从连接池获取到连接"></a>一.无法从连接池获取到连接</h3><p>JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisPool中借用Jedis，就需要进行等待(例如设置了maxWaitMillis&gt;0)，如果在maxWaitMillis时间内仍然无法获取到Jedis对象就会抛出如下异常。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Timeout waiting for idle object</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:449)</div></pre></td></tr></table></figure>
-<p>还有一种情况，就是设置了blockWhenExhausted=false，那么调用者发现池子中没有资源时，会立即抛出异常不进行等待，下面的异常就是blockWhenExhausted=false时的效果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Pool exhausted</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:464)</div></pre></td></tr></table></figure>
+          <h3 id="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"><a href="#声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。" class="headerlink" title="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"></a>声明：本文内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书第12章，如转载请声明。</h3><p>热门新闻事件或商品通常会给系统带来巨大的流量，但对存储这类信息的Redis来说是一个巨大的挑战。以Redis Cluster为例，它会造成整体流量的不均衡，个别节点出现OPS过大的情况，极端情况下热点key甚至会超过Redis本身能够承受的OPS，因此寻找热点key对于开发和运维人员非常重要。</p>
+<h3 id="1-客户端"><a href="#1-客户端" class="headerlink" title="1.客户端"></a>1.客户端</h3><p>客户端其实是距离key”最近”的地方，因为Redis命令就是从客户端发出的，例如在客户端设置全局字典(key和调用次数)，每次调用Redis命令时，使用这个字典进行记录，如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public static final AtomicLongMap&lt;String&gt; ATOMIC_LONG_MAP = AtomicLongMap.create(); </div><div class="line">String get(String key) &#123;</div><div class="line">    counterKey(key);</div><div class="line">    //ignore</div><div class="line">&#125;</div><div class="line">String set(String key, String value) &#123;</div><div class="line">    counterKey(key);</div><div class="line">    //ignore</div><div class="line">&#125;</div><div class="line">void counterKey(String key) &#123;</div><div class="line">    ATOMIC_LONG_MAP.incrementAndGet(key);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/17/Redis客户端常见异常分析/#more" rel="contents">
+            <a class="btn" href="/2017/02/20/Redis热点key寻找与优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -381,8 +1460,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/11/03/Redis Cluster多机房高可用实现/" itemprop="url">
-                  Redis Cluster多机房高可用实现--基于客户端
+                <a class="post-title-link" href="/2017/02/16/Redis内存优化/" itemprop="url">
+                  Redis的内存优化
                 </a>
               
             
@@ -395,8 +1474,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T11:20:00+08:00" content="2016-11-03">
-              2016-11-03
+            <time itemprop="dateCreated" datetime="2017-02-16T17:20:00+08:00" content="2017-02-16">
+              2017-02-16
             </time>
           </span>
 
@@ -409,8 +1488,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
                   </a>
                 </span>
 
@@ -425,8 +1504,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/03/Redis Cluster多机房高可用实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/Redis Cluster多机房高可用实现/" itemprop="commentsCount"></span>
+                <a href="/2017/02/16/Redis内存优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/16/Redis内存优化/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -436,7 +1515,7 @@
 
           
           
-             <span id="/2016/11/03/Redis Cluster多机房高可用实现/" class="leancloud_visitors" data-flag-title="Redis Cluster多机房高可用实现--基于客户端">
+             <span id="/2017/02/16/Redis内存优化/" class="leancloud_visitors" data-flag-title="Redis的内存优化">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -459,1152 +1538,14 @@
 
       
         
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本文以Redis-Cluster为例子，实际使用中Redis-Sentinel和Redis Standalone也是一样的。</div></pre></td></tr></table></figure>
-<h3 id="一、现有问题"><a href="#一、现有问题" class="headerlink" title="一、现有问题"></a>一、现有问题</h3><p>由于Redis本身的一些特性(例如复制)以及使用场景，造成Redis不太适合部署在不同的机房，所以通常来看Redis集群都是在同一个机房部署的。虽然Redis集群自身已经具备了高可用的特性，即使几个Redis节点异常或者挂掉，Redis Cluster也会实现故障自动转移，对应用方来说也可以在很短时间内恢复故障。但是如果发生了机房故障(断电、断网等极端情况)，如果应用方降级或者容错机制做的不好甚至业务本身不能降级，或者会丢失重要数据，或者可能瞬间会跑满应用的线程池造成服务不可用，对于一些重要的服务来说是非常致命的。      </p>
-<p>为了应对像机房故障这类情况，保证应用方在这种极端情况下，仍然可以正常服务(系统正常运行、数据正常)，所以需要给出一个Redis跨机房的方案。</p>
-<h3 id="二、实现思路和目标："><a href="#二、实现思路和目标：" class="headerlink" title="二、实现思路和目标："></a>二、实现思路和目标：</h3><h4 id="1-思路"><a href="#1-思路" class="headerlink" title="1.思路"></a>1.思路</h4><ul>
-<li>使用CacheCloud开通两个位于两个不同机房的Redis-Cluster集群(例如：兆维、北显)：一个叫major，作为主Redis服务，一个叫minor，作为备用Redis服务。</li>
-<li>开发定制版的客户端，利用netflix的hystrix组件能够解除依赖隔离的特性，在major出现故障时，将故障隔离，并将请求自动转发到minor，并且对于应用的主线程池没有影响。（有关hystrix的请求流程流程见下图，有关hystrix使用请参考：<a href="http://hot66hot.iteye.com/blog/2155036" target="_blank" rel="external">http://hot66hot.iteye.com/blog/2155036</a></li>
-</ul>
-<p><img src="http://i2.itc.cn/20161103/3084_2bebda41_d500_20d1_b7aa_fd027c8587fd_1.png" alt=""></p>
+          <h3 id="声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。"><a href="#声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。" class="headerlink" title="声明：本文内容来自《Redis开发与运维》一书第八章，如转载请声明。"></a>声明：本文内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书第八章，如转载请声明。</h3><p>Redis所有的数据都在内存中，而内存又是非常宝贵的资源。对于如何优化内存使用一直是Redis用户非常关注的问题。本文让我们深入到Redis细节中，学习内存优化的技巧。分为如下几个部分：</p>
+<p>一. <a href="#chapter1">redisObject对象</a><br>二. <a href="#chapter2">缩减键值对象</a><br>三. <a href="#chapter3">共享对象池</a><br>四. <a href="#chapter4">字符串优化</a><br>五. <a href="#chapter5">编码优化</a><br>六. <a href="#chapter6">控制key的数量</a></p>
+<p><a name="chapter1"></a></p>
+<h2 id="一-redisObject对象"><a href="#一-redisObject对象" class="headerlink" title="一. redisObject对象"></a>一. redisObject对象</h2><p>Redis存储的所有值对象在内部定义为redisObject结构体，内部结构如下图所示。</p>
+<p><img src="http://i1.itc.cn/20170216/3084_2c3a0c00_6cbc_c4d9_01fe_8852cc497653_1.png" alt=""></p>
+<p>Redis存储的数据都使用redisObject来封装，包括string,hash,list,set,zset在内的所有数据类型。理解redisObject对内存优化非常有帮助，下面针对每个字段做详细说明：</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/03/Redis Cluster多机房高可用实现/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/29/4.openResty使用Kafka/" itemprop="url">
-                  OpenResty-4.OpenResty使用Kafka
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-29T21:40:00+08:00" content="2016-09-29">
-              2016-09-29
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/OpenResty/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenResty</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/29/4.openResty使用Kafka/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/29/4.openResty使用Kafka/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/09/29/4.openResty使用Kafka/" class="leancloud_visitors" data-flag-title="OpenResty-4.OpenResty使用Kafka">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>openresty官方模块</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/openresty/lua-nginx-module#readme</div></pre></td></tr></table></figure>
-<p>其中没有kafka的模块，可以在google上搜索可以查到lua-resty-kafka</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/doujiang24/lua-resty-kafka</div></pre></td></tr></table></figure>
-<h4 id="1-安装lua-resty-kafka"><a href="#1-安装lua-resty-kafka" class="headerlink" title="1.安装lua-resty-kafka"></a>1.安装lua-resty-kafka</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/doujiang24/lua-resty-kafka/archive/master.zip  </div><div class="line">unzip lua-resty-kafka-master.zip -d /opt/nginx/  </div><div class="line">    </div><div class="line">#拷贝lua-resty-kafka到openresty  </div><div class="line">mkdir /opt/openresty/lualib/kafka  </div><div class="line">cp -rf /opt/nginx/lua-resty-kafka-master/lib/resty /opt/openresty/lualib/kafka/</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/29/4.openResty使用Kafka/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/26/3.openResty使用Redis/" itemprop="url">
-                  OpenResty-3.OpenResty使用Redis
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-26T21:40:00+08:00" content="2016-09-26">
-              2016-09-26
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/OpenResty/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenResty</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/26/3.openResty使用Redis/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/3.openResty使用Redis/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/09/26/3.openResty使用Redis/" class="leancloud_visitors" data-flag-title="OpenResty-3.OpenResty使用Redis">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>openresty模块</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/openresty/lua-nginx-module#readme</div></pre></td></tr></table></figure>
-<p>其中redis模块叫做lua-resty-redis,可以在上述页面进行搜索</p>
-<h4 id="1-一个完整的demo"><a href="#1-一个完整的demo" class="headerlink" title="1.一个完整的demo"></a>1.一个完整的demo</h4><p>使用起来不困难，也不必深究：redis的API、luajit的基本语法。</p>
-<p>需要注意的是在openresty中已经有了类库，也就是下面require “resty.redis”</p>
-<p><img src="http://i1.itc.cn/20170419/3084_60974274_5a35_6dcc_833e_3b88c84cc724_1.png" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/26/3.openResty使用Redis/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/24/2.一个独立的ngx_lua程序/" itemprop="url">
-                  OpenResty-2.一个独立的ngx_lua程序
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-24T21:40:00+08:00" content="2016-09-24">
-              2016-09-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/OpenResty/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenResty</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/24/2.一个独立的ngx_lua程序/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/24/2.一个独立的ngx_lua程序/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/09/24/2.一个独立的ngx_lua程序/" class="leancloud_visitors" data-flag-title="OpenResty-2.一个独立的ngx_lua程序">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>提示，有关ngx_lua的语法可以到如下网站搜索</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://www.nginx.com/resources/wiki/modules/lua/?highlight=luas</div></pre></td></tr></table></figure>
-<h4 id="1-一个完整的程序"><a href="#1-一个完整的程序" class="headerlink" title="1.一个完整的程序"></a>1.一个完整的程序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">local args = ngx.req.get_uri_args()</div><div class="line">local salt = args.salt</div><div class="line">if not salt then</div><div class="line">    ngx.exit(ngx.HTTP_BAD_REQUEST)</div><div class="line">end</div><div class="line">local str = ngx.md5(ngx.time() .. salt)</div><div class="line">ngx.say(str)</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/24/2.一个独立的ngx_lua程序/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/23/1.openresty快速安装和使用/" itemprop="url">
-                  OpenResty-1.快速安装和使用
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-23T21:40:00+08:00" content="2016-09-23">
-              2016-09-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/OpenResty/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenResty</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/23/1.openresty快速安装和使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/23/1.openresty快速安装和使用/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/09/23/1.openresty快速安装和使用/" class="leancloud_visitors" data-flag-title="OpenResty-1.快速安装和使用">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、相关资源"><a href="#一、相关资源" class="headerlink" title="一、相关资源"></a>一、相关资源</h3><p>1.<a href="https://openresty.org/cn" target="_blank" rel="external">openresty官网</a></p>
-<p>2.<a href="http://www.stuq.org/course/1015/study" target="_blank" rel="external">openresty视频教程</a></p>
-<p>3.<a href="https://www.nginx.com/resources/wiki/modules/lua/?highlight=luas" target="_blank" rel="external">ngx_lua文档</a></p>
-<p>4.<a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/index.html" target="_blank" rel="external">openresty最佳实践</a></p>
-<p>5.<a href="https://github.com/openresty/lua-nginx-module#readme" target="_blank" rel="external">相关类库说明</a></p>
-<p>6.<a href="https://www.oschina.net/question/28_60461" target="_blank" rel="external">【开源访谈】OpenResty 作者章亦春访谈实录</a></p>
-<p>附图一张：<br><img src="http://i1.itc.cn/20170418/3084_6d9e21e6_2660_ebcb_04bc_02529db723bc_1.jpg" alt=""></p>
-<h3 id="二、快速安装"><a href="#二、快速安装" class="headerlink" title="二、快速安装"></a>二、快速安装</h3><h4 id="1-下载"><a href="#1-下载" class="headerlink" title="1. 下载"></a>1. 下载</h4><p>从<a href="https://openresty.org/cn/download.html下载最新的版本，例如·" target="_blank" rel="external">https://openresty.org/cn/download.html下载最新的版本，例如·</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /opt/soft/</div><div class="line">wget https://openresty.org/download/openresty-1.9.15.1.tar.gz &apos;--no-check-certificate&apos;</div><div class="line">tar -xvf openresty-1.9.15.1.tar.gz</div><div class="line">ln -s openresty-1.9.15.1 openresty</div></pre></td></tr></table></figure>
-<h4 id="2-准备"><a href="#2-准备" class="headerlink" title="2. 准备"></a>2. 准备</h4><p>(1) yum相关的依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install readline-devel pcre-devel openssl-devel gcc</div></pre></td></tr></table></figure>
-<p>(2) 编译安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">cd /opt/soft/openresty</div><div class="line">./configure \</div><div class="line">   --prefix=/opt/openresty</div><div class="line">   --without-http_redis2_module \</div><div class="line">   --with-cc-opt=&quot;-I/usr/local/opt/openssl/include/ -I/usr/local/opt/pcre/include/&quot; \</div><div class="line">   --with-ld-opt=&quot;-L/usr/local/opt/openssl/lib/ -L/usr/local/opt/pcre/lib/&quot; \</div><div class="line">   -j8</div><div class="line">   --with-luajit</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
-<h4 id="3-启动"><a href="#3-启动" class="headerlink" title="3.启动"></a>3.启动</h4><p>启动方法和nginx是一样的:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/opt/soft/openresty/nginx/sbin/nginx -c /opt/soft/openresty/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
-<h4 id="4-验证"><a href="#4-验证" class="headerlink" title="4.验证"></a>4.验证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl 127.0.0.1</div></pre></td></tr></table></figure>
-<p>结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</div><div class="line">&lt;style&gt;</div><div class="line">    body &#123;</div><div class="line">        width: 35em;</div><div class="line">        margin: 0 auto;</div><div class="line">        font-family: Tahoma, Verdana, Arial, sans-serif;</div><div class="line">    &#125;</div><div class="line">&lt;/style&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</div><div class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</div><div class="line">working. Further configuration is required.&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p&gt;For online documentation and support please refer to</div><div class="line">&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</div><div class="line">Commercial support is available at</div><div class="line">&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<h3 id="三、快速使用"><a href="#三、快速使用" class="headerlink" title="三、快速使用"></a>三、快速使用</h3><h4 id="1-在nginx-conf中添加ngx-lua代码"><a href="#1-在nginx-conf中添加ngx-lua代码" class="headerlink" title="1.在nginx.conf中添加ngx_lua代码"></a>1.在nginx.conf中添加ngx_lua代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">location /hello &#123;</div><div class="line">    content_by_lua &apos;</div><div class="line">        ngx.say(&quot;&lt;p&gt;hello openresty!!&lt;/p&gt;&quot;)</div><div class="line">    &apos;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="2-验证并重启nginx"><a href="#2-验证并重启nginx" class="headerlink" title="2.验证并重启nginx"></a>2.验证并重启nginx</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/opt/soft/openresty/nginx/sbin/nginx -t /opt/soft/openresty/nginx/conf/nginx.conf</div><div class="line">/opt/soft/openresty/nginx/sbin/nginx -s reload</div></pre></td></tr></table></figure>
-<h4 id="3-访问验证"><a href="#3-访问验证" class="headerlink" title="3.访问验证"></a>3.访问验证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 conf]# curl 127.0.0.1/hello</div><div class="line">&lt;p&gt;hello openresty!!&lt;/p&gt;</div></pre></td></tr></table></figure>
-<p>提示，有关ngx_lua的语法可以到如下网站搜索</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://www.nginx.com/resources/wiki/modules/lua/?highlight=luas</div></pre></td></tr></table></figure>
-<h4 id="4-lua脚本独立"><a href="#4-lua脚本独立" class="headerlink" title="4.lua脚本独立"></a>4.lua脚本独立</h4><p>(1) lua独立<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location /hello &#123;</div><div class="line">    content_by_lua_file /usr/local/openresty/script/hello.lua;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>其中content_by_lua_file是通过上面的网站查到的，这个网址应该经常用到。</p>
-<p>(2) 脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 script]# cat /usr/local/openresty/script/hello.lua</div><div class="line">ngx.say(&quot;&lt;p&gt;hello openresty content_by_lua_file.&lt;/p&gt;&quot;)</div></pre></td></tr></table></figure>
-<p>(3) 缓存：<br>先修改脚本内容发现，返回内容不变，需要添加缓存选项(如果是生产可能会影响性能)<br>默认开启, 有多个使用范围</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">syntax: lua_code_cache on | off</div><div class="line">default: lua_code_cache on</div><div class="line">context: http, server, location, location if</div></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[@bx-14-182 script]# ../nginx/sbin/nginx -t</div><div class="line">nginx: [alert] lua_code_cache is off; this will hurt performance in /usr/local/openresty/nginx/conf/nginx.conf:48</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/19/jvm学习之-jstat/" itemprop="url">
-                  jvm学习之-jstat
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-19T15:06:16+08:00" content="2016-06-19">
-              2016-06-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">Jvm</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/19/jvm学习之-jstat/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/19/jvm学习之-jstat/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/19/jvm学习之-jstat/" class="leancloud_visitors" data-flag-title="jvm学习之-jstat">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一-简单说明"><a href="#一-简单说明" class="headerlink" title="一. 简单说明"></a>一. 简单说明</h3><p>jstat是用于监控虚拟机各种运行状态信息的命令工具，尤其对于了解垃圾回收的情况很有帮助(类装载、垃圾收集、运行期编译状况)。 </p>
-<h3 id="二-使用方法"><a href="#二-使用方法" class="headerlink" title="二. 使用方法"></a>二. 使用方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jstat &lt;option&gt; pid [interval] [count]</div></pre></td></tr></table></figure>
-<p>下图来自深入理解java虚拟机，这里只选几个重要的进行说明<br><img src="http://i3.itc.cn/20160619/3084_2a14a3ff_a5c2_3cba_bc8a_62c57e7e367d_1.png" alt="jstat选项"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/19/jvm学习之-jstat/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/14/jvm学习之-jmap/" itemprop="url">
-                  jvm学习之-jmap
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-14T09:24:11+08:00" content="2016-06-14">
-              2016-06-14
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">Jvm</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/14/jvm学习之-jmap/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/14/jvm学习之-jmap/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/14/jvm学习之-jmap/" class="leancloud_visitors" data-flag-title="jvm学习之-jmap">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一-简单说明"><a href="#一-简单说明" class="headerlink" title="一. 简单说明"></a>一. 简单说明</h3><p>jmap是和JVM堆内存相关的命令，比如dump出堆内存、堆内存的基本使用情况、堆内存使用情况直方图等等。</p>
-<h3 id="二-使用方法"><a href="#二-使用方法" class="headerlink" title="二. 使用方法"></a>二. 使用方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jmap &lt;option&gt; pid</div></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-<th>影响程度</th>
-<th>重要程度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-heap</td>
-<td>显示堆内存的详细信息(例如:回收器信息、分代内存等等)</td>
-<td>不会对线上有影响</td>
-<td>五星</td>
-</tr>
-<tr>
-<td>-histo</td>
-<td>显示堆内存中对象的统计信息，类似直方图</td>
-<td>不会对线上有影响</td>
-<td>五星</td>
-</tr>
-<tr>
-<td>-dump</td>
-<td>生成堆内存的快照</td>
-<td>轻易不要在线上使用</td>
-<td>四星</td>
-</tr>
-<tr>
-<td>-F</td>
-<td>强制生成快照</td>
-<td>轻易不要在线上使用</td>
-<td>　四星</td>
-</tr>
-<tr>
-<td>-permstat</td>
-<td>以classloader为统计口径查看永久代信息</td>
-<td>测试了一下应该对线上有影响(确实没用过)</td>
-<td>三星</td>
-</tr>
-</tbody>
-</table>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/14/jvm学习之-jmap/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/06/1.Redis3.0与3.2/" itemprop="url">
-                  Redis 3.2.0 new-1.对比3.0
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/06/1.Redis3.0与3.2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/1.Redis3.0与3.2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/06/1.Redis3.0与3.2/" class="leancloud_visitors" data-flag-title="Redis 3.2.0 new-1.对比3.0">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、Redis3-0与3-2文件对比"><a href="#一、Redis3-0与3-2文件对比" class="headerlink" title="一、Redis3.0与3.2文件对比"></a>一、Redis3.0与3.2文件对比</h3><h4 id="1-clone-redis"><a href="#1-clone-redis" class="headerlink" title="1. clone redis"></a>1. clone redis</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/antirez/redis.git</div></pre></td></tr></table></figure>
-<h4 id="2-checkout分支"><a href="#2-checkout分支" class="headerlink" title="2. checkout分支"></a>2. checkout分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd redis</div><div class="line">git checkout 3.0</div><div class="line">git checkout 3.2</div></pre></td></tr></table></figure>
-<h4 id="3-比较"><a href="#3-比较" class="headerlink" title="3. 比较"></a>3. 比较</h4><p>(1) 比较3.0和3.2文件变化数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; git rev-list 3.0..3.2 --count</div><div class="line">1708</div></pre></td></tr></table></figure>
-<p>(2) 比较3.0和3.2文件变化统计<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; git diff 3.0..3.2 --shortstat</div><div class="line">比较3.0和3.2文件变化数</div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/06/1.Redis3.0与3.2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/06/Spring Cloud相关图/" itemprop="url">
-                  Spring Cloud相关图
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-06T09:35:36+08:00" content="2016-06-06">
-              2016-06-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/06/Spring Cloud相关图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/06/Spring Cloud相关图/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/06/Spring Cloud相关图/" class="leancloud_visitors" data-flag-title="Spring Cloud相关图">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="1-整体架构"><a href="#1-整体架构" class="headerlink" title="1.整体架构"></a>1.整体架构</h3><p><img src="http://i0.itc.cn/20170518/3084_af4239db_8c52_9676_a1f9_9329eba0c135_1.jpg" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/06/Spring Cloud相关图/#more" rel="contents">
+            <a class="btn" href="/2017/02/16/Redis内存优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1638,7 +1579,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1679,7 +1620,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">55</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1687,7 +1628,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1696,7 +1637,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

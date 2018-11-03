@@ -1,0 +1,909 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景合理的JedisPool资源池参数设置能为业务使用Redis保驾护航，本文将对JedisPool的使用、资源池的参数进行详细说明，最后给出“最合理”配置。 一、使用方法以官方的2.9.0为例子(Jedis Release)，Maven依赖如下： 123456&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;redis.clients&amp;lt;/groupId&amp;gt;	&amp;lt;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JedisPool优化">
+<meta property="og:url" content="http://yoursite.com/20178/04/26/JedisPool优化/index.html">
+<meta property="og:site_name" content="carlosfu">
+<meta property="og:description" content="背景合理的JedisPool资源池参数设置能为业务使用Redis保驾护航，本文将对JedisPool的使用、资源池的参数进行详细说明，最后给出“最合理”配置。 一、使用方法以官方的2.9.0为例子(Jedis Release)，Maven依赖如下： 123456&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;redis.clients&amp;lt;/groupId&amp;gt;	&amp;lt;a">
+<meta property="og:updated_time" content="2018-04-23T07:07:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JedisPool优化">
+<meta name="twitter:description" content="背景合理的JedisPool资源池参数设置能为业务使用Redis保驾护航，本文将对JedisPool的使用、资源池的参数进行详细说明，最后给出“最合理”配置。 一、使用方法以官方的2.9.0为例子(Jedis Release)，Maven依赖如下： 123456&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;redis.clients&amp;lt;/groupId&amp;gt;	&amp;lt;a">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> JedisPool优化 | carlosfu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?259be27fbdaccd97ee659bc4dfe21524";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">carlosfu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JedisPool优化
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="20178-04-26T09:40:00+08:00" content="20178-04-26">
+              20178-04-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Jedis/" itemprop="url" rel="index">
+                    <span itemprop="name">Jedis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/20178/04/26/JedisPool优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="20178/04/26/JedisPool优化/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/20178/04/26/JedisPool优化/" class="leancloud_visitors" data-flag-title="JedisPool优化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>合理的JedisPool资源池参数设置能为业务使用Redis保驾护航，本文将对JedisPool的使用、资源池的参数进行详细说明，最后给出“最合理”配置。</p>
+<h3 id="一、使用方法"><a href="#一、使用方法" class="headerlink" title="一、使用方法"></a>一、使用方法</h3><p>以官方的2.9.0为例子(<a href="https://github.com/xetorthio/jedis/releases" target="_blank" rel="external">Jedis Release</a>)，Maven依赖如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;redis.clients&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;jedis&lt;/artifactId&gt;</div><div class="line">	&lt;version&gt;2.9.0&lt;/version&gt;</div><div class="line">	&lt;scope&gt;compile&lt;/scope&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<p>Jedis使用apache commons-pool2对Jedis资源池进行管理，所以在定义JedisPool时一个很重要的参数就是资源池GenericObjectPoolConfig，使用方式如下，其中有很多资源管理和使用的参数(具体看第二节)</p>
+<p><strong>注意：后面会提到建议用JedisPoolConfig代替GenericObjectPoolConfig</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GenericObjectPoolConfig jedisPoolConfig = new GenericObjectPoolConfig();</div><div class="line">jedisPoolConfig.setMaxTotal(..);</div><div class="line">jedisPoolConfig.setMaxIdle(..);</div><div class="line">jedisPoolConfig.setMinIdle(..);</div><div class="line">jedisPoolConfig.setMaxWaitMillis(..);</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>JedisPool的初始化如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// redisHost和redisPort是实例的IP和端口</div><div class="line">// redisPassword是实例的密码</div><div class="line">// timeout，这里既是连接超时又是读写超时，从Jedis 2.8开始有区分connectionTimeout和soTimeout的构造函数</div><div class="line"></div><div class="line">JedisPool jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort, timeout, redisPassword);</div><div class="line">执行命令如下：</div><div class="line">Jedis jedis = null;</div><div class="line">try &#123;</div><div class="line">	jedis = jedisPool.getResource();</div><div class="line">	//具体的命令</div><div class="line">	jedis.executeCommand()</div><div class="line">&#125; catch (Exception e) &#123;</div><div class="line">	logger.error(e.getMessage(), e);</div><div class="line">&#125; finally &#123;</div><div class="line">    //注意这里不是关闭连接，在JedisPool模式下，Jedis会被归还给资源池。</div><div class="line">	if (jedis != null) </div><div class="line">		jedis.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="二、参数说明"><a href="#二、参数说明" class="headerlink" title="二、参数说明"></a>二、参数说明</h3><p>JedisPool保证资源在一个可控范围内，并且提供了线程安全，但是一个合理的GenericObjectPoolConfig配置能为应用使用Redis保驾护航，下面将对它的一些重要参数进行说明和建议：</p>
+<p>在当前环境下，Jedis连接就是资源，JedisPool管理的就是Jedis连接。</p>
+<h4 id="1-资源设置和使用"><a href="#1-资源设置和使用" class="headerlink" title="1. 资源设置和使用"></a>1. 资源设置和使用</h4><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>参数名</th>
+<th>含义</th>
+<th>默认值</th>
+<th>使用建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>maxTotal</td>
+<td>资源池中最大连接数</td>
+<td>8</td>
+<td>设置建议见下节</td>
+</tr>
+<tr>
+<td>2</td>
+<td>maxIdle</td>
+<td>资源池允许最大空闲的连接数</td>
+<td>8</td>
+<td>设置建议见下节</td>
+</tr>
+<tr>
+<td>3</td>
+<td>minIdle</td>
+<td>资源池确保最少空闲的连接数</td>
+<td>0</td>
+<td>设置建议见下节</td>
+</tr>
+<tr>
+<td>4</td>
+<td>blockWhenExhausted</td>
+<td>当资源池用尽后，调用者是否要等待。只有当为true时，下面的maxWaitMillis才会生效</td>
+<td>true</td>
+<td>建议使用默认值</td>
+</tr>
+<tr>
+<td>5</td>
+<td>maxWaitMillis</td>
+<td>当资源池连接用尽后，调用者的最大等待时间(单位为毫秒)</td>
+<td>-1：表示永不超时</td>
+<td>不建议使用默认值</td>
+</tr>
+<tr>
+<td>6</td>
+<td>testOnBorrow</td>
+<td>向资源池借用连接时是否做连接有效性检测(ping)，无效连接会被移除</td>
+<td>false</td>
+<td>业务量很大时候建议设置为false(多一次ping的开销)。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>testOnReturn</td>
+<td>向资源池归还连接时是否做连接有效性检测(ping)，无效连接会被移除</td>
+<td>false</td>
+<td>业务量很大时候建议设置为false(多一次ping的开销)。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>jmxEnabled</td>
+<td>是否开启jmx监控，可用于监控</td>
+<td>true</td>
+<td>建议开启，但应用本身也要开启</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-空闲资源监测"><a href="#2-空闲资源监测" class="headerlink" title="2.空闲资源监测"></a>2.空闲资源监测</h4><p>空闲Jedis对象检测，下面四个参数组合来完成，testWhileIdle是该功能的开关。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>参数名</th>
+<th>含义</th>
+<th>默认值</th>
+<th>使用建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>testWhileIdle</td>
+<td>是否开启空闲资源监测</td>
+<td>false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>2</td>
+<td>timeBetweenEvictionRunsMillis</td>
+<td>空闲资源的检测周期(单位为毫秒)</td>
+<td>-1：不检测</td>
+<td>建议设置，周期自行选择，也可以默认也可以使用下面JedisPoolConfig中的配置</td>
+</tr>
+<tr>
+<td>3</td>
+<td>minEvictableIdleTimeMillis</td>
+<td>资源池中资源最小空闲时间(单位为毫秒)，达到此值后空闲资源将被移除</td>
+<td>1000 <em> 60 </em> 30 = 30分钟</td>
+<td>可根据自身业务决定，大部分默认值即可，也可以考虑使用下面JeidsPoolConfig中的配置</td>
+</tr>
+<tr>
+<td>4</td>
+<td>numTestsPerEvictionRun</td>
+<td>做空闲资源检测时，每次的采样数</td>
+<td>3</td>
+<td>可根据自身应用连接数进行微调,如果设置为-1，就是对所有连接做空闲监测</td>
+</tr>
+</tbody>
+</table>
+<p>为了方便使用，Jedis提供了JedisPoolConfig，它本身继承了GenericObjectPoolConfig设置了一些空闲监测设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class JedisPoolConfig extends GenericObjectPoolConfig &#123;</div><div class="line">  public JedisPoolConfig() &#123;</div><div class="line">    // defaults to make your life with connection pool easier :)</div><div class="line">    setTestWhileIdle(true);</div><div class="line">    //</div><div class="line">    setMinEvictableIdleTimeMillis(60000);</div><div class="line">    //</div><div class="line">    setTimeBetweenEvictionRunsMillis(30000);</div><div class="line">    setNumTestsPerEvictionRun(-1);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所有默认值可以从org.apache.commons.pool2.impl.BaseObjectPoolConfig中看到。</p>
+<h3 id="三、资源池大小-maxTotal-、空闲-maxIdle-minIdle-设置建议"><a href="#三、资源池大小-maxTotal-、空闲-maxIdle-minIdle-设置建议" class="headerlink" title="三、资源池大小(maxTotal)、空闲(maxIdle minIdle)设置建议"></a>三、资源池大小(maxTotal)、空闲(maxIdle minIdle)设置建议</h3><h4 id="1-maxTotal：最大连接数"><a href="#1-maxTotal：最大连接数" class="headerlink" title="1.maxTotal：最大连接数"></a>1.maxTotal：最大连接数</h4><p>实际上这个是一个很难回答的问题，考虑的因素比较多：</p>
+<ul>
+<li>业务希望Redis并发量</li>
+<li>客户端执行命令时间</li>
+<li>Redis资源：例如 nodes(例如应用个数) * maxTotal 是不能超过redis的最大连接数。</li>
+<li>资源开销：例如虽然希望控制空闲连接，但是不希望因为连接池的频繁释放创建连接造成不必靠开销。</li>
+</ul>
+<p>以一个例子说明，假设:</p>
+<ul>
+<li><p>一次命令时间（borrow|return resource + Jedis执行命令(含网络) ）的平均耗时约为1ms，一个连接的QPS大约是1000</p>
+</li>
+<li><p>业务期望的QPS是50000</p>
+</li>
+</ul>
+<p>那么理论上需要的资源池大小是50000 / 1000 = 50个。但事实上这是个理论值，还要考虑到要比理论值预留一些资源，通常来讲maxTotal可以比理论值大一些。</p>
+<p>但这个值不是越大越好，一方面连接太多占用客户端和服务端资源，另一方面对于Redis这种高QPS的服务器，一个大命令的阻塞即使设置再大资源池仍然会无济于事。</p>
+<h4 id="2-maxIdle-minIdle"><a href="#2-maxIdle-minIdle" class="headerlink" title="2. maxIdle minIdle"></a>2. maxIdle minIdle</h4><p>maxIdle实际上才是业务需要的最大连接数，maxTotal是为了给出余量，所以maxIdle不要设置过小，否则会有new Jedis(新连接)开销，而minIdle是为了控制空闲资源监测。</p>
+<p>连接池的最佳性能是maxTotal = maxIdle ,这样就避免连接池伸缩带来的性能干扰。但是如果并发量不大或者maxTotal设置过高，会导致不必要的连接资源浪费。<br>可以根据实际总OPS和调用redis客户端的规模整体评估每个节点所使用的连接池。</p>
+<h4 id="3-监控"><a href="#3-监控" class="headerlink" title="3.监控"></a>3.监控</h4><p>实际上最靠谱的值是通过监控来得到“最佳值”的，可以考虑通过一些手段(例如jmx)实现监控，找到合理值。</p>
+<h3 id="四、常见问题"><a href="#四、常见问题" class="headerlink" title="四、常见问题"></a>四、常见问题</h3><h4 id="1-资源“不足”"><a href="#1-资源“不足”" class="headerlink" title="1.资源“不足”"></a>1.资源“不足”</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">…</div><div class="line">Caused by: java.util.NoSuchElementException: Timeout waiting for idle object</div><div class="line">at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:449)</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">…</div><div class="line">Caused by: java.util.NoSuchElementException: Pool exhausted</div><div class="line">at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:464)</div></pre></td></tr></table></figure>
+<p>两种情况均属于无法从资源池获取到资源，但第一种是超时，第二种是因为blockWhenExhausted为false根本就不等。</p>
+<p>遇到此类异常，不要盲目的认为资源池不够大，第三节已经进行了分析。具体原因可以排查：网络、资源池参数设置、资源池监控(如果对jmx监控)、代码(例如没执行jedis.close())、慢查询、DNS等问题。</p>
+<p>具体可以参考该文章：<a href="https://www.atatech.org/articles/77799" target="_blank" rel="external">https://www.atatech.org/articles/77799</a></p>
+<h4 id="2-预热JedisPool"><a href="#2-预热JedisPool" class="headerlink" title="2. 预热JedisPool"></a>2. 预热JedisPool</h4><p>由于一些原因(例如超时时间设置较小原因)，有的项目在启动成功后会出现超时。JedisPool定义最大资源数、最小空闲资源数时，不会真的把Jedis连接放到池子里，第一次使用时，池子没有资源使用，会new Jedis，使用后放到池子里，可能会有一定的时间开销，所以也可以考虑在JedisPool定义后，为JedisPool提前进行预热，例如以最小空闲数量为预热数量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">List&lt;Jedis&gt; minIdleJedisList = new ArrayList&lt;Jedis&gt;(jedisPoolConfig.getMinIdle());</div><div class="line"></div><div class="line">for (int i = 0; i &lt; jedisPoolConfig.getMinIdle(); i++) &#123;</div><div class="line">	Jedis jedis = null;</div><div class="line">	try &#123;</div><div class="line">		jedis = pool.getResource();</div><div class="line">		minIdleJedisList.add(jedis);</div><div class="line">		jedis.ping();</div><div class="line">	&#125; catch (Exception e) &#123;</div><div class="line">		logger.error(e.getMessage(), e);</div><div class="line">	&#125; finally &#123;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">for (int i = 0; i &lt; jedisPoolConfig.getMinIdle(); i++) &#123;</div><div class="line">	Jedis jedis = null;</div><div class="line">	try &#123;</div><div class="line">		jedis = minIdleJedisList.get(i);</div><div class="line">		jedis.close();</div><div class="line">	&#125; catch (Exception e) &#123;</div><div class="line">		logger.error(e.getMessage(), e);</div><div class="line">	&#125; finally &#123;</div><div class="line">	</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="广告"><a href="#广告" class="headerlink" title="广告"></a>广告</h3><p>云数据库Redis版（ApsaraDB for Redis）是一种稳定可靠、性能卓越、可弹性伸缩的数据库服务。基于飞天分布式系统和全SSD盘高性能存储，支持主备版和集群版两套高可用架构。提供了全套的容灾切换、故障迁移、在线扩容、性能优化的数据库解决方案。欢迎各位购买使用:云数据库 Redis 版</p>
+<h3 id="招聘：阿里云-技术专家-KVstore"><a href="#招聘：阿里云-技术专家-KVstore" class="headerlink" title="招聘：阿里云-技术专家-KVstore"></a>招聘：<a href="https://job.alibaba.com/zhaopin/position_detail.htm?positionId=40132" target="_blank" rel="external">阿里云-技术专家-KVstore</a></h3><p>岗位描述：</p>
+<ul>
+<li>负责阿里云Redis源码开发维护 </li>
+<li>负责阿里云Redis cluster开发与设计</li>
+</ul>
+<p>岗位要求：</p>
+<ul>
+<li>精通C/C++，熟悉TCP， Linux Kernel等优先 </li>
+<li>数据结构，算法等基础知识扎实 </li>
+<li>5年后台系统的设计与开发，或3年分布式系统的设计与开发，运维过大型分布式系统 </li>
+<li>精通至少一项开源NoSQL产品。Redis，mongodb,memcached等优先。 </li>
+<li>有云服务产品或基于SSD的系统开发经验优先 </li>
+<li>善于创新，乐于挑战，有责任心，良好团队精神 </li>
+<li>良好的表达能力，能够清晰和准确地描述问题，发现并解决问题能力</li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/17/iterm2连接不断/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="20178/04/26/JedisPool优化/"
+           data-title="JedisPool优化" data-url="http://yoursite.com/20178/04/26/JedisPool优化/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i3.itc.cn/20160316/3084_9587fc69_5909_9fac_89e3_c420eda9eafa_1.png"
+               alt="carlosfu" />
+          <p class="site-author-name" itemprop="name">carlosfu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sohutv/cachecloud" target="_blank" title="cachecloud">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  cachecloud
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanan0628.github.io/" target="_blank" title="shiye">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  shiye
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://jolinzhangg.github.io/" target="_blank" title="xiaodada">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  xiaodada
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、使用方法"><span class="nav-number">2.</span> <span class="nav-text">一、使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、参数说明"><span class="nav-number">3.</span> <span class="nav-text">二、参数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-资源设置和使用"><span class="nav-number">3.1.</span> <span class="nav-text">1. 资源设置和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-空闲资源监测"><span class="nav-number">3.2.</span> <span class="nav-text">2.空闲资源监测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、资源池大小-maxTotal-、空闲-maxIdle-minIdle-设置建议"><span class="nav-number">4.</span> <span class="nav-text">三、资源池大小(maxTotal)、空闲(maxIdle minIdle)设置建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-maxTotal：最大连接数"><span class="nav-number">4.1.</span> <span class="nav-text">1.maxTotal：最大连接数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-maxIdle-minIdle"><span class="nav-number">4.2.</span> <span class="nav-text">2. maxIdle minIdle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-监控"><span class="nav-number">4.3.</span> <span class="nav-text">3.监控</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、常见问题"><span class="nav-number">5.</span> <span class="nav-text">四、常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-资源“不足”"><span class="nav-number">5.1.</span> <span class="nav-text">1.资源“不足”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-预热JedisPool"><span class="nav-number">5.2.</span> <span class="nav-text">2. 预热JedisPool</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#广告"><span class="nav-number">6.</span> <span class="nav-text">广告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#招聘：阿里云-技术专家-KVstore"><span class="nav-number">7.</span> <span class="nav-text">招聘：阿里云-技术专家-KVstore</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carlosfu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cachecloud"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("mE1dgEEcMgEqtzna9bTGPFh3-gzGzoHsz", "d9rvW1gPToBncDo9q4808CYD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

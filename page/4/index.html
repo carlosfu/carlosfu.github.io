@@ -246,8 +246,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/06/01/Netty学习1-BIO的阻塞分析/" itemprop="url">
-                  Netty学习1-BIO的阻塞分析
+                <a class="post-title-link" href="/2017/02/16/Redis的Linux系统优化/" itemprop="url">
+                  Redis的Linux系统优化
                 </a>
               
             
@@ -260,8 +260,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T17:27:54+08:00" content="2016-06-01">
-              2016-06-01
+            <time itemprop="dateCreated" datetime="2017-02-16T16:20:00+08:00" content="2017-02-16">
+              2017-02-16
             </time>
           </span>
 
@@ -274,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/RPC/" itemprop="url" rel="index">
-                    <span itemprop="name">RPC</span>
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
                   </a>
                 </span>
 
@@ -290,8 +290,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习1-BIO的阻塞分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习1-BIO的阻塞分析/" itemprop="commentsCount"></span>
+                <a href="/2017/02/16/Redis的Linux系统优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/16/Redis的Linux系统优化/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -301,7 +301,7 @@
 
           
           
-             <span id="/2016/06/01/Netty学习1-BIO的阻塞分析/" class="leancloud_visitors" data-flag-title="Netty学习1-BIO的阻塞分析">
+             <span id="/2017/02/16/Redis的Linux系统优化/" class="leancloud_visitors" data-flag-title="Redis的Linux系统优化">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -324,9 +324,14 @@
 
       
         
-          <h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p>最早学Java的时候，肯定学过ServerSocket、Socket这些类，然后完成所谓客户端与服务端的建立连接，客户端发送消息、服务端接受消息并返回给客户端消息，客户端接受来自服务端的消息。有点绕嘴，因为很多时候在开发中对于Socket使用不太多，对于这些的了解也仅限于此了。</p>
+          <h3 id="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"><a href="#声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。" class="headerlink" title="声明：本文内容来自《Redis开发与运维》一书第12章，如转载请声明。"></a>声明：本文内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书第12章，如转载请声明。</h3><p>通常来看，Redis开发和运维人员更加关注的是Redis本身的一些配置优化，例如AOF和RDB的配置优化、数据结构的配置优化等，但是对于操作系统是否需要针对Redis做一些配置优化不甚了解或者不太关心，然而事实证明一个良好的系统操作配置能够为Redis服务良好运行保驾护航。</p>
+<p>众所周知Redis的作者对于Windows操作系统并不感冒，目前大部分公司都会将Web服务器、数据库服务器等部署在Linux操作系统上，Redis也不例外。所以接下来介绍Linux操作系统如何优化Redis，包含如下七个方面。</p>
+<p>一. <a href="#chapter1">内存分配控制</a><br>二. <a href="#chapter2">swappiness</a><br>三. <a href="#chapter3">Transparent Huge Pages</a><br>四. <a href="#chapter4">OOM killer</a><br>五. <a href="#chapter5">使用NTP</a><br>六. <a href="#chapter6">ulimit</a><br>七. <a href="#chapter7">TCP backlog</a></p>
+<p><a name="chapter1"></a></p>
+<h2 id="一-内存分配控制"><a href="#一-内存分配控制" class="headerlink" title="一. 内存分配控制"></a>一. 内存分配控制</h2><h3 id="1-vm-overcommit-memory"><a href="#1-vm-overcommit-memory" class="headerlink" title="1. vm.overcommit_memory"></a>1. vm.overcommit_memory</h3><p>Redis在启动时可能会出现这样的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &apos;vm.overcommit_memory = 1&apos; to /etc/sysctl.conf and then reboot or run the </div><div class="line">command &apos;sysctl vm.overcommit_memory=1&apos; for this to take effect.</div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习1-BIO的阻塞分析/#more" rel="contents">
+            <a class="btn" href="/2017/02/16/Redis的Linux系统优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -377,8 +382,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="url">
-                  Netty学习4-Netty客户端基本结构
+                <a class="post-title-link" href="/2016/12/26/quartz-1.第一个程序/" itemprop="url">
+                  quartz入门
                 </a>
               
             
@@ -391,8 +396,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T14:45:25+08:00" content="2016-06-01">
-              2016-06-01
+            <time itemprop="dateCreated" datetime="2016-12-26T09:40:00+08:00" content="2016-12-26">
+              2016-12-26
             </time>
           </span>
 
@@ -405,8 +410,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/RPC/" itemprop="url" rel="index">
-                    <span itemprop="name">RPC</span>
+                  <a href="/categories/quartz/" itemprop="url" rel="index">
+                    <span itemprop="name">quartz</span>
                   </a>
                 </span>
 
@@ -421,8 +426,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习4-Netty客户端基本结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习4-Netty客户端基本结构/" itemprop="commentsCount"></span>
+                <a href="/2016/12/26/quartz-1.第一个程序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/26/quartz-1.第一个程序/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -432,7 +437,7 @@
 
           
           
-             <span id="/2016/06/01/Netty学习4-Netty客户端基本结构/" class="leancloud_visitors" data-flag-title="Netty学习4-Netty客户端基本结构">
+             <span id="/2016/12/26/quartz-1.第一个程序/" class="leancloud_visitors" data-flag-title="quartz入门">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -455,153 +460,31 @@
 
       
         
-          <h3 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h3><p>上一篇我们介绍了通过Telnet的形式连接Netty的服务端，实际上Netty也提供了客户端的相应功能，可以如果有了Netty客户端的配合，Netty的优势才能发挥的淋漓尽致。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习4-Netty客户端基本结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/01/Netty学习3-Netty服务端基本结构/" itemprop="url">
-                  Netty学习3-Netty服务端基本结构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-01T13:47:09+08:00" content="2016-06-01">
-              2016-06-01
-            </time>
-          </span>
-
           
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/RPC/" itemprop="url" rel="index">
-                    <span itemprop="name">RPC</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/01/Netty学习3-Netty服务端基本结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Netty学习3-Netty服务端基本结构/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/06/01/Netty学习3-Netty服务端基本结构/" class="leancloud_visitors" data-flag-title="Netty学习3-Netty服务端基本结构">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h3><h4 id="1-版本介绍"><a href="#1-版本介绍" class="headerlink" title="1. 版本介绍"></a>1. 版本介绍</h4><p>netty的版本大致分为netty3.x和netty4.x、netty5.x</p>
-<h4 id="2-netty可以运用在那些领域？"><a href="#2-netty可以运用在那些领域？" class="headerlink" title="2. netty可以运用在那些领域？"></a>2. netty可以运用在那些领域？</h4><ul>
-<li><ol>
-<li>分布式进程通信<br>例如: hadoop、dubbo、akka等具有分布式功能的框架，底层RPC通信都是基于netty实现的，这些框架使用的版本通常都还在用netty3.x</li>
-</ol>
-</li>
-<li><ol>
-<li>游戏服务器开发<br>最新的游戏服务器有部分公司可能已经开始采用netty4.x 或 netty5.x</li>
-</ol>
-</li>
+            <p>quartz是Java中很强大的调度工具，它的使用比较简单，但是实际上无论从源码量以及实际生产中的规模化应用看，实际上quartz相当复杂，要想用好实际上也是不容易的。</p>
+<p>下图是quartz的整体架构图，基本展示了quartz组件的相关关系。</p>
+<p><img src="pic/quartz架构.png" alt=""></p>
+<ul>
+<li>JobDetail是具体的任务</li>
+<li>Trigger是触发器，确定什么时候去做什么</li>
+<li>scheduler是调度器，整体上调度trigger和job。</li>
 </ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/01/Netty学习3-Netty服务端基本结构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+<p>quartz原生代码都是使用Builder模式来定义。</p>
+<h3 id="1-quartz-maven依赖"><a href="#1-quartz-maven依赖" class="headerlink" title="1.quartz maven依赖"></a>1.quartz maven依赖</h3><p>quartz似乎更新不是很频繁，官网的最新版本是2.2.3，但是用的比较广泛的是2.2.1。为了演示项目，加入了junit和logback。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;dependencies&gt;</div><div class="line"></div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;quartz&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;2.2.1&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">	</div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;junit&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;junit&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;4.11&lt;/version&gt;</div><div class="line">		&lt;scope&gt;test&lt;/scope&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line"></div><div class="line">	&lt;dependency&gt;</div><div class="line">		&lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;logback-classic&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;1.1.11&lt;/version&gt;</div><div class="line">	&lt;/dependency&gt;</div><div class="line">&lt;/dependencies&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-定义Job"><a href="#2-定义Job" class="headerlink" title="2.定义Job"></a>2.定义Job</h3><p>Job就是任务的定义，比如定义了一个任务是从指定host:port的redis中收集慢查询，其中host:port可以通过定义属性或者通过JobExecutionContext获取JobDataMap来获取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.carlosfu.job;</div><div class="line"></div><div class="line">import org.quartz.Job;</div><div class="line">import org.quartz.JobExecutionContext;</div><div class="line">import org.quartz.JobExecutionException;</div><div class="line">import org.slf4j.Logger;</div><div class="line">import org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @author fulei.fl 2017年12月29日 下午3:39:32</div><div class="line"> */</div><div class="line">public class HelloJob implements Job &#123;</div><div class="line"></div><div class="line">	private Logger logger = LoggerFactory.getLogger(HelloJob.class);</div><div class="line"></div><div class="line">	public void execute(JobExecutionContext context) throws JobExecutionException &#123;</div><div class="line">		logger.info(&quot;hello quartz!&quot;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-定义JobDetail"><a href="#3-定义JobDetail" class="headerlink" title="3.定义JobDetail"></a>3.定义JobDetail</h3><p>而JobDetail就是具体的任务了，每个任务可以用name和group进行区分(withIdentity)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JobDetail jobDetail = JobBuilder.newJob(HelloJob.class).withIdentity(&quot;helloJob&quot;, &quot;group1&quot;).build();</div></pre></td></tr></table></figure>
+<h3 id="4-定义Trigger"><a href="#4-定义Trigger" class="headerlink" title="4.定义Trigger"></a>4.定义Trigger</h3><p>Trigger包含了两种类型SimpleTrigger和CronTrigger(可以通过cron表达式设置，个人认为可以基本代替SimpleTrigger的功能)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Trigger trigger = TriggerBuilder.newTrigger()</div><div class="line">				.withIdentity(&quot;helloTrigger&quot;, &quot;group1&quot;).startNow()</div><div class="line">				.withSchedule(SimpleScheduleBuilder.simpleSchedule()</div><div class="line">						.withIntervalInSeconds(2).repeatForever())</div><div class="line">				.build();</div></pre></td></tr></table></figure>
+<h3 id="5-定义Scheduler"><a href="#5-定义Scheduler" class="headerlink" title="5.定义Scheduler"></a>5.定义Scheduler</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SchedulerFactory schedulerFactory = new StdSchedulerFactory();</div><div class="line">Scheduler scheduler = schedulerFactory.getScheduler();</div></pre></td></tr></table></figure>
+<p>启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scheduler.start();</div></pre></td></tr></table></figure>
+<p>调度任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scheduler.scheduleJob(jobDetail, trigger);</div></pre></td></tr></table></figure>
+
+          
         
       
     </div>
@@ -649,8 +532,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/2017-06问题汇总/" itemprop="url">
-                  HBase故障记录：由jstack引起的RegionServer宕机。
+                <a class="post-title-link" href="/2016/12/26/quartz-2.crontab语法/" itemprop="url">
+                  quartz-2.crontab语法
                 </a>
               
             
@@ -663,8 +546,190 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-27T13:19:50+08:00" content="2016-05-27">
-              2016-05-27
+            <time itemprop="dateCreated" datetime="2016-12-26T09:40:00+08:00" content="2016-12-26">
+              2016-12-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/quartz/" itemprop="url" rel="index">
+                    <span itemprop="name">quartz</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/26/quartz-2.crontab语法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/26/quartz-2.crontab语法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/26/quartz-2.crontab语法/" class="leancloud_visitors" data-flag-title="quartz-2.crontab语法">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>quartz的crontab功能是它的强大之处，它的语法和linux有些类似，但是又有一些不同，例如linux无法精确到秒，而quartz是支持的，本文直接通过例子进行说明。</p>
+<h4 id="1-语法简介"><a href="#1-语法简介" class="headerlink" title="1. 语法简介"></a>1. 语法简介</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[秒] [分] [小时] [日] [月] [星期] [年]</div></pre></td></tr></table></figure>
+<p>每个位置可以支持设置的值如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1493878-6306129926dfbc07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>有几点需要说明</p>
+<ul>
+<li>除了年，每个位置是必须的。</li>
+<li>每个位置如果无特殊值，可以用*代替，代表每。</li>
+<li>除了一些数字，每个位置还允许一些特殊字符。</li>
+</ul>
+<h4 id="2-例子。"><a href="#2-例子。" class="headerlink" title="2. 例子。"></a>2. 例子。</h4><p>下面直接用例子来说明，具体如下：</p>
+<h4 id="1-每秒执行"><a href="#1-每秒执行" class="headerlink" title="(1) 每秒执行"></a>(1) 每秒执行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* * * * * *</div></pre></td></tr></table></figure>
+<p>啰嗦解释一下就是每个月、每个星期、每天、每小时、每分钟、每秒。所以其实就是每秒。但是如果运行程序就会发现报如下错误， 似乎提示是星期和日是一个矛盾体。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Exception in thread &quot;main&quot; java.lang.RuntimeException: CronExpression &apos;* * * * * *&apos; is invalid.</div><div class="line">	at org.quartz.CronScheduleBuilder.cronSchedule(CronScheduleBuilder.java:111)</div><div class="line">	at com.carlosfu.main.HelloScheduler.main(HelloScheduler.java:28)</div><div class="line">Caused by: java.text.ParseException: Support for specifying both a day-of-week AND a day-of-month parameter is not implemented.</div><div class="line">	at org.quartz.CronExpression.buildExpression(CronExpression.java:511)</div><div class="line">	at org.quartz.CronExpression.&lt;init&gt;(CronExpression.java:276)</div><div class="line">	at org.quartz.CronScheduleBuilder.cronSchedule(CronScheduleBuilder.java:107)</div><div class="line">	... 1 more</div></pre></td></tr></table></figure>
+<p>因为日和星期是一个矛盾体，所以可以用一个?代替即可，所以下面两个的结果是一样的，都代表每秒。</p>
+<h5 id="a-每个月的每个星期"><a href="#a-每个月的每个星期" class="headerlink" title="(a) 每个月的每个星期"></a>(a) 每个月的每个星期</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* * * ? * *</div></pre></td></tr></table></figure>
+<h5 id="b-每个月的每天"><a href="#b-每个月的每天" class="headerlink" title="(b) 每个月的每天"></a>(b) 每个月的每天</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* * * * * ?</div></pre></td></tr></table></figure>
+<h5 id="c-下面两种情况都是错误的"><a href="#c-下面两种情况都是错误的" class="headerlink" title="(c)下面两种情况都是错误的"></a>(c)下面两种情况都是错误的</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">* * * * ? *</div><div class="line">* * * * ? ?</div></pre></td></tr></table></figure>
+<h4 id="2-每分钟执行一次"><a href="#2-每分钟执行一次" class="headerlink" title="(2) 每分钟执行一次"></a>(2) 每分钟执行一次</h4><p>下面是不是呢？其实仔细想想“分钟”位置0/1和*的效果是一样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* 0/1 * ? * *</div></pre></td></tr></table></figure>
+<p>也就是说如果想实现每分钟执行一次，要在秒的位置给出具体的值，例如</p>
+<p>每分钟的第59秒执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">59 0/1 * ? * *</div></pre></td></tr></table></figure>
+<p>每分钟的第0秒执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0 0/1 * ? * *</div></pre></td></tr></table></figure>
+<p>有个小技巧，如果需求是只要保证每分钟完成，而不在意在哪秒完成，在大量trigger的情况下，可以对秒做打散操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public static String getSlowLogCron() &#123;</div><div class="line">    return new Random().nextInt(60) + &quot; 0/1 * ? * *&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0 0/1 * ? * *</div></pre></td></tr></table></figure>
+<p>具体日志如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">17:27:00.005 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:28:00.004 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:29:00.006 [DefaultQuartzScheduler_Worker-3] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:30:00.003 [DefaultQuartzScheduler_Worker-4] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:31:00.002 [DefaultQuartzScheduler_Worker-5] INFO  com.carlosfu.job.HelloJob - hello quartz!</div></pre></td></tr></table></figure>
+<p>如果想每5秒执行一次，可以如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0/5 * * ? * *</div></pre></td></tr></table></figure>
+<p>如果想每5秒执行一次，但是从每分钟的第20秒到第60秒，可以这么配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">20/5 * * ? * *</div></pre></td></tr></table></figure>
+<p>如果当前的秒小于20，那么就等到执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">now: 2018-01-01 17:35:11</div><div class="line">17:35:20.011 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:25.006 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:30.001 [DefaultQuartzScheduler_Worker-3] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:35.002 [DefaultQuartzScheduler_Worker-4] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:40.002 [DefaultQuartzScheduler_Worker-5] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:45.005 [DefaultQuartzScheduler_Worker-6] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:50.006 [DefaultQuartzScheduler_Worker-7] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:35:55.006 [DefaultQuartzScheduler_Worker-8] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:36:20.001 [DefaultQuartzScheduler_Worker-9] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:36:25.004 [DefaultQuartzScheduler_Worker-10] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:36:30.002 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:36:35.005 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div></pre></td></tr></table></figure>
+<p>如果当前秒超过20，可以在执行周期内执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">now: 2018-01-01 17:37:24</div><div class="line">17:37:25.007 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:37:30.004 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:37:35.006 [DefaultQuartzScheduler_Worker-3] INFO  com.carlosfu.job.HelloJob - hello quartz!</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">now: 2018-01-01 17:38:38</div><div class="line">17:38:40.008 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:38:45.003 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:38:50.003 [DefaultQuartzScheduler_Worker-3] INFO  com.carlosfu.job.HelloJob - hello quartz!</div></pre></td></tr></table></figure>
+<h4 id="3-每天10点20分执行"><a href="#3-每天10点20分执行" class="headerlink" title="(3)每天10点20分执行"></a>(3)每天10点20分执行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0 20 10 ? * *</div></pre></td></tr></table></figure>
+<h4 id="4-每天下午2点-3点-整点开始，每隔五分钟执行"><a href="#4-每天下午2点-3点-整点开始，每隔五分钟执行" class="headerlink" title="(4) 每天下午2点~3点(整点开始，每隔五分钟执行)"></a>(4) 每天下午2点~3点(整点开始，每隔五分钟执行)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0 0/5 14 ? * *</div></pre></td></tr></table></figure>
+<h4 id="5-每月的第三周的星期五的10点20分执行"><a href="#5-每月的第三周的星期五的10点20分执行" class="headerlink" title="(5) 每月的第三周的星期五的10点20分执行"></a>(5) 每月的第三周的星期五的10点20分执行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0 20 10 ? * 6#3</div></pre></td></tr></table></figure>
+<h4 id="6-每周一到周五的10点20分执行"><a href="#6-每周一到周五的10点20分执行" class="headerlink" title="(6) 每周一到周五的10点20分执行"></a>(6) 每周一到周五的10点20分执行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0 20 10 ? * MON-FRI</div></pre></td></tr></table></figure>
+<p>注意：星期是不分大小写。</p>
+<h3 id="3-其他"><a href="#3-其他" class="headerlink" title="3. 其他"></a>3. 其他</h3><p>特殊字符的解释如下，如果用到的时候可以看下。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1493878-9c8983c262b90fa4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>也有在线的crontab生成工具：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1493878-b61931ba6fd56574.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>0和30分执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0/30 * * ? * *</div></pre></td></tr></table></figure></p>
+<p>5和35分执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">5/30 * * ? * *</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">15/50 * * ? * *</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">now: 2018-01-01 18:02:35</div><div class="line">18:03:15.006 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">18:04:15.005 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">18:05:15.005 [DefaultQuartzScheduler_Worker-3] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">18:06:15.003 [DefaultQuartzScheduler_Worker-4] INFO  com.carlosfu.job.HelloJob - hello quartz!</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">now: 2018-01-01 17:55:53</div><div class="line">17:56:00.010 [DefaultQuartzScheduler_Worker-1] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:56:30.004 [DefaultQuartzScheduler_Worker-2] INFO  com.carlosfu.job.HelloJob - hello quartz!</div><div class="line">17:57:00.001 [DefaultQuartzScheduler_Worker-3] INFO  com.carlosfu.job.HelloJob - hello quartz!</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/28/Hbase学习1.2-伪分布式安装/" itemprop="url">
+                  Hbase学习1.2-伪分布式安装
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-28T11:20:00+08:00" content="2016-11-28">
+              2016-11-28
             </time>
           </span>
 
@@ -693,8 +758,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/2017-06问题汇总/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/2017-06问题汇总/" itemprop="commentsCount"></span>
+                <a href="/2016/11/28/Hbase学习1.2-伪分布式安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/28/Hbase学习1.2-伪分布式安装/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -704,7 +769,7 @@
 
           
           
-             <span id="/2016/05/27/2017-06问题汇总/" class="leancloud_visitors" data-flag-title="HBase故障记录：由jstack引起的RegionServer宕机。">
+             <span id="/2016/11/28/Hbase学习1.2-伪分布式安装/" class="leancloud_visitors" data-flag-title="Hbase学习1.2-伪分布式安装">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -727,143 +792,20 @@
 
       
         
-          
-            <h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3>
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="url">
-                  分布式服务框架学习1-一个最简单的RPC服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-27T13:19:50+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/RPC/" itemprop="url" rel="index">
-                    <span itemprop="name">RPC</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/分布式服务学习1-一个最简最简单/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/分布式服务学习1-一个最简最简单/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/27/分布式服务学习1-一个最简最简单/" class="leancloud_visitors" data-flag-title="分布式服务框架学习1-一个最简单的RPC服务">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一、实现思路"><a href="#一、实现思路" class="headerlink" title="一、实现思路"></a>一、实现思路</h3><ul>
-<li>SocketServer作为服务端，Socket作为客户端。</li>
-<li>定义公共接口，例如XXXService。</li>
-<li>在服务端，定义XXXService的实现类，例如XXXService。</li>
-<li>客户端将要调用XXXService、方法名、参数，通过Socket的中的OutPutStream传到服务端，服务端利用反射拿到要调用的实现类、方法、参数类型、参数进行本地调用，然后通过Socket返回给客户端。</li>
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">没有单独安装hadoop、zookeeper随便找了个单点，后续继续安装</div></pre></td></tr></table></figure>
+<h3 id="一-机器"><a href="#一-机器" class="headerlink" title="一. 机器"></a>一. 机器</h3><ul>
+<li>10.16.14.182</li>
+<li>10.16.14.153</li>
+<li>10.10.53.159</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">整个过程，基本上述所描述，基本的RPC思路已经出来了(先不讨论分布式服务框架的层面)，单单作为RPC已经足够，那么SocketServer和Socket对于要传的参数的含义、顺序等应该打成一致，其实也就是所谓的协议，后面在介绍dubbo源码的时候再进行分析。</div></pre></td></tr></table></figure>
+<h3 id="二-资源分布"><a href="#二-资源分布" class="headerlink" title="二. 资源分布"></a>二. 资源分布</h3><ul>
+<li>10.16.14.182: hmaster、regionserver、zookeeper</li>
+<li>10.16.14.153: regionserver</li>
+<li>10.10.53.159: regionserver</li>
+</ul>
+<p>hadoop:不安装，直接走本地文件系统</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/分布式服务学习1-一个最简最简单/#more" rel="contents">
+            <a class="btn" href="/2016/11/28/Hbase学习1.2-伪分布式安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -914,8 +856,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/25/Redis常用数据处理/" itemprop="url">
-                  Redis常用数据处理
+                <a class="post-title-link" href="/2016/11/24/全量复制问题/" itemprop="url">
+                  Redis无限全量复制问题分析与优化
                 </a>
               
             
@@ -928,8 +870,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-25T21:20:00+08:00" content="2016-05-25">
-              2016-05-25
+            <time itemprop="dateCreated" datetime="2016-11-24T17:20:00+08:00" content="2016-11-24">
+              2016-11-24
             </time>
           </span>
 
@@ -958,8 +900,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/25/Redis常用数据处理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/25/Redis常用数据处理/" itemprop="commentsCount"></span>
+                <a href="/2016/11/24/全量复制问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/24/全量复制问题/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -969,7 +911,7 @@
 
           
           
-             <span id="/2016/05/25/Redis常用数据处理/" class="leancloud_visitors" data-flag-title="Redis常用数据处理">
+             <span id="/2016/11/24/全量复制问题/" class="leancloud_visitors" data-flag-title="Redis无限全量复制问题分析与优化">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -992,13 +934,13 @@
 
       
         
-          <p>主要引入如下模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import redis</div><div class="line">import rediscluster</div></pre></td></tr></table></figure></p>
-<h3 id="一-删除指定模式的key"><a href="#一-删除指定模式的key" class="headerlink" title="一.删除指定模式的key"></a>一.删除指定模式的key</h3><h4 id="1-单个节点"><a href="#1-单个节点" class="headerlink" title="1.单个节点"></a>1.单个节点</h4><p>使用scan + pipeline + del(每次扫描100个) </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def delInstancePatternKeys(host, port, pattern, password=None):</div><div class="line">    client = redis.StrictRedis(host=host, port=port, password=password)</div><div class="line">    pipeline = client.pipeline(transaction=False)</div><div class="line">    cursor = 0</div><div class="line">    while True:</div><div class="line">        currentCursor, keys = client.scan(cursor=cursor, match=pattern, count=100)</div><div class="line">        if len(keys) &gt; 0:</div><div class="line">            for key in keys:</div><div class="line">                pipeline.delete(key)</div><div class="line">            pipeline.execute()</div><div class="line">        cursor = currentCursor</div><div class="line">        if cursor == 0:</div><div class="line">            break</div></pre></td></tr></table></figure>
-<p>例如删除127.0.0.1:6380中以video开头的key，可以执行如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">delInstancePatternKeys(&quot;127.0.0.1&quot;,6380,&quot;video*&quot;)</div></pre></td></tr></table></figure>
+          <h3 id="本文部分内容来自《Redis开发与运维》一书，转载请声明。"><a href="#本文部分内容来自《Redis开发与运维》一书，转载请声明。" class="headerlink" title="本文部分内容来自《Redis开发与运维》一书，转载请声明。"></a>本文部分内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书，转载请声明。</h3><h3 id="一、现象和危害"><a href="#一、现象和危害" class="headerlink" title="一、现象和危害"></a>一、现象和危害</h3><p>线上有台机器内存接近了90%，总内存为24G，整个部署如下图：</p>
+<p><img src="http://i3.itc.cn/20161124/3084_942324f9_f1fe_07d1_9604_bb279ba0c095_1.jpg" alt=""></p>
+<p>现要将Redis-2迁移走，由于特殊原因此节点没有slave节点，需要添加一个slave节点，然后做failover操作。</p>
+<p><img src="http://i3.itc.cn/20161124/3084_60720f13_6f4e_61a5_44bb_02101ea3019a_1.jpg" alt=""></p>
+<p>通过对日志的观察，发现主从不停地做全量复制。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/25/Redis常用数据处理/#more" rel="contents">
+            <a class="btn" href="/2016/11/24/全量复制问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1049,8 +991,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/24/redis-py使用(2)-redis-py-cluster/" itemprop="url">
-                  redis-py使用(2)-redis-py-cluster
+                <a class="post-title-link" href="/2016/11/24/docker初识/" itemprop="url">
+                  docker初识
                 </a>
               
             
@@ -1063,8 +1005,281 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-24T21:20:00+08:00" content="2016-05-24">
-              2016-05-24
+            <time itemprop="dateCreated" datetime="2016-11-24T17:20:00+08:00" content="2016-11-24">
+              2016-11-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/24/docker初识/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/24/docker初识/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/24/docker初识/" class="leancloud_visitors" data-flag-title="docker初识">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、docker的三点好处"><a href="#一、docker的三点好处" class="headerlink" title="一、docker的三点好处"></a>一、docker的三点好处</h3><ul>
+<li>统一环境和配置：想想平时怎么迁移服务。</li>
+<li>高效伸缩性：想想平时怎么扩容</li>
+<li>资源隔离(使用lxc)：想想单机多部署。</li>
+</ul>
+<h3 id="二、docker在linux上安装方法"><a href="#二、docker在linux上安装方法" class="headerlink" title="二、docker在linux上安装方法"></a>二、docker在linux上安装方法</h3><p>为了简单(非生产环境)，使用yum进行安装。</p>
+<p>所有安装的前提是内核版本要在大于等于3.10</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@iZ2ze0ay4bt2m4mafbw5euZ ~]# uname -r</div><div class="line">3.10.0-693.2.2.el7.x86_64</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/24/docker初识/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/17/Redis客户端常见异常分析/" itemprop="url">
+                  Redis客户端常见异常分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-17T09:20:00+08:00" content="2016-11-17">
+              2016-11-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis开发与运维/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis开发与运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/17/Redis客户端常见异常分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/17/Redis客户端常见异常分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/17/Redis客户端常见异常分析/" class="leancloud_visitors" data-flag-title="Redis客户端常见异常分析">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="本文部分内容来自《Redis开发与运维》一书，转载请声明。"><a href="#本文部分内容来自《Redis开发与运维》一书，转载请声明。" class="headerlink" title="本文部分内容来自《Redis开发与运维》一书，转载请声明。"></a>本文部分内容来自<a href="https://cachecloud.github.io/2016/10/24/Redis3%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E7%9B%AE%E5%BD%95/" target="_blank" rel="external">《Redis开发与运维》</a>一书，转载请声明。</h3><p>在Redis客户端的使用过程中，无论是客户端使用不当或者Redis服务端出现问题，客户端会反应出一些异常，下面分析一下Jedis使用过程中常见的异常情况：</p>
+<h3 id="一-无法从连接池获取到连接"><a href="#一-无法从连接池获取到连接" class="headerlink" title="一.无法从连接池获取到连接"></a>一.无法从连接池获取到连接</h3><p>JedisPool中的Jedis对象个数是有限的，默认是8个。这里假设使用的默认配置，如果有8个Jedis对象被占用，并且没有归还，如果调用者还要从JedisPool中借用Jedis，就需要进行等待(例如设置了maxWaitMillis&gt;0)，如果在maxWaitMillis时间内仍然无法获取到Jedis对象就会抛出如下异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Timeout waiting for idle object</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:449)</div></pre></td></tr></table></figure>
+<p>还有一种情况，就是设置了blockWhenExhausted=false，那么调用者发现池子中没有资源时，会立即抛出异常不进行等待，下面的异常就是blockWhenExhausted=false时的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool</div><div class="line">	…</div><div class="line">Caused by: java.util.NoSuchElementException: Pool exhausted</div><div class="line">	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:464)</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/17/Redis客户端常见异常分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/03/Redis Cluster多机房高可用实现/" itemprop="url">
+                  Redis Cluster多机房高可用实现--基于客户端
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-03T11:20:00+08:00" content="2016-11-03">
+              2016-11-03
             </time>
           </span>
 
@@ -1093,8 +1308,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/24/redis-py使用(2)-redis-py-cluster/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/24/redis-py使用(2)-redis-py-cluster/" itemprop="commentsCount"></span>
+                <a href="/2016/11/03/Redis Cluster多机房高可用实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/Redis Cluster多机房高可用实现/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1104,7 +1319,7 @@
 
           
           
-             <span id="/2016/05/24/redis-py使用(2)-redis-py-cluster/" class="leancloud_visitors" data-flag-title="redis-py使用(2)-redis-py-cluster">
+             <span id="/2016/11/03/Redis Cluster多机房高可用实现/" class="leancloud_visitors" data-flag-title="Redis Cluster多机房高可用实现--基于客户端">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1127,13 +1342,16 @@
 
       
         
-          <h3 id="一-获取redis-py-cluster"><a href="#一-获取redis-py-cluster" class="headerlink" title="一.获取redis-py-cluster"></a>一.获取redis-py-cluster</h3><p>redis-py并没有支持Redis Cluster。社区中有人开发了<a href="https://github.com/Grokzen/redis-py-cluster" target="_blank" rel="external">redis-py-cluster</a>(非同一个作者)。两种方法获取。</p>
-<p>第一：使用pip进行安装(推荐)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install redis-py-cluster</div></pre></td></tr></table></figure>
-<p>第三：使用源码安装(以1.3.4版本为例子，可以在<a href="https://github.com/Grokzen/redis-py-cluster/releases" target="_blank" rel="external">release列表</a>选取需要)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/Grokzen/redis-py-cluster/releases/download/1.3.4/redis-py-cluster-1.3.4.tar.gz</div><div class="line">unzip redis-py-cluster-1.3.4.tar.gz</div><div class="line">cd redis-py-cluster-1.3.4</div><div class="line">python setup.py install</div></pre></td></tr></table></figure>
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">本文以Redis-Cluster为例子，实际使用中Redis-Sentinel和Redis Standalone也是一样的。</div></pre></td></tr></table></figure>
+<h3 id="一、现有问题"><a href="#一、现有问题" class="headerlink" title="一、现有问题"></a>一、现有问题</h3><p>由于Redis本身的一些特性(例如复制)以及使用场景，造成Redis不太适合部署在不同的机房，所以通常来看Redis集群都是在同一个机房部署的。虽然Redis集群自身已经具备了高可用的特性，即使几个Redis节点异常或者挂掉，Redis Cluster也会实现故障自动转移，对应用方来说也可以在很短时间内恢复故障。但是如果发生了机房故障(断电、断网等极端情况)，如果应用方降级或者容错机制做的不好甚至业务本身不能降级，或者会丢失重要数据，或者可能瞬间会跑满应用的线程池造成服务不可用，对于一些重要的服务来说是非常致命的。      </p>
+<p>为了应对像机房故障这类情况，保证应用方在这种极端情况下，仍然可以正常服务(系统正常运行、数据正常)，所以需要给出一个Redis跨机房的方案。</p>
+<h3 id="二、实现思路和目标："><a href="#二、实现思路和目标：" class="headerlink" title="二、实现思路和目标："></a>二、实现思路和目标：</h3><h4 id="1-思路"><a href="#1-思路" class="headerlink" title="1.思路"></a>1.思路</h4><ul>
+<li>使用CacheCloud开通两个位于两个不同机房的Redis-Cluster集群(例如：兆维、北显)：一个叫major，作为主Redis服务，一个叫minor，作为备用Redis服务。</li>
+<li>开发定制版的客户端，利用netflix的hystrix组件能够解除依赖隔离的特性，在major出现故障时，将故障隔离，并将请求自动转发到minor，并且对于应用的主线程池没有影响。（有关hystrix的请求流程流程见下图，有关hystrix使用请参考：<a href="http://hot66hot.iteye.com/blog/2155036" target="_blank" rel="external">http://hot66hot.iteye.com/blog/2155036</a></li>
+</ul>
+<p><img src="http://i2.itc.cn/20161103/3084_2bebda41_d500_20d1_b7aa_fd027c8587fd_1.png" alt=""></p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/24/redis-py使用(2)-redis-py-cluster/#more" rel="contents">
+            <a class="btn" href="/2016/11/03/Redis Cluster多机房高可用实现/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1184,8 +1402,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/23/ Redis源码学习二：RedisCluster源码阅读/" itemprop="url">
-                  Redis源码学习二：RedisCluster源码阅读(1)
+                <a class="post-title-link" href="/2016/10/24/小坑/" itemprop="url">
+                  小坑
                 </a>
               
             
@@ -1198,8 +1416,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T22:20:00+08:00" content="2016-05-23">
-              2016-05-23
+            <time itemprop="dateCreated" datetime="2016-10-24T17:20:00+08:00" content="2016-10-24">
+              2016-10-24
             </time>
           </span>
 
@@ -1212,8 +1430,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis源码/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis源码</span>
+                  <a href="/categories/小坑/" itemprop="url" rel="index">
+                    <span itemprop="name">小坑</span>
                   </a>
                 </span>
 
@@ -1228,8 +1446,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/23/ Redis源码学习二：RedisCluster源码阅读/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/ Redis源码学习二：RedisCluster源码阅读/" itemprop="commentsCount"></span>
+                <a href="/2016/10/24/小坑/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/24/小坑/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1239,7 +1457,7 @@
 
           
           
-             <span id="/2016/05/23/ Redis源码学习二：RedisCluster源码阅读/" class="leancloud_visitors" data-flag-title="Redis源码学习二：RedisCluster源码阅读(1)">
+             <span id="/2016/10/24/小坑/" class="leancloud_visitors" data-flag-title="小坑">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1263,14 +1481,12 @@
       
         
           
-            <p>RedisCluster使用P2P实现分布式，对于每个Redis节点来说，它既存储数据又要管理分布式状态，Redis节点之间使用Gossip协议进行通信，那么对于每个节点来说，它又是客户端又是服务端。所以了解节点通信的代码很重要。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">所有代码均在cluster.h和cluster.c中。</div></pre></td></tr></table></figure>
-<h4 id="1-Redis-Cluster节点在初始化时，会创建AcceptTcpHandler-clusterAcceptHandler-。"><a href="#1-Redis-Cluster节点在初始化时，会创建AcceptTcpHandler-clusterAcceptHandler-。" class="headerlink" title="1.Redis Cluster节点在初始化时，会创建AcceptTcpHandler(clusterAcceptHandler)。"></a>1.Redis Cluster节点在初始化时，会创建AcceptTcpHandler(clusterAcceptHandler)。</h4><p>可以看出RedisCluster节点内部使用port + 10000进行通信。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">void clusterInit(void) &#123;</div><div class="line">    /* Port sanity check II</div><div class="line">     * The other handshake port check is triggered too late to stop</div><div class="line">     * us from trying to use a too-high cluster port number. */</div><div class="line">    if (server.port &gt; (65535-REDIS_CLUSTER_PORT_INCR)) &#123;</div><div class="line">        redisLog(REDIS_WARNING, &quot;Redis port number too high. &quot;</div><div class="line">                   &quot;Cluster communication port is 10,000 port &quot;</div><div class="line">                   &quot;numbers higher than your Redis port. &quot;</div><div class="line">                   &quot;Your Redis port number must be &quot;</div><div class="line">                   &quot;lower than 55535.&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (listenToPort(server.port+REDIS_CLUSTER_PORT_INCR,</div><div class="line">        server.cfd,&amp;server.cfd_count) == REDIS_ERR)</div><div class="line">    &#123;</div><div class="line">        exit(1);</div><div class="line">    &#125; else &#123;</div><div class="line">        int j;</div><div class="line"></div><div class="line">        for (j = 0; j &lt; server.cfd_count; j++) &#123;</div><div class="line">            if (aeCreateFileEvent(server.el, server.cfd[j], AE_READABLE,</div><div class="line">                clusterAcceptHandler, NULL) == AE_ERR)</div><div class="line">                    redisPanic(&quot;Unrecoverable error creating Redis Cluster &quot;</div><div class="line">                                &quot;file event.&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>clusterInit会在redis.c中初始化redis实例时候使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void initServer(void) &#123;</div><div class="line">    ...忽略...</div><div class="line"></div><div class="line">    if (server.cluster_enabled) clusterInit();</div><div class="line">    ...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="2-clusterAcceptHandler定义，进入clusterReadHandler逻辑。"><a href="#2-clusterAcceptHandler定义，进入clusterReadHandler逻辑。" class="headerlink" title="2. clusterAcceptHandler定义，进入clusterReadHandler逻辑。"></a>2. clusterAcceptHandler定义，进入clusterReadHandler逻辑。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">void clusterAcceptHandler(aeEventLoop *el, int fd, void *privdata, int mask) &#123;</div><div class="line">    int cport, cfd;</div><div class="line">    int max = MAX_CLUSTER_ACCEPTS_PER_CALL;</div><div class="line">    char cip[REDIS_IP_STR_LEN];</div><div class="line">    clusterLink *link;</div><div class="line">    REDIS_NOTUSED(el);</div><div class="line">    REDIS_NOTUSED(mask);</div><div class="line">    REDIS_NOTUSED(privdata);</div><div class="line"></div><div class="line">    /* If the server is starting up, don&apos;t accept cluster connections:</div><div class="line">     * UPDATE messages may interact with the database content. */</div><div class="line">    if (server.masterhost == NULL &amp;&amp; server.loading) return;</div><div class="line"></div><div class="line">    while(max--) &#123;</div><div class="line">        cfd = anetTcpAccept(server.neterr, fd, cip, sizeof(cip), &amp;cport);</div><div class="line">        if (cfd == ANET_ERR) &#123;</div><div class="line">            if (errno != EWOULDBLOCK)</div><div class="line">                redisLog(REDIS_VERBOSE,</div><div class="line">                    &quot;Error accepting cluster node: %s&quot;, server.neterr);</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        anetNonBlock(NULL,cfd);</div><div class="line">        anetEnableTcpNoDelay(NULL,cfd);</div><div class="line"></div><div class="line">        /* Use non-blocking I/O for cluster messages. */</div><div class="line">        redisLog(REDIS_VERBOSE,&quot;Accepted cluster node %s:%d&quot;, cip, cport);</div><div class="line">        /* Create a link object we use to handle the connection.</div><div class="line">         * It gets passed to the readable handler when data is available.</div><div class="line">         * Initiallly the link-&gt;node pointer is set to NULL as we don&apos;t know</div><div class="line">         * which node is, but the right node is references once we know the</div><div class="line">         * node identity. */</div><div class="line">        link = createClusterLink(NULL);</div><div class="line">        link-&gt;fd = cfd;</div><div class="line">        aeCreateFileEvent(server.el,cfd,AE_READABLE,clusterReadHandler,link);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="3-clusterReadHandler：解析请求，其中clusterProcessPacket是处理各种消息的逻辑-例如ping-pong-meet等"><a href="#3-clusterReadHandler：解析请求，其中clusterProcessPacket是处理各种消息的逻辑-例如ping-pong-meet等" class="headerlink" title="3. clusterReadHandler：解析请求，其中clusterProcessPacket是处理各种消息的逻辑(例如ping,pong,meet等)"></a>3. clusterReadHandler：解析请求，其中clusterProcessPacket是处理各种消息的逻辑(例如ping,pong,meet等)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">/* Read data. Try to read the first field of the header first to check the</div><div class="line"> * full length of the packet. When a whole packet is in memory this function</div><div class="line"> * will call the function to process the packet. And so forth. */</div><div class="line">void clusterReadHandler(aeEventLoop *el, int fd, void *privdata, int mask) &#123;</div><div class="line">    char buf[sizeof(clusterMsg)];</div><div class="line">    ssize_t nread;</div><div class="line">    clusterMsg *hdr;</div><div class="line">    clusterLink *link = (clusterLink*) privdata;</div><div class="line">    unsigned int readlen, rcvbuflen;</div><div class="line">    REDIS_NOTUSED(el);</div><div class="line">    REDIS_NOTUSED(mask);</div><div class="line"></div><div class="line">    while(1) &#123; /* Read as long as there is data to read. */</div><div class="line">        rcvbuflen = sdslen(link-&gt;rcvbuf);</div><div class="line">        if (rcvbuflen &lt; 8) &#123;</div><div class="line">            /* First, obtain the first 8 bytes to get the full message</div><div class="line">             * length. */</div><div class="line">            readlen = 8 - rcvbuflen;</div><div class="line">        &#125; else &#123;</div><div class="line">            /* Finally read the full message. */</div><div class="line">            hdr = (clusterMsg*) link-&gt;rcvbuf;</div><div class="line">            if (rcvbuflen == 8) &#123;</div><div class="line">                /* Perform some sanity check on the message signature</div><div class="line">                 * and length. */</div><div class="line">                if (memcmp(hdr-&gt;sig,&quot;RCmb&quot;,4) != 0 ||</div><div class="line">                    ntohl(hdr-&gt;totlen) &lt; CLUSTERMSG_MIN_LEN)</div><div class="line">                &#123;</div><div class="line">                    redisLog(REDIS_WARNING,</div><div class="line">                        &quot;Bad message length or signature received &quot;</div><div class="line">                        &quot;from Cluster bus.&quot;);</div><div class="line">                    handleLinkIOError(link);</div><div class="line">                    return;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            readlen = ntohl(hdr-&gt;totlen) - rcvbuflen;</div><div class="line">            if (readlen &gt; sizeof(buf)) readlen = sizeof(buf);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        nread = read(fd,buf,readlen);</div><div class="line">        if (nread == -1 &amp;&amp; errno == EAGAIN) return; /* No more data ready. */</div><div class="line"></div><div class="line">        if (nread &lt;= 0) &#123;</div><div class="line">            /* I/O error... */</div><div class="line">            redisLog(REDIS_DEBUG,&quot;I/O error reading from node link: %s&quot;,</div><div class="line">                (nread == 0) ? &quot;connection closed&quot; : strerror(errno));</div><div class="line">            handleLinkIOError(link);</div><div class="line">            return;</div><div class="line">        &#125; else &#123;</div><div class="line">            /* Read data and recast the pointer to the new buffer. */</div><div class="line">            link-&gt;rcvbuf = sdscatlen(link-&gt;rcvbuf,buf,nread);</div><div class="line">            hdr = (clusterMsg*) link-&gt;rcvbuf;</div><div class="line">            rcvbuflen += nread;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        /* Total length obtained? Process this packet. */</div><div class="line">        if (rcvbuflen &gt;= 8 &amp;&amp; rcvbuflen == ntohl(hdr-&gt;totlen)) &#123;</div><div class="line">            if (clusterProcessPacket(link)) &#123;</div><div class="line">                sdsfree(link-&gt;rcvbuf);</div><div class="line">                link-&gt;rcvbuf = sdsempty();</div><div class="line">            &#125; else &#123;</div><div class="line">                return; /* Link no longer valid. */</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <h3 id="1-application-properties"><a href="#1-application-properties" class="headerlink" title="1.application.properties"></a>1.application.properties</h3><p>spring-boot中，application.properties中的值，无论是字符串或者数字，都不要加双引号，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user.name=carlos</div></pre></td></tr></table></figure>
+<p>不要写成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user.name=&quot;carlos&quot;</div></pre></td></tr></table></figure>
+<p>配置atlas时候，由于添加了双引号的application.server.name造成启动一直保存，直到debug错误中才发现原来是这个造成的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spring.application.name = &quot;carlosfu-atlas-test&quot;</div></pre></td></tr></table></figure>
 
           
         
@@ -1320,8 +1536,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/23/Redis从客户端请求到命令处理/" itemprop="url">
-                  Redis源码学习一：客户端请求处理到命令执行
+                <a class="post-title-link" href="/2016/09/29/4.openResty使用Kafka/" itemprop="url">
+                  OpenResty-4.OpenResty使用Kafka
                 </a>
               
             
@@ -1334,8 +1550,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T22:20:00+08:00" content="2016-05-23">
-              2016-05-23
+            <time itemprop="dateCreated" datetime="2016-09-29T21:40:00+08:00" content="2016-09-29">
+              2016-09-29
             </time>
           </span>
 
@@ -1348,8 +1564,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
+                  <a href="/categories/OpenResty/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenResty</span>
                   </a>
                 </span>
 
@@ -1364,8 +1580,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/23/Redis从客户端请求到命令处理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/Redis从客户端请求到命令处理/" itemprop="commentsCount"></span>
+                <a href="/2016/09/29/4.openResty使用Kafka/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/29/4.openResty使用Kafka/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1375,7 +1591,7 @@
 
           
           
-             <span id="/2016/05/23/Redis从客户端请求到命令处理/" class="leancloud_visitors" data-flag-title="Redis源码学习一：客户端请求处理到命令执行">
+             <span id="/2016/09/29/4.openResty使用Kafka/" class="leancloud_visitors" data-flag-title="OpenResty-4.OpenResty使用Kafka">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1398,150 +1614,16 @@
 
       
         
-          <h4 id="1-Redis实例启动的时候，创建TcpHandler来处理客户端的请求"><a href="#1-Redis实例启动的时候，创建TcpHandler来处理客户端的请求" class="headerlink" title="1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求"></a>1.Redis实例启动的时候，创建TcpHandler来处理客户端的请求</h4><p><strong>(redis.c)</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">void initServer(void) &#123;</div><div class="line">...忽略...</div><div class="line">    /* Create an event handler for accepting new connections in TCP and Unix</div><div class="line">     * domain sockets. */</div><div class="line">    for (j = 0; j &lt; server.ipfd_count; j++) &#123;</div><div class="line">        if (aeCreateFileEvent(server.el, server.ipfd[j], AE_READABLE,</div><div class="line">            acceptTcpHandler,NULL) == AE_ERR)</div><div class="line">            &#123;</div><div class="line">                redisPanic(</div><div class="line">                    &quot;Unrecoverable error creating server.ipfd file event.&quot;);</div><div class="line">            &#125;</div><div class="line">    &#125;</div><div class="line">...忽略...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <p>openresty官方模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/openresty/lua-nginx-module#readme</div></pre></td></tr></table></figure>
+<p>其中没有kafka的模块，可以在google上搜索可以查到lua-resty-kafka</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/doujiang24/lua-resty-kafka</div></pre></td></tr></table></figure>
+<h4 id="1-安装lua-resty-kafka"><a href="#1-安装lua-resty-kafka" class="headerlink" title="1.安装lua-resty-kafka"></a>1.安装lua-resty-kafka</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/doujiang24/lua-resty-kafka/archive/master.zip  </div><div class="line">unzip lua-resty-kafka-master.zip -d /opt/nginx/  </div><div class="line">    </div><div class="line">#拷贝lua-resty-kafka到openresty  </div><div class="line">mkdir /opt/openresty/lualib/kafka  </div><div class="line">cp -rf /opt/nginx/lua-resty-kafka-master/lib/resty /opt/openresty/lualib/kafka/</div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/23/Redis从客户端请求到命令处理/#more" rel="contents">
+            <a class="btn" href="/2016/09/29/4.openResty使用Kafka/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/23/HBase数据管理操作/" itemprop="url">
-                  Redis源码学习二：RedisCluster源码阅读(1)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T22:20:00+08:00" content="2016-05-23">
-              2016-05-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Redis源码/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis源码</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/23/HBase数据管理操作/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/23/HBase数据管理操作/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/05/23/HBase数据管理操作/" class="leancloud_visitors" data-flag-title="Redis源码学习二：RedisCluster源码阅读(1)">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-获取指定rowkey对应region和regionserver"><a href="#1-获取指定rowkey对应region和regionserver" class="headerlink" title="1.获取指定rowkey对应region和regionserver"></a>1.获取指定rowkey对应region和regionserver</h4><p>(1).获取一个表的RegionLocator</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">TableName tableName = TableName.valueOf(Bytes.toBytes(&quot;myTableName&quot;))</div><div class="line">RegionLocator locator = connection.getRegionLocator(tableName);</div></pre></td></tr></table></figure>
-<p>(2).使用RegionLocator定位rowkey对应的Region和Region Server</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">byte[] rowKey = xx</div><div class="line">HRegionLocation location = locator.getRegionLocation(rowKey);</div></pre></td></tr></table></figure>
-<p>其中HRegionLocation包含了Region、RegionServer等信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">public HRegionInfo getRegionInfo();</div><div class="line">public ServerName getServerName();</div></pre></td></tr></table></figure>
-<p>(3).RegionLocator的其他功能</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public List&lt;HRegionLocation&gt; getAllRegionLocations();</div><div class="line">public byte [][] getStartKeys() throws IOException;</div><div class="line">public byte[][] getEndKeys() throws IOException;</div><div class="line">public Pair&lt;byte[][],byte[][]&gt; getStartEndKeys() throws IOException;</div><div class="line">TableName getName();</div></pre></td></tr></table></figure>
-<h4 id="2-获取regionServer下所有的Region"><a href="#2-获取regionServer下所有的Region" class="headerlink" title="2.获取regionServer下所有的Region"></a>2.获取regionServer下所有的Region</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ServerName serverName = ServerName.valueOf(“xxxx”);List&lt;HRegionInfo&gt; hRegionInfoList = connection.getAdmin().getOnlineRegions(serverName);for (HRegionInfo hRegionInfo : hRegionInfoList)&#123;</div><div class="line">    System.out.println(Bytes.toString(hRegionInfo.getRegionName()));&#125;</div></pre></td></tr></table></figure>
-
-          
         
       
     </div>
@@ -1572,7 +1654,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1613,7 +1695,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">55</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1621,7 +1703,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1630,7 +1712,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
